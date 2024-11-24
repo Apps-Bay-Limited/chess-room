@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:provider/provider.dart';
+import 'package:user_messaging_platform/user_messaging_platform.dart' as UMP;
 
 import '../generated/l10n.dart';
 import '../util/ads_manager.dart';
@@ -48,6 +49,18 @@ class _MainMenuViewState extends State<MainMenuView> {
 
     AppOpenAdManager appOpenAdManager = AppOpenAdManager()..loadAd();
     WidgetsBinding.instance?.addObserver(AppLifecycleReactor(appOpenAdManager: appOpenAdManager));
+    updateConsent();
+  }
+
+  void updateConsent() async {
+    // Make sure to continue with the latest consent info.
+    var info = await UMP.UserMessagingPlatform.instance.requestConsentInfoUpdate();
+
+    // Show the consent form if consent is required.
+    if (info.consentStatus == UMP.ConsentStatus.required) {
+      // `showConsentForm` returns the latest consent info, after the consent from has been closed.
+      info = await UMP.UserMessagingPlatform.instance.showConsentForm();
+    }
   }
 
   @override

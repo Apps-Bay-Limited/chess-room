@@ -71,6 +71,9 @@ PODS:
     - FlutterMacOS
   - url_launcher_ios (0.0.1):
     - Flutter
+  - user_messaging_platform (0.0.1):
+    - Flutter
+    - GoogleUserMessagingPlatform (~> 2.1)
 
 DEPENDENCIES:
   - app_tracking_transparency (from `.symlinks/plugins/app_tracking_transparency/ios`)
@@ -81,6 +84,7 @@ DEPENDENCIES:
   - path_provider_ios (from `.symlinks/plugins/path_provider_ios/ios`)
   - shared_preferences_foundation (from `.symlinks/plugins/shared_preferences_foundation/ios`)
   - url_launcher_ios (from `.symlinks/plugins/url_launcher_ios/ios`)
+  - user_messaging_platform (from `.symlinks/plugins/user_messaging_platform/ios`)
 
 SPEC REPOS:
   trunk:
@@ -108,6 +112,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/shared_preferences_foundation/ios"
   url_launcher_ios:
     :path: ".symlinks/plugins/url_launcher_ios/ios"
+  user_messaging_platform:
+    :path: ".symlinks/plugins/user_messaging_platform/ios"
 
 SPEC CHECKSUMS:
   app_tracking_transparency: e169b653478da7bb15a6c61209015378ca73e375
@@ -124,6 +130,7 @@ SPEC CHECKSUMS:
   PromisesObjC: f5707f49cb48b9636751c5b2e7d227e43fba9f47
   shared_preferences_foundation: 297b3ebca31b34ec92be11acd7fb0ba932c822ca
   url_launcher_ios: ae1517e5e344f5544fb090b079e11f399dfbe4d2
+  user_messaging_platform: 6dbd1633fe91f750fad2fe886e55ef5a66f7ea22
 
 PODFILE CHECKSUM: 4e8f8b2be68aeea4c0d5beb6ff1e79fface1d048
 
