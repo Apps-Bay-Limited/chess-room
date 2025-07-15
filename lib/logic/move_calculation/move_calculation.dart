@@ -33,14 +33,14 @@ List<Move> allMoves(Player player, ChessBoard board, int aiDifficulty) {
       if (piece.type == ChessPieceType.pawn && (tileToRow(tile) == 0 || tileToRow(tile) == 7)) {
         for (var promotion in PROMOTIONS) {
           var move = MoveAndValue(Move(piece.tile, tile, promotionType: promotion), 0);
-          push(move.move, board, promotionType: promotion);
+          push(move.move!, board, promotionType: promotion);
           move.value = boardValue(board);
           pop(board);
           moves.add(move);
         }
       } else {
         var move = MoveAndValue(Move(piece.tile, tile), 0);
-        push(move.move, board);
+        push(move.move!, board);
         move.value = boardValue(board);
         pop(board);
         moves.add(move);
@@ -48,7 +48,7 @@ List<Move> allMoves(Player player, ChessBoard board, int aiDifficulty) {
     }
   }
   moves.sort((a, b) => _compareMoves(a, b, player, board));
-  return moves.map((move) => move.move).toList();
+  return moves.map((move) => move.move!).toList();
 }
 
 int _compareMoves(MoveAndValue a, MoveAndValue b, Player player, ChessBoard board) {
@@ -103,16 +103,21 @@ List<int> _pawnMoves(ChessPiece pawn, ChessBoard board) {
   List<int> moves = [];
   var offset = pawn.player == Player.player1 ? -8 : 8;
   var firstTile = pawn.tile + offset;
-  if (board.tiles[firstTile] == null) {
+  // One square forward
+  if (board.tiles[firstTile] == null && _inBounds(tileToRow(firstTile), tileToCol(firstTile))) {
     moves.add(firstTile);
-    if (pawn.moveCount == 0) {
-      var secondTile = firstTile + offset;
-      if (board.tiles[secondTile] == null) {
+    // Two squares forward from starting position
+    var startRow = pawn.player == Player.player1 ? 6 : 1;
+    if (tileToRow(pawn.tile) == startRow) {
+      var secondTile = pawn.tile + 2 * offset;
+      if (board.tiles[secondTile] == null && board.tiles[firstTile] == null && _inBounds(tileToRow(secondTile), tileToCol(secondTile))) {
         moves.add(secondTile);
       }
     }
   }
-  return moves + _pawnDiagonalAttacks(pawn, board);
+  // Diagonal attacks
+  moves.addAll(_pawnDiagonalAttacks(pawn, board));
+  return moves;
 }
 
 List<int> _pawnDiagonalAttacks(ChessPiece pawn, ChessBoard board) {
@@ -123,8 +128,9 @@ List<int> _pawnDiagonalAttacks(ChessPiece pawn, ChessBoard board) {
     var col = tileToCol(pawn.tile) + diagonal.right;
     if (_inBounds(row, col)) {
       var takenPiece = board.tiles[_rowColToTile(row, col)];
-      if ((takenPiece != null && takenPiece.player == oppositePlayer(pawn.player)) ||
-          _canTakeEnPassant(pawn.player, _rowColToTile(row, col), board)) {
+      if (takenPiece != null && takenPiece.player == oppositePlayer(pawn.player)) {
+        moves.add(_rowColToTile(row, col));
+      } else if (_canTakeEnPassant(pawn.player, _rowColToTile(row, col), board)) {
         moves.add(_rowColToTile(row, col));
       }
     }
@@ -135,9 +141,9 @@ List<int> _pawnDiagonalAttacks(ChessPiece pawn, ChessBoard board) {
 bool _canTakeEnPassant(Player pawnPlayer, int diagonal, ChessBoard board) {
   var offset = (pawnPlayer == Player.player1) ? 8 : -8;
   var takenPiece = board.tiles[diagonal + offset];
-  return takenPiece != null &&
-      takenPiece.player != pawnPlayer &&
-      takenPiece == board.enPassantPiece;
+  return takenPiece != null && 
+         takenPiece.player != pawnPlayer &&
+         takenPiece == board.enPassantPiece;
 }
 
 List<int> _knightMoves(ChessPiece knight, ChessBoard board) {
@@ -164,7 +170,7 @@ List<int> _kingMoves(ChessPiece king, ChessBoard board, bool legal) {
 List<int> _rookCastleMove(ChessPiece rook, ChessBoard board, bool legal) {
   if (!legal || !kingInCheck(rook.player, board)) {
     var king = kingForPlayer(rook.player, board);
-    if (_canCastle(king, rook, board, legal)) {
+    if (king != null && _canCastle(king, rook, board, legal)) {
       return [king.tile];
     }
   }
@@ -189,7 +195,7 @@ bool _canCastle(ChessPiece king, ChessPiece rook, ChessBoard board, bool legal) 
     var tile = rook.tile;
     while (tile != king.tile) {
       tile += offset;
-      if ((board.tiles[tile] != null && tile != king.tile) ||
+      if ((tile != king.tile) ||
           (legal && _kingInCheckAtTile(tile, king.player, board))) {
         return false;
       }
@@ -210,13 +216,14 @@ List<int> _movesFromDirections(
       col += direction.right;
       if (_inBounds(row, col)) {
         var possiblePiece = board.tiles[_rowColToTile(row, col)];
-        if (possiblePiece != null) {
-          if (possiblePiece.player != piece.player) {
-            moves.add(_rowColToTile(row, col));
-          }
+        if (possiblePiece == null) {
+          moves.add(_rowColToTile(row, col));
+        } else if (possiblePiece.player != piece.player) {
+          // print('Capture possible: ${piece.type} at ${piece.tile} can capture ${possiblePiece.type} at ${_rowColToTile(row, col)} (player: ${possiblePiece.player})');
+          moves.add(_rowColToTile(row, col));
           break;
         } else {
-          moves.add(_rowColToTile(row, col));
+          break;
         }
       }
       if (!repeat) {
@@ -244,9 +251,12 @@ bool _kingInCheckAtTile(int tile, Player player, ChessBoard board) {
 }
 
 bool kingInCheck(Player player, ChessBoard board) {
-  for (var piece in piecesForPlayer(oppositePlayer(player), board)) {
-    if (movesForPiece(piece, board, legal: false).contains(kingForPlayer(player, board).tile)) {
-      return true;
+  var king = kingForPlayer(player, board);
+  if (king != null) {
+    for (var piece in piecesForPlayer(oppositePlayer(player), board)) {
+      if (movesForPiece(piece, board, legal: false).contains(king.tile)) {
+        return true;
+      }
     }
   }
   return false;

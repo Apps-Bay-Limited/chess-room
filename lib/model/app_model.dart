@@ -35,8 +35,8 @@ class AppModel extends ChangeNotifier {
   bool showHints = true;
   bool flip = true;
 
-  ChessGame game;
-  Timer timer;
+  ChessGame? game;
+  Timer? timer;
   bool gameOver = false;
   bool stalemate = false;
   bool promotionRequested = false;
@@ -93,12 +93,8 @@ class AppModel extends ChangeNotifier {
   }
 
   void newGame(BuildContext context, {bool notify = true}) {
-    if (game != null) {
-      game.cancelAIMove();
-    }
-    if (timer != null) {
-      timer.cancel();
-    }
+    game?.cancelAIMove();
+    timer?.cancel();
     gameOver = false;
     stalemate = false;
     turn = Player.player1;
@@ -108,6 +104,8 @@ class AppModel extends ChangeNotifier {
     if (selectedSide == Player.random) {
       playerSide = Random.secure().nextInt(2) == 0 ? Player.player1 : Player.player2;
     }
+    // Ensure the turn starts with the human player if appropriate
+    turn = playerSide;
     game = ChessGame(this, context);
     timer = Timer.periodic(Duration(milliseconds: TIMER_ACCURACY_MS), (timer) {
       turn == Player.player1 ? decrementPlayer1Timer() : decrementPlayer2Timer();
@@ -122,8 +120,8 @@ class AppModel extends ChangeNotifier {
   }
 
   void exitChessView() {
-    game.cancelAIMove();
-    timer.cancel();
+    game?.cancelAIMove();
+    timer?.cancel();
     notifyListeners();
   }
 

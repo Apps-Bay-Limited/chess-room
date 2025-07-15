@@ -30,7 +30,10 @@ class PiecePreview extends Game {
 
   loadSpriteImages() async {
     for (var index = 0; index < 6; index++) {
-      spriteMap[index] = Sprite(await Flame.images.load(imageMap[index]));
+      var imagePath = imageMap[index];
+      if (imagePath != null) {
+        spriteMap[index] = Sprite(await Flame.images.load(imagePath));
+      }
     }
   }
 
@@ -44,14 +47,17 @@ class PiecePreview extends Game {
               ? appModel.theme.lightTile
               : appModel.theme.darkTile,
       );
-      spriteMap[index].render(
-        canvas,
-        size: Vector2(30, 30),
-        position: Vector2(
-          (index % 2) * 40.0 + 5,
-          (index / 2).floor() * 40.0 + 5,
-        ),
-      );
+      var sprite = spriteMap[index];
+      if (sprite != null) {
+        sprite.render(
+          canvas,
+          size: Vector2(30, 30),
+          position: Vector2(
+            (index % 2) * 40.0 + 5,
+            (index / 2).floor() * 40.0 + 5,
+          ),
+        );
+      }
     }
   }
 

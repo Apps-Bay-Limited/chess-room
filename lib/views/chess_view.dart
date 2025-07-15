@@ -14,7 +14,7 @@ import 'components/chess_view/game_info_and_controls/game_status.dart';
 class ChessView extends StatefulWidget {
   final AppModel appModel;
 
-  ChessView(this.appModel);
+  const ChessView({super.key, required this.appModel});
 
   @override
   _ChessViewState createState() => _ChessViewState(appModel);
@@ -25,7 +25,7 @@ class _ChessViewState extends State<ChessView> {
 
   _ChessViewState(this.appModel);
 
-  BannerAd _ad;
+  BannerAd? _ad;
 
   bool _isAdLoaded = false;
 
@@ -52,7 +52,13 @@ class _ChessViewState extends State<ChessView> {
       ),
     );
 
-    _ad.load();
+    _ad?.load();
+  }
+
+  @override
+  void dispose() {
+    _ad?.dispose();
+    super.dispose();
   }
 
   @override
@@ -63,33 +69,38 @@ class _ChessViewState extends State<ChessView> {
           appModel.promotionRequested = false;
           WidgetsBinding.instance.addPostFrameCallback((_) => _showPromotionDialog(appModel));
         }
-        return WillPopScope(
-          onWillPop: _willPopCallback,
+        return PopScope(
+          canPop: true,
+          onPopInvoked: (didPop) {
+            if (didPop) {
+              appModel.exitChessView();
+            }
+          },
           child: Container(
             decoration: BoxDecoration(gradient: appModel.theme.background),
             child: Stack(
               children: [
                 Container(
-                  padding: EdgeInsets.all(30),
+                  padding: const EdgeInsets.all(30),
                   child: Column(
                     children: [
-                      SizedBox(
+                      const SizedBox(
                         height: 30,
                       ),
-                      GameInfoAndControls(appModel),
-                      SizedBox(height: 30),
+                      GameInfoAndControls(appModel: appModel),
+                      const SizedBox(height: 30),
                       ChessBoardWidget(appModel),
-                      SizedBox(height: 30),
+                      const SizedBox(height: 30),
                       GameStatus(),
                     ],
                   ),
                 ),
-                if (_isAdLoaded)
+                if (_isAdLoaded && _ad != null)
                   Align(
                     alignment: Alignment.bottomCenter,
                     child: Container(
                       margin: EdgeInsets.fromLTRB(0, 0, 0, MediaQuery.of(context).padding.bottom),
-                      child: AdWidget(ad: _ad),
+                      child: AdWidget(ad: _ad!),
                       height: 50.0,
                     ),
                   ),
@@ -108,12 +119,5 @@ class _ChessViewState extends State<ChessView> {
         return PromotionDialog(appModel);
       },
     );
-  }
-
-  Future<bool> _willPopCallback() async {
-    if (appModel != null) {
-      appModel.exitChessView();
-    }
-    return true;
   }
 }

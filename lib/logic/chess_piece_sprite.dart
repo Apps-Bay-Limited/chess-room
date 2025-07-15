@@ -9,12 +9,12 @@ import 'chess_piece.dart';
 import 'shared_functions.dart';
 
 class ChessPieceSprite {
-  ChessPieceType type;
-  String pieceTheme;
-  int tile;
-  Sprite sprite;
-  double spriteX;
-  double spriteY;
+  late ChessPieceType type;
+  late String pieceTheme;
+  late int tile;
+  late Sprite sprite;
+  late double spriteX;
+  late double spriteY;
   double offsetX = 0;
   double offsetY = 0;
 
@@ -65,8 +65,7 @@ class ChessPieceSprite {
   void playSound(double destX, double destY, AppModel appModel) async {
     if ((destX - spriteX).abs() <= 0.1 && (destY - spriteY).abs() <= 0.1) {
       if (appModel.soundEnabled) {
-        final bytes = await (await audioCache.loadAsFile('audio/piece_moved.mp3')).readAsBytes();
-        audioPlayer.playBytes(bytes);
+        await audioPlayer.play(AssetSource('audio/piece_moved.mp3'));
       }
     }
   }

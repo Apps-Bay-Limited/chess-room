@@ -1,4 +1,3 @@
-import 'dart:ui';
 
 import 'package:async/async.dart';
 import 'package:chess_room/logic/chess_piece_sprite.dart';
@@ -18,22 +17,23 @@ import 'chess_piece.dart';
 import 'move_calculation/move_classes/move.dart';
 
 class ChessGame extends Game with TapDetector {
-  double width;
-  double tileSize;
+  late double width;
+  late double tileSize;
   AppModel appModel;
   BuildContext context;
   ChessBoard board = ChessBoard();
   Map<ChessPiece, ChessPieceSprite> spriteMap = Map();
 
-  CancelableOperation aiOperation;
+  late CancelableOperation aiOperation;
   List<int> validMoves = [];
-  ChessPiece selectedPiece;
-  int checkHintTile;
-  Move latestMove;
+  ChessPiece? selectedPiece;
+  int? checkHintTile;
+  Move? latestMove;
 
   ChessGame(this.appModel, this.context) {
     width = MediaQuery.of(context).size.width - 68;
     tileSize = width / 8;
+    aiOperation = CancelableOperation.fromValue(null);
     for (var piece in board.player1Pieces + board.player2Pieces) {
       spriteMap[piece] = ChessPieceSprite(piece, appModel.pieceTheme);
     }
@@ -43,6 +43,7 @@ class ChessGame extends Game with TapDetector {
     }
   }
 
+  @override
   void onTapDown(TapDownInfo details) {
     if (appModel.gameOver || !(appModel.isAIsTurn)) {
       var tile = _vector2ToTile(details.eventPosition.widget);
@@ -53,14 +54,14 @@ class ChessGame extends Game with TapDetector {
       } else {
         if (selectedPiece != null &&
             touchedPiece != null &&
-            touchedPiece.player == selectedPiece.player) {
+            touchedPiece.player == selectedPiece?.player) {
           if (validMoves.contains(tile)) {
             _movePiece(tile);
           } else {
             validMoves = [];
             _selectPiece(touchedPiece);
           }
-        } else if (selectedPiece == null) {
+        } else if (selectedPiece == null  && touchedPiece != null) {
           _selectPiece(touchedPiece);
         } else {
           _movePiece(tile);
@@ -71,53 +72,47 @@ class ChessGame extends Game with TapDetector {
 
   @override
   void render(Canvas canvas) {
-    if (appModel != null) {
-      _drawBoard(canvas);
-      if (appModel.showHints) {
-        _drawCheckHint(canvas);
-        _drawLatestMove(canvas);
-      }
-      _drawSelectedPieceHint(canvas);
-      _drawPieces(canvas);
-      if (appModel.showHints) {
-        _drawMoveHints(canvas);
-      }
+    _drawBoard(canvas);
+    if (appModel.showHints) {
+      _drawCheckHint(canvas);
+      _drawLatestMove(canvas);
     }
-  }
+    _drawSelectedPieceHint(canvas);
+    _drawPieces(canvas);
+    if (appModel.showHints) {
+      _drawMoveHints(canvas);
+    }
+    }
 
   @override
   void update(double t) {
-    if (appModel != null) {
-      for (var piece in board.player1Pieces + board.player2Pieces) {
-        spriteMap[piece].update(tileSize, appModel, piece);
-      }
+    for (var piece in board.player1Pieces + board.player2Pieces) {
+      spriteMap[piece]?.update(tileSize, appModel, piece);
     }
-  }
+    }
 
   void _initSpritePositions() {
     for (var piece in board.player1Pieces + board.player2Pieces) {
-      spriteMap[piece].initSpritePosition(tileSize, appModel);
+      spriteMap[piece]?.initSpritePosition(tileSize, appModel);
     }
   }
 
   void _selectPiece(ChessPiece piece) {
-    if (piece != null) {
-      if (piece.player == appModel.turn) {
-        selectedPiece = piece;
-        if (selectedPiece != null) {
-          validMoves = movesForPiece(piece, board);
-        }
-        if (validMoves.isEmpty) {
-          selectedPiece = null;
-        }
+    if (piece.player == appModel.turn) {
+      selectedPiece = piece;
+      validMoves = movesForPiece(piece, board);
+      // print('Selected piece: type=${piece.type}, tile=${piece.tile}, validMoves: $validMoves');
+      if (validMoves.isEmpty) {
+        selectedPiece = null;
       }
+      update(0); // Force redraw
     }
   }
 
   void _movePiece(int tile) {
     if (validMoves.contains(tile)) {
       validMoves = [];
-      var meta = push(Move(selectedPiece.tile, tile), board, getMeta: true);
+      var meta = push(Move(selectedPiece!.tile, tile), board, getMeta: true);
       if (meta.promotion) {
         appModel.requestPromotion();
       }
@@ -149,10 +144,8 @@ class ChessGame extends Game with TapDetector {
   }
 
   void cancelAIMove() {
-    if (aiOperation != null) {
-      aiOperation.cancel();
+    aiOperation.cancel();
     }
-  }
 
   void undoMove() {
     board.redoStack.add(pop(board));
@@ -220,7 +213,10 @@ class ChessGame extends Game with TapDetector {
     var oppositeTurn = oppositePlayer(appModel.turn);
     if (kingInCheck(oppositeTurn, board)) {
       meta.isCheck = true;
-      checkHintTile = kingForPlayer(oppositeTurn, board).tile;
+      var king = kingForPlayer(oppositeTurn, board);
+      if (king != null) {
+        checkHintTile = king.tile;
+      }
     }
     if (kingInCheckmate(oppositeTurn, board)) {
       if (!meta.isCheck) {
@@ -273,14 +269,17 @@ class ChessGame extends Game with TapDetector {
 
   void _drawPieces(Canvas canvas) {
     for (var piece in board.player1Pieces + board.player2Pieces) {
-      spriteMap[piece].sprite.render(
-            canvas,
-            size: Vector2(tileSize - 10, tileSize - 10),
-            position: Vector2(
-              spriteMap[piece].spriteX + 5,
-              spriteMap[piece].spriteY + 5,
-            ),
-          );
+      var sprite = spriteMap[piece];
+      if (sprite != null) {
+        sprite.sprite.render(
+          canvas,
+          size: Vector2(tileSize - 10, tileSize - 10),
+          position: Vector2(
+            sprite.spriteX + 5,
+            sprite.spriteY + 5,
+          ),
+        );
+      }
     }
   }
 
@@ -298,53 +297,50 @@ class ChessGame extends Game with TapDetector {
   }
 
   void _drawLatestMove(Canvas canvas) {
-    if (latestMove != null) {
-      canvas.drawRect(
-        Rect.fromLTWH(
-          getXFromTile(latestMove.from, tileSize, appModel),
-          getYFromTile(latestMove.from, tileSize, appModel),
-          tileSize,
-          tileSize,
-        ),
-        Paint()..color = appModel.theme.latestMove,
-      );
-      canvas.drawRect(
-        Rect.fromLTWH(
-          getXFromTile(latestMove.to, tileSize, appModel),
-          getYFromTile(latestMove.to, tileSize, appModel),
-          tileSize,
-          tileSize,
-        ),
-        Paint()..color = appModel.theme.latestMove,
-      );
-    }
+    if (latestMove == null) return;
+    canvas.drawRect(
+      Rect.fromLTWH(
+        getXFromTile(latestMove!.from, tileSize, appModel),
+        getYFromTile(latestMove!.from, tileSize, appModel),
+        tileSize,
+        tileSize,
+      ),
+      Paint()..color = appModel.theme.latestMove,
+    );
+    canvas.drawRect(
+      Rect.fromLTWH(
+        getXFromTile(latestMove!.to, tileSize, appModel),
+        getYFromTile(latestMove!.to, tileSize, appModel),
+        tileSize,
+        tileSize,
+      ),
+      Paint()..color = appModel.theme.latestMove,
+    );
   }
 
   void _drawCheckHint(Canvas canvas) {
-    if (checkHintTile != null) {
-      canvas.drawRect(
-        Rect.fromLTWH(
-          getXFromTile(checkHintTile, tileSize, appModel),
-          getYFromTile(checkHintTile, tileSize, appModel),
-          tileSize,
-          tileSize,
-        ),
-        Paint()..color = appModel.theme.checkHint,
-      );
-    }
+    if (checkHintTile == null) return;
+    canvas.drawRect(
+      Rect.fromLTWH(
+        getXFromTile(checkHintTile!, tileSize, appModel),
+        getYFromTile(checkHintTile!, tileSize, appModel),
+        tileSize,
+        tileSize,
+      ),
+      Paint()..color = appModel.theme.checkHint,
+    );
   }
 
   void _drawSelectedPieceHint(Canvas canvas) {
-    if (selectedPiece != null) {
-      canvas.drawRect(
-        Rect.fromLTWH(
-          getXFromTile(selectedPiece.tile, tileSize, appModel),
-          getYFromTile(selectedPiece.tile, tileSize, appModel),
-          tileSize,
-          tileSize,
-        ),
-        Paint()..color = appModel.theme.moveHint,
-      );
-    }
+    if (selectedPiece == null) return;
+    canvas.drawRect(
+      Rect.fromLTWH(
+        getXFromTile(selectedPiece!.tile, tileSize, appModel),
+        getYFromTile(selectedPiece!.tile, tileSize, appModel),
+        tileSize,
+        tileSize,
+      ),
+      Paint()..color = appModel.theme.moveHint,
+    );
   }
 }

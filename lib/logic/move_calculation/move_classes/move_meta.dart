@@ -8,13 +8,13 @@ class MoveMeta {
   Player player;
   ChessPieceType type;
   bool took = false;
-  bool kingCastle = false;
-  bool queenCastle = false;
-  bool promotion = false;
-  ChessPieceType promotionType;
   bool isCheck = false;
   bool isCheckmate = false;
   bool isStalemate = false;
+  bool promotion = false;
+  late ChessPieceType promotionType;
+  bool queenCastle = false;
+  bool kingCastle = false;
   bool rowIsAmbiguous = false;
   bool colIsAmbiguous = false;
 

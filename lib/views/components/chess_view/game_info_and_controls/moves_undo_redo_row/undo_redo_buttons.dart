@@ -6,22 +6,24 @@ class UndoRedoButtons extends StatelessWidget {
   final AppModel appModel;
 
   bool get undoEnabled {
+    if (appModel.game == null) return false;
     if (appModel.playingWithAI) {
-      return appModel.game.board.moveStack.length > 1 && !appModel.isAIsTurn;
+      return appModel.game!.board.moveStack.length > 1 && !appModel.isAIsTurn;
     } else {
-      return appModel.game.board.moveStack.isNotEmpty;
+      return appModel.game!.board.moveStack.isNotEmpty;
     }
   }
 
   bool get redoEnabled {
+    if (appModel.game == null) return false;
     if (appModel.playingWithAI) {
-      return appModel.game.board.redoStack.length > 1 && !appModel.isAIsTurn;
+      return appModel.game!.board.redoStack.length > 1 && !appModel.isAIsTurn;
     } else {
-      return appModel.game.board.redoStack.isNotEmpty;
+      return appModel.game!.board.redoStack.isNotEmpty;
     }
   }
 
-  UndoRedoButtons(this.appModel);
+  const UndoRedoButtons(this.appModel);
 
   @override
   Widget build(BuildContext context) {
@@ -29,37 +31,37 @@ class UndoRedoButtons extends StatelessWidget {
       children: [
         Expanded(
           child: RoundedIconButton(
-            CupertinoIcons.back,
+            icon: CupertinoIcons.back,
             onPressed: () {
               appModel.exitChessView();
               Navigator.pop(context);
             },
           ),
         ),
-        SizedBox(width: 10),
+        const SizedBox(width: 10),
         Expanded(
           child: RoundedIconButton(
-            CupertinoIcons.arrow_2_circlepath,
+            icon: CupertinoIcons.arrow_2_circlepath,
             onPressed: () {
               appModel.newGame(context);
             },
           ),
         ),
-        appModel.allowUndoRedo ? SizedBox(width: 10) : Container(),
+        appModel.allowUndoRedo ? const SizedBox(width: 10) : Container(),
         appModel.allowUndoRedo
             ? Expanded(
                 child: RoundedIconButton(
-                  CupertinoIcons.arrow_counterclockwise,
-                  onPressed: undoEnabled ? () => undo() : null,
+                  icon: CupertinoIcons.arrow_counterclockwise,
+                  onPressed: undoEnabled ? () => undo() : () {},
                 ),
               )
             : Container(),
-        appModel.allowUndoRedo ? SizedBox(width: 10) : Container(),
+        appModel.allowUndoRedo ? const SizedBox(width: 10) : Container(),
         appModel.allowUndoRedo
             ? Expanded(
                 child: RoundedIconButton(
-                  CupertinoIcons.arrow_clockwise,
-                  onPressed: redoEnabled ? () => redo() : null,
+                  icon: CupertinoIcons.arrow_clockwise,
+                  onPressed: redoEnabled ? () => redo() : () {},
                 ),
               )
             : Container(),
@@ -68,18 +70,22 @@ class UndoRedoButtons extends StatelessWidget {
   }
 
   void undo() {
-    if (appModel.playingWithAI) {
-      appModel.game.undoTwoMoves();
-    } else {
-      appModel.game.undoMove();
+    if (appModel.game != null) {
+      if (appModel.playingWithAI) {
+        appModel.game!.undoTwoMoves();
+      } else {
+        appModel.game!.undoMove();
+      }
     }
   }
 
   void redo() {
-    if (appModel.playingWithAI) {
-      appModel.game.redoTwoMoves();
-    } else {
-      appModel.game.redoMove();
+    if (appModel.game != null) {
+      if (appModel.playingWithAI) {
+        appModel.game!.redoTwoMoves();
+      } else {
+        appModel.game!.redoMove();
+      }
     }
   }
 }

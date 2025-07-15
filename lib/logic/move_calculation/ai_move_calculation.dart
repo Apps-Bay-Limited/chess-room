@@ -18,14 +18,14 @@ Move calculateAIMove(Map args) {
   if (board.possibleOpenings.isNotEmpty) {
     return _openingMove(board, args['aiPlayer']);
   } else {
-    return _alphaBeta(
-            board, args['aiPlayer'], null, 0, args['aiDifficulty'], INITIAL_ALPHA, INITIAL_BETA)
-        .move;
+    var result = _alphaBeta(
+            board, args['aiPlayer'], null, 0, args['aiDifficulty'], INITIAL_ALPHA, INITIAL_BETA);
+    return result.move ?? Move(0, 0); // Fallback move if null
   }
 }
 
 MoveAndValue _alphaBeta(
-    ChessBoard board, Player player, Move move, int depth, int maxDepth, int alpha, int beta) {
+    ChessBoard board, Player player, Move? move, int depth, int maxDepth, int alpha, int beta) {
   if (depth == maxDepth) {
     return MoveAndValue(move, boardValue(board));
   }

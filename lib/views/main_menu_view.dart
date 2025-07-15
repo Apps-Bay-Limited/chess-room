@@ -3,22 +3,22 @@ import 'package:chess_room/views/more_apps_page.dart';
 import 'package:chess_room/views/settings_view.dart';
 import 'package:chess_room/views/single_player_page.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:provider/provider.dart';
-import 'package:user_messaging_platform/user_messaging_platform.dart' as UMP;
 
 import '../generated/l10n.dart';
 import '../util/ads_manager.dart';
 import 'btn.dart';
 
 class MainMenuView extends StatefulWidget {
+  const MainMenuView({super.key});
+
   @override
   _MainMenuViewState createState() => _MainMenuViewState();
 }
 
 class _MainMenuViewState extends State<MainMenuView> {
-  BannerAd _ad;
+  BannerAd? _ad;
 
   bool _isAdLoaded = false;
 
@@ -45,22 +45,16 @@ class _MainMenuViewState extends State<MainMenuView> {
       ),
     );
 
-    _ad.load();
+    _ad?.load();
 
     AppOpenAdManager appOpenAdManager = AppOpenAdManager()..loadAd();
-    WidgetsBinding.instance?.addObserver(AppLifecycleReactor(appOpenAdManager: appOpenAdManager));
-    updateConsent();
+    WidgetsBinding.instance.addObserver(AppLifecycleReactor(appOpenAdManager: appOpenAdManager));
   }
 
-  void updateConsent() async {
-    // Make sure to continue with the latest consent info.
-    var info = await UMP.UserMessagingPlatform.instance.requestConsentInfoUpdate();
-
-    // Show the consent form if consent is required.
-    if (info.consentStatus == UMP.ConsentStatus.required) {
-      // `showConsentForm` returns the latest consent info, after the consent from has been closed.
-      info = await UMP.UserMessagingPlatform.instance.showConsentForm();
-    }
+  @override
+  void dispose() {
+    _ad?.dispose();
+    super.dispose();
   }
 
   @override
@@ -76,7 +70,7 @@ class _MainMenuViewState extends State<MainMenuView> {
               Center(
                 child: Column(
                   children: [
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     Container(
                       padding:
                           EdgeInsets.fromLTRB(10, MediaQuery.of(context).padding.top + 30, 10, 0),
@@ -85,97 +79,97 @@ class _MainMenuViewState extends State<MainMenuView> {
                         width: width,
                       ),
                     ),
-                    SizedBox(height: 40),
+                    const SizedBox(height: 40),
                     Btn(
                       onTap: () {
                         appModel.setPlayerCount(1);
                         Navigator.push(
                           context,
                           CupertinoPageRoute(
-                            builder: (context) => SinglePlayerView(),
+                            builder: (context) => const SinglePlayerView(),
                           ),
                         );
                       },
                       height: 60,
                       width: 260,
                       borderRadius: 250,
-                      color: Color(0xffCC996F),
+                      color: const Color(0xffCC996F),
                       child: Text(
                         S.of(context).Vs_AI_Player,
-                        style: TextStyle(
+                        style: const TextStyle(
                             color: Color(0xff473D3D), fontSize: 20, fontWeight: FontWeight.w800),
                       ),
                     ),
-                    SizedBox(height: 30),
+                    const SizedBox(height: 30),
                     Btn(
                       onTap: () {
                         appModel.setPlayerCount(2);
                         Navigator.push(
                           context,
                           CupertinoPageRoute(
-                            builder: (context) => SinglePlayerView(),
+                            builder: (context) => const SinglePlayerView(),
                           ),
                         );
                       },
                       height: 60,
                       width: 260,
                       borderRadius: 250,
-                      color: Color(0xffCC996F),
+                      color: const Color(0xffCC996F),
                       child: Text(
                         S.of(context).Two_Players,
-                        style: TextStyle(
+                        style: const TextStyle(
                             color: Color(0xff473D3D), fontSize: 20, fontWeight: FontWeight.w800),
                       ),
                     ),
-                    SizedBox(height: 30),
+                    const SizedBox(height: 30),
                     Btn(
                       onTap: () {
                         Navigator.push(
                           context,
                           CupertinoPageRoute(
-                            builder: (context) => SettingsView(),
+                            builder: (context) => SettingsView(appModel: appModel),
                           ),
                         );
                       },
                       height: 60,
                       width: 260,
                       borderRadius: 250,
-                      color: Color(0xffCC996F),
+                      color: const Color(0xffCC996F),
                       child: Text(
                         S.of(context).Settings,
-                        style: TextStyle(
+                        style: const TextStyle(
                             color: Color(0xff473D3D), fontSize: 20, fontWeight: FontWeight.w800),
                       ),
                     ),
-                    SizedBox(height: 30),
+                    const SizedBox(height: 30),
                     Btn(
                       onTap: () {
                         Navigator.push(
                           context,
                           CupertinoPageRoute(
-                            builder: (context) => MoreAppsPage(),
+                            builder: (context) => const MoreAppsPage(),
                           ),
                         );
                       },
                       height: 60,
                       width: 260,
                       borderRadius: 250,
-                      color: Color(0xffCC996F),
+                      color: const Color(0xffCC996F),
                       child: Text(
                         S.of(context).More_Apps,
-                        style: TextStyle(
+                        style: const TextStyle(
                             color: Color(0xff473D3D), fontSize: 20, fontWeight: FontWeight.w800),
                       ),
                     ),
                   ],
                 ),
               ),
-              if (_isAdLoaded)
+              if (_isAdLoaded && _ad != null)
                 Align(
                   alignment: Alignment.bottomCenter,
                   child: Container(
                     margin: EdgeInsets.fromLTRB(0, 0, 0, MediaQuery.of(context).padding.bottom),
-                    child: AdWidget(ad: _ad),
+                    child: AdWidget(ad: _ad!),
                     height: 50.0,
                   ),
                 ),

@@ -136,14 +136,14 @@ class AdsManager {
 }
 
 class AppOpenAdManager {
-  AppOpenAd _appOpenAd;
+  AppOpenAd? _appOpenAd;
   bool _isShowingAd = false;
 
   /// Maximum duration allowed between loading and showing the ad.
   final Duration maxCacheDuration = Duration(hours: 4);
 
   /// Keep track of load time so we don't show an expired ad.
-  DateTime _appOpenLoadTime;
+  DateTime? _appOpenLoadTime;
 
   /// Load an AppOpenAd.
   void loadAd() {
@@ -180,7 +180,7 @@ class AppOpenAdManager {
       print('Tried to show ad while already showing an ad.');
       return;
     }
-    if (DateTime.now().subtract(maxCacheDuration).isAfter(_appOpenLoadTime)) {
+    if (_appOpenLoadTime != null && DateTime.now().subtract(maxCacheDuration).isAfter(_appOpenLoadTime!)) {
       print('Maximum cache duration exceeded. Loading another ad.');
       _appOpenAd?.dispose();
       _appOpenAd = null;
@@ -218,7 +218,7 @@ class AppLifecycleReactor extends WidgetsBindingObserver {
 
   bool hasEnterBackground = false;
 
-  AppLifecycleReactor({this.appOpenAdManager});
+  AppLifecycleReactor({required this.appOpenAdManager});
 
   @override
   Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {

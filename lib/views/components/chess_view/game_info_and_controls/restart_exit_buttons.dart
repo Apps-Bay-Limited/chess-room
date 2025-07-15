@@ -5,7 +5,7 @@ import 'package:flutter/cupertino.dart';
 class RestartExitButtons extends StatelessWidget {
   final AppModel appModel;
 
-  RestartExitButtons(this.appModel);
+  const RestartExitButtons(this.appModel);
 
   @override
   Widget build(BuildContext context) {
@@ -13,16 +13,16 @@ class RestartExitButtons extends StatelessWidget {
       children: [
         Expanded(
           child: RoundedAlertButton(
-            'Restart',
+            label: 'Restart',
             onConfirm: () {
               appModel.newGame(context);
             },
           ),
         ),
-        SizedBox(width: 10),
+        const SizedBox(width: 10),
         Expanded(
           child: RoundedAlertButton(
-            'Exit',
+            label: 'Exit',
             onConfirm: () {
               appModel.exitChessView();
               Navigator.pop(context);

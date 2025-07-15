@@ -1,24 +1,24 @@
 import 'package:flutter/material.dart';
 
 class Btn extends StatelessWidget {
-  final List<Color> gradient;
-  final Color color;
-  final double height;
-  final double width;
-  final GestureTapCallback onTap;
+  final List<Color>? gradient;
+  final Color? color;
+  final double? height;
+  final double? width;
+  final GestureTapCallback? onTap;
   final double borderRadius;
-  final Widget child;
+  final Widget? child;
 
-  Btn(
-      {Key key,
-      this.gradient,
-      this.color,
-      this.onTap,
-      this.child,
-      this.borderRadius = 0,
-      this.height,
-      this.width})
-      : super(key: key);
+  const Btn({
+    super.key,
+    this.gradient,
+    this.color,
+    this.onTap,
+    this.child,
+    this.borderRadius = 0,
+    this.height,
+    this.width,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -30,16 +30,16 @@ class Btn extends StatelessWidget {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(borderRadius),
           color: color,
-          gradient: this.gradient == null
+          gradient: gradient == null
               ? null
               : LinearGradient(
                   begin: Alignment.centerLeft,
                   end: Alignment.centerRight,
-                  stops: [0.1, 0.8],
-                  colors: gradient),
+                  stops: const [0.1, 0.8],
+                  colors: gradient!),
           boxShadow: [
             BoxShadow(
-                color: Colors.black.withOpacity(.1),
+                color: Colors.black.withValues(alpha: 0.1),
                 spreadRadius: 5,
                 blurRadius: 10)
           ],

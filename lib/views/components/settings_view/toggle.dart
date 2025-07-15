@@ -7,19 +7,26 @@ class Toggle extends StatelessWidget {
   final bool toggle;
   final Function setFunc;
 
-  Toggle(this.label, {this.toggle, this.setFunc});
+  const Toggle({
+    super.key,
+    required this.label,
+    required this.toggle,
+    required this.setFunc,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 55,
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          TextRegular(label),
-          Spacer(),
+          TextDefault(label),
           CupertinoSwitch(
             value: toggle,
-            onChanged: setFunc,
+            onChanged: (bool value) {
+              setFunc(value);
+            },
+            activeTrackColor: const Color(0xffCC996F),
           ),
         ],
       ),

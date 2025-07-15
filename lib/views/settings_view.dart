@@ -10,12 +10,19 @@ import 'components/settings_view/toggles.dart';
 import 'components/shared/text_variable.dart';
 
 class SettingsView extends StatefulWidget {
+  final AppModel appModel;
+  
+  const SettingsView({
+    super.key,
+    required this.appModel,
+  });
+
   @override
-  State<SettingsView> createState() => _SettingsViewState();
+  _SettingsViewState createState() => _SettingsViewState();
 }
 
 class _SettingsViewState extends State<SettingsView> {
-  BannerAd _ad;
+  BannerAd? _ad;
 
   bool _isAdLoaded = false;
 
@@ -42,7 +49,13 @@ class _SettingsViewState extends State<SettingsView> {
       ),
     );
 
-    _ad.load();
+    _ad?.load();
+  }
+
+  @override
+  void dispose() {
+    _ad?.dispose();
+    super.dispose();
   }
 
   @override
@@ -97,7 +110,7 @@ class _SettingsViewState extends State<SettingsView> {
                 alignment: Alignment.bottomCenter,
                 child: Container(
                   margin: EdgeInsets.fromLTRB(0, 0, 0, MediaQuery.of(context).padding.bottom),
-                  child: AdWidget(ad: _ad),
+                  child: AdWidget(ad: _ad!),
                   height: 50.0,
                 ),
               ),

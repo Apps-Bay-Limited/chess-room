@@ -5,14 +5,14 @@ import 'picker.dart';
 
 class AIDifficultyPicker extends StatelessWidget {
   final Map<int, Text> difficultyOptions = {
-    1: Text('⭐️'),
-    3: Text('⭐️⭐️'),
-    5: Text('⭐️⭐️⭐️'),
-    6: Text('⭐️⭐️⭐️⭐️')
+    1: const Text('⭐️'),
+    3: const Text('⭐️⭐️'),
+    5: const Text('⭐️⭐️⭐️'),
+    6: const Text('⭐️⭐️⭐️⭐️')
   };
 
   final int aiDifficulty;
-  final Function setFunc;
+  final ValueChanged<int?> setFunc;
 
   AIDifficultyPicker(this.aiDifficulty, this.setFunc);
 

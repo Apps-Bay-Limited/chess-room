@@ -7,19 +7,19 @@ import 'toggle.dart';
 class Toggles extends StatelessWidget {
   final AppModel appModel;
 
-  Toggles(this.appModel);
+  const Toggles(this.appModel);
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         Toggle(
-          S.of(context).Hints,
+          label: S.of(context).Hints,
           toggle: appModel.showHints,
           setFunc: appModel.setShowHints,
         ),
         Toggle(
-          S.of(context).Undo,
+          label: S.of(context).Undo,
           toggle: appModel.allowUndoRedo,
           setFunc: appModel.setAllowUndoRedo,
         ),

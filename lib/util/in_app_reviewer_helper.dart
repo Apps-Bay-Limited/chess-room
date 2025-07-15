@@ -7,20 +7,16 @@ class InAppReviewHelper {
 
   static Future<void> incrementOpenCount() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    int count = prefs.getInt(openCount);
-    if (count != null) {
-      count += 1;
-      prefs.setInt(openCount, count);
-    } else {
-      prefs.setInt(openCount, 1);
-    }
+    int count = prefs.getInt(openCount) ?? 0;
+    count += 1;
+    prefs.setInt(openCount, count);
   }
 
   static Future<void> checkAndAskForReview() async {
     await incrementOpenCount();
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    int count = prefs.getInt(openCount);
+    int count = prefs.getInt(openCount) ?? 0;
 
     print("App open count: $count");
     if (count == 3 || count == 15 || count == 100) {

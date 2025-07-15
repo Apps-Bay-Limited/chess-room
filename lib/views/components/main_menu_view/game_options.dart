@@ -8,7 +8,7 @@ import 'game_options/time_limit_picker.dart';
 class GameOptions extends StatelessWidget {
   final AppModel appModel;
 
-  GameOptions(this.appModel);
+  const GameOptions({super.key, required this.appModel});
 
   @override
   Widget build(BuildContext context) {
@@ -20,26 +20,26 @@ class GameOptions extends StatelessWidget {
         //   appModel.playerCount,
         //   appModel.setPlayerCount,
         // ),
-        SizedBox(height: 20),
+        const SizedBox(height: 20),
         appModel.playerCount == 1
             ? Column(
                 children: [
                   AIDifficultyPicker(
                     appModel.aiDifficulty,
-                    appModel.setAIDifficulty,
+                    (value) => appModel.setAIDifficulty(value ?? 1),
                   ),
-                  SizedBox(height: 40),
+                  const SizedBox(height: 40),
                   SidePicker(
                     appModel.selectedSide,
-                    appModel.setPlayerSide,
+                    (value) => appModel.setPlayerSide(value ?? Player.player1),
                   ),
-                  SizedBox(height: 40),
+                  const SizedBox(height: 40),
                 ],
               )
             : Container(),
         TimeLimitPicker(
           selectedTime: appModel.timeLimit,
-          setTime: appModel.setTimeLimit,
+          setFunc: (value) => appModel.setTimeLimit(value ?? 0),
         ),
       ],
     );

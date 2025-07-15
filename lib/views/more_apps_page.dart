@@ -6,7 +6,7 @@ import 'package:open_store/open_store.dart';
 import '../generated/l10n.dart';
 
 class MoreAppsPage extends StatelessWidget {
-  const MoreAppsPage({Key key}) : super(key: key);
+  const MoreAppsPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -180,7 +180,7 @@ class MoreAppsPage extends StatelessWidget {
               physics: const NeverScrollableScrollPhysics(),
               itemCount: _items.length,
               itemBuilder: (context, index) {
-                return MoreAppsRow.factory(_items[index]);
+                return MoreAppsRow.fromItem(_items[index]);
               },
             ),
             SizedBox(
@@ -200,24 +200,25 @@ class MoreAppItem {
 }
 
 class MoreAppsRow extends StatelessWidget {
-  Image appIcon;
-  IconData trailingIcon;
-  String title;
-  void Function() onTap;
+  final Widget appIcon;
+  final String title;
+  final VoidCallback onTap;
+  final IconData trailingIcon;
 
-  MoreAppsRow(
-      {Key key,
-      this.trailingIcon = Icons.chevron_right_rounded,
-      @required this.appIcon,
-      @required this.title,
-      @required this.onTap})
-      : super(key: key);
+  const MoreAppsRow({
+    super.key,
+    required this.appIcon,
+    required this.title,
+    required this.onTap,
+    this.trailingIcon = Icons.chevron_right_rounded,
+  });
 
-  MoreAppsRow.factory(MoreAppItem moreAppItem) {
-    appIcon = moreAppItem.appIcon;
-    trailingIcon = Icons.chevron_right_rounded;
-    title = moreAppItem.title;
-    onTap = moreAppItem.onTap;
+  static MoreAppsRow fromItem(MoreAppItem moreAppItem) {
+    return MoreAppsRow(
+      appIcon: moreAppItem.appIcon,
+      title: moreAppItem.title,
+      onTap: moreAppItem.onTap,
+    );
   }
 
   @override

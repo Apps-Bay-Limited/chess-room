@@ -8,7 +8,7 @@ class PromotionOption extends StatelessWidget {
   final AppModel appModel;
   final ChessPieceType promotionType;
 
-  PromotionOption(this.appModel, this.promotionType);
+  const PromotionOption(this.appModel, this.promotionType);
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +20,7 @@ class PromotionOption extends StatelessWidget {
         ),
       ),
       onPressed: () {
-        appModel.game.promote(promotionType);
+        appModel.game?.promote(promotionType);
         appModel.update();
         Navigator.pop(context);
       },

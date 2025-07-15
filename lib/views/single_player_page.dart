@@ -1,7 +1,6 @@
 import 'package:chess_room/model/app_model.dart';
 import 'package:chess_room/views/components/main_menu_view/game_options.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:provider/provider.dart';
 
@@ -11,12 +10,14 @@ import 'btn.dart';
 import 'chess_view.dart';
 
 class SinglePlayerView extends StatefulWidget {
+  const SinglePlayerView({super.key});
+
   @override
   _SinglePlayerViewState createState() => _SinglePlayerViewState();
 }
 
 class _SinglePlayerViewState extends State<SinglePlayerView> {
-  BannerAd _ad;
+  BannerAd? _ad;
 
   bool _isAdLoaded = false;
 
@@ -43,7 +44,13 @@ class _SinglePlayerViewState extends State<SinglePlayerView> {
       ),
     );
 
-    _ad.load();
+    _ad?.load();
+  }
+
+  @override
+  void dispose() {
+    _ad?.dispose();
+    super.dispose();
   }
 
   @override
@@ -59,7 +66,7 @@ class _SinglePlayerViewState extends State<SinglePlayerView> {
                 child: Column(
                   children: [
                     SizedBox(height: 40),
-                    GameOptions(appModel),
+                    GameOptions(appModel: appModel),
                     SizedBox(height: 50),
                     Btn(
                       onTap: () {
@@ -68,7 +75,7 @@ class _SinglePlayerViewState extends State<SinglePlayerView> {
                           CupertinoPageRoute(
                             builder: (context) {
                               appModel.newGame(context, notify: false);
-                              return ChessView(appModel);
+                              return ChessView(appModel: appModel);
                             },
                           ),
                         );
@@ -106,7 +113,7 @@ class _SinglePlayerViewState extends State<SinglePlayerView> {
                   alignment: Alignment.bottomCenter,
                   child: Container(
                     margin: EdgeInsets.fromLTRB(0, 0, 0, MediaQuery.of(context).padding.bottom),
-                    child: AdWidget(ad: _ad),
+                    child: AdWidget(ad: _ad!),
                     height: 50.0,
                   ),
                 ),

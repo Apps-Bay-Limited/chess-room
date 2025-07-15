@@ -1,6 +1,5 @@
 import 'package:chess_room/model/app_model.dart';
 import 'package:chess_room/views/components/chess_view/game_info_and_controls/timer_widget.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class Timers extends StatelessWidget {

@@ -10,28 +10,47 @@ import 'intl/messages_all.dart';
 
 // ignore_for_file: non_constant_identifier_names, lines_longer_than_80_chars
 // ignore_for_file: join_return_with_assignment, prefer_final_in_for_each
-// ignore_for_file: avoid_redundant_argument_values
+// ignore_for_file: avoid_redundant_argument_values, avoid_escaping_inner_quotes
 
 class S {
   S();
-  
-  static S current;
-  
-  static const AppLocalizationDelegate delegate =
-    AppLocalizationDelegate();
+
+  static S? _current;
+
+  static S get current {
+    assert(
+      _current != null,
+      'No instance of S was loaded. Try to initialize the S delegate before accessing S.current.',
+    );
+    return _current!;
+  }
+
+  static const AppLocalizationDelegate delegate = AppLocalizationDelegate();
 
   static Future<S> load(Locale locale) {
-    final name = (locale.countryCode?.isEmpty ?? false) ? locale.languageCode : locale.toString();
-    final localeName = Intl.canonicalizedLocale(name); 
+    final name = (locale.countryCode?.isEmpty ?? false)
+        ? locale.languageCode
+        : locale.toString();
+    final localeName = Intl.canonicalizedLocale(name);
     return initializeMessages(localeName).then((_) {
       Intl.defaultLocale = localeName;
-      S.current = S();
-      
-      return S.current;
+      final instance = S();
+      S._current = instance;
+
+      return instance;
     });
-  } 
+  }
 
   static S of(BuildContext context) {
+    final instance = S.maybeOf(context);
+    assert(
+      instance != null,
+      'No instance of S present in the widget tree. Did you add S.delegate in localizationsDelegates?',
+    );
+    return instance!;
+  }
+
+  static S? maybeOf(BuildContext context) {
     return Localizations.of<S>(context, S);
   }
 
@@ -47,22 +66,12 @@ class S {
 
   /// `Two Players`
   String get Two_Players {
-    return Intl.message(
-      'Two Players',
-      name: 'Two_Players',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Two Players', name: 'Two_Players', desc: '', args: []);
   }
 
   /// `Settings`
   String get Settings {
-    return Intl.message(
-      'Settings',
-      name: 'Settings',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Settings', name: 'Settings', desc: '', args: []);
   }
 
   /// `AI Difficulty`
@@ -77,42 +86,22 @@ class S {
 
   /// `Easy`
   String get Easy {
-    return Intl.message(
-      'Easy',
-      name: 'Easy',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Easy', name: 'Easy', desc: '', args: []);
   }
 
   /// `Medium`
   String get Medium {
-    return Intl.message(
-      'Medium',
-      name: 'Medium',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Medium', name: 'Medium', desc: '', args: []);
   }
 
   /// `Hard`
   String get Hard {
-    return Intl.message(
-      'Hard',
-      name: 'Hard',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Hard', name: 'Hard', desc: '', args: []);
   }
 
   /// `Extreme`
   String get Extreme {
-    return Intl.message(
-      'Extreme',
-      name: 'Extreme',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Extreme', name: 'Extreme', desc: '', args: []);
   }
 
   /// `Pick Your Side`
@@ -127,62 +116,32 @@ class S {
 
   /// `White`
   String get White {
-    return Intl.message(
-      'White',
-      name: 'White',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('White', name: 'White', desc: '', args: []);
   }
 
   /// `Black`
   String get Black {
-    return Intl.message(
-      'Black',
-      name: 'Black',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Black', name: 'Black', desc: '', args: []);
   }
 
   /// `Time Limit`
   String get Time_Limit {
-    return Intl.message(
-      'Time Limit',
-      name: 'Time_Limit',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Time Limit', name: 'Time_Limit', desc: '', args: []);
   }
 
   /// `Start`
   String get Start {
-    return Intl.message(
-      'Start',
-      name: 'Start',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Start', name: 'Start', desc: '', args: []);
   }
 
   /// `Back`
   String get Back {
-    return Intl.message(
-      'Back',
-      name: 'Back',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Back', name: 'Back', desc: '', args: []);
   }
 
   /// `Your Turn`
   String get Your_Turn {
-    return Intl.message(
-      'Your Turn',
-      name: 'Your_Turn',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Your Turn', name: 'Your_Turn', desc: '', args: []);
   }
 
   /// `AI is thinking`
@@ -197,52 +156,27 @@ class S {
 
   /// `Hints`
   String get Hints {
-    return Intl.message(
-      'Hints',
-      name: 'Hints',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Hints', name: 'Hints', desc: '', args: []);
   }
 
   /// `Undo/Redo`
   String get Undo {
-    return Intl.message(
-      'Undo/Redo',
-      name: 'Undo',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Undo/Redo', name: 'Undo', desc: '', args: []);
   }
 
   /// `You Lose`
   String get You_Lose {
-    return Intl.message(
-      'You Lose',
-      name: 'You_Lose',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('You Lose', name: 'You_Lose', desc: '', args: []);
   }
 
   /// `You Win`
   String get You_Win {
-    return Intl.message(
-      'You Win',
-      name: 'You_Win',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('You Win', name: 'You_Win', desc: '', args: []);
   }
 
   /// `More Apps`
   String get More_Apps {
-    return Intl.message(
-      'More Apps',
-      name: 'More_Apps',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('More Apps', name: 'More_Apps', desc: '', args: []);
   }
 
   /// `World Weather Live`
@@ -257,12 +191,7 @@ class S {
 
   /// `Image Guru`
   String get Image_Guru {
-    return Intl.message(
-      'Image Guru',
-      name: 'Image_Guru',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Image Guru', name: 'Image_Guru', desc: '', args: []);
   }
 
   /// `We Play Piano`
@@ -287,12 +216,7 @@ class S {
 
   /// `Yes Habit`
   String get Yes_Habit {
-    return Intl.message(
-      'Yes Habit',
-      name: 'Yes_Habit',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Yes Habit', name: 'Yes_Habit', desc: '', args: []);
   }
 
   /// `Metronome Go`
@@ -347,22 +271,12 @@ class S {
 
   /// `Onlynote`
   String get Onlynote {
-    return Intl.message(
-      'Onlynote',
-      name: 'Onlynote',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Onlynote', name: 'Onlynote', desc: '', args: []);
   }
 
   /// `Novels Hub`
   String get Novels_Hub {
-    return Intl.message(
-      'Novels Hub',
-      name: 'Novels_Hub',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Novels Hub', name: 'Novels_Hub', desc: '', args: []);
   }
 
   /// `Simple Calculator`
@@ -377,12 +291,7 @@ class S {
 
   /// `Shows`
   String get Shows {
-    return Intl.message(
-      'Shows',
-      name: 'Shows',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Shows', name: 'Shows', desc: '', args: []);
   }
 
   /// `Saving Ambulance`
@@ -397,12 +306,7 @@ class S {
 
   /// `Fling Knife`
   String get Fling_Knife {
-    return Intl.message(
-      'Fling Knife',
-      name: 'Fling_Knife',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Fling Knife', name: 'Fling_Knife', desc: '', args: []);
   }
 
   /// `Minesweeper Go`
@@ -427,12 +331,7 @@ class S {
 
   /// `Easy Unit`
   String get Easy_Unit {
-    return Intl.message(
-      'Easy Unit',
-      name: 'Easy_Unit',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Easy Unit', name: 'Easy_Unit', desc: '', args: []);
   }
 }
 
@@ -455,11 +354,9 @@ class AppLocalizationDelegate extends LocalizationsDelegate<S> {
   bool shouldReload(AppLocalizationDelegate old) => false;
 
   bool _isSupported(Locale locale) {
-    if (locale != null) {
-      for (var supportedLocale in supportedLocales) {
-        if (supportedLocale.languageCode == locale.languageCode) {
-          return true;
-        }
+    for (var supportedLocale in supportedLocales) {
+      if (supportedLocale.languageCode == locale.languageCode) {
+        return true;
       }
     }
     return false;

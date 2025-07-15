@@ -8,7 +8,7 @@ class GameInfoAndControls extends StatelessWidget {
   final AppModel appModel;
   final ScrollController scrollController = ScrollController();
 
-  GameInfoAndControls(this.appModel);
+  GameInfoAndControls({super.key, required this.appModel});
 
   @override
   Widget build(BuildContext context) {
@@ -23,9 +23,9 @@ class GameInfoAndControls extends StatelessWidget {
         shrinkWrap: true,
         padding: EdgeInsets.zero,
         children: [
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
           MovesUndoRedoRow(appModel),
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
           Timers(appModel),
         ],
       ),

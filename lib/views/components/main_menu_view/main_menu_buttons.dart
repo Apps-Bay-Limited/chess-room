@@ -9,7 +9,7 @@ import '../../settings_view.dart';
 class MainMenuButtons extends StatelessWidget {
   final AppModel appModel;
 
-  MainMenuButtons(this.appModel);
+  const MainMenuButtons(this.appModel);
 
   @override
   Widget build(BuildContext context) {
@@ -18,39 +18,39 @@ class MainMenuButtons extends StatelessWidget {
       child: Column(
         children: [
           RoundedButton(
-            'Start',
+            label: 'Start',
             onPressed: () {
               Navigator.push(
                 context,
                 CupertinoPageRoute(
                   builder: (context) {
                     appModel.newGame(context, notify: false);
-                    return ChessView(appModel);
+                    return ChessView(appModel: appModel);
                   },
                 ),
               );
             },
           ),
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
           Row(
             children: [
               Expanded(
                 child: RoundedButton(
-                  'GitHub',
+                  label: 'GitHub',
                   onPressed: () {
                     _openGitHub();
                   },
                 ),
               ),
-              SizedBox(width: 10),
+              const SizedBox(width: 10),
               Expanded(
                 child: RoundedButton(
-                  'Settings',
+                  label: 'Settings',
                   onPressed: () {
                     Navigator.push(
                       context,
                       CupertinoPageRoute(
-                        builder: (context) => SettingsView(),
+                        builder: (context) => SettingsView(appModel: appModel),
                       ),
                     );
                   },
@@ -65,8 +65,8 @@ class MainMenuButtons extends StatelessWidget {
 
   void _openGitHub() async {
     const url = 'https://github.com/PScottZero/EnPassant';
-    if (await canLaunch(url)) {
-      await launch(url);
+    if (await canLaunchUrl(Uri.parse(url))) {
+      await launchUrl(Uri.parse(url));
     } else {
       throw 'Could not launch $url';
     }

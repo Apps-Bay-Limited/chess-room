@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 
 class AppTheme {
-  String name;
-  LinearGradient background;
-  Color lightTile;
-  Color darkTile;
-  Color moveHint;
-  Color checkHint;
-  Color latestMove;
-  Color border;
+  final String name;
+  final LinearGradient background;
+  final Color lightTile;
+  final Color darkTile;
+  final Color moveHint;
+  final Color checkHint;
+  final Color latestMove;
+  final Color border;
 
-  AppTheme({
-    this.name,
-    this.background,
+  const AppTheme({
+    required this.name,
+    required this.background,
     this.lightTile = const Color(0xFFC9B28F),
     this.darkTile = const Color(0xFF69493b),
     this.moveHint = Colors.lightGreen,
