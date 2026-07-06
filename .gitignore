@@ -3,11 +3,15 @@
 *.log
 *.pyc
 *.swp
+*.tmp
+*.temp
+*.bak
 .DS_Store
 .atom/
 .buildlog/
 .history
 .svn/
+*~
 
 # IntelliJ related
 *.iml
@@ -30,6 +34,7 @@
 .pub-cache/
 .pub/
 /build/
+**/build/
 
 # Web related
 lib/generated_plugin_registrant.dart
@@ -40,10 +45,46 @@ app.*.symbols
 # Obfuscation related
 app.*.map.json
 
-# Android Studio will place build artifacts here
+# Android build artifacts and caches
 /android/app/debug
 /android/app/profile
 /android/app/release
+**/android/.gradle/
+**/android/gradle-wrapper.jar
+**/android/captures/
+**/android/gradlew
+**/android/gradlew.bat
+**/android/local.properties
+**/android/**/GeneratedPluginRegistrant.java
+*.apk
+*.aab
+*.jks
+*.keystore
+
+# iOS/macOS build artifacts and caches
+**/ios/Pods/
+**/ios/.symlinks/
+**/ios/Flutter/Flutter.framework
+**/ios/Flutter/Flutter.podspec
+**/ios/Flutter/App.framework
+**/ios/Flutter/ephemeral/
+**/macos/Pods/
+**/macos/Flutter/ephemeral/
+DerivedData/
+*.xcuserstate
+xcuserdata/
+*.ipa
+*.dSYM.zip
+*.dSYM
+
+# Windows build artifacts
+**/windows/flutter/ephemeral/
+
+# Linux build artifacts
+**/linux/flutter/ephemeral/
+
+# Coverage / test output
+coverage/
 
 # FVM Version Cache
 .fvm/
