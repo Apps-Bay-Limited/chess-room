@@ -38,6 +38,7 @@ class AppModel extends ChangeNotifier {
 
   ChessGame? game;
   Timer? timer;
+  DateTime? _lastTick;
   bool gameOver = false;
   bool stalemate = false;
   bool promotionRequested = false;
@@ -85,6 +86,12 @@ class AppModel extends ChangeNotifier {
     return playingWithAI && (turn == aiTurn);
   }
 
+  /// Whether a match is currently active (used to avoid showing interruptive
+  /// ads, like the app-open ad, over an in-progress game).
+  bool get gameInProgress {
+    return game != null && !gameOver;
+  }
+
   bool get playingWithAI {
     return playerCount == 1;
   }
@@ -108,8 +115,14 @@ class AppModel extends ChangeNotifier {
     // Ensure the turn starts with the human player if appropriate
     turn = playerSide;
     game = ChessGame(this, context);
+    _lastTick = DateTime.now();
     timer = Timer.periodic(Duration(milliseconds: TIMER_ACCURACY_MS), (timer) {
-      turn == Player.player1 ? decrementPlayer1Timer() : decrementPlayer2Timer();
+      final now = DateTime.now();
+      final elapsedMs = now.difference(_lastTick!).inMilliseconds;
+      _lastTick = now;
+      turn == Player.player1
+          ? decrementPlayer1Timer(elapsedMs)
+          : decrementPlayer2Timer(elapsedMs);
       if ((player1TimeLeft == Duration.zero || player2TimeLeft == Duration.zero) &&
           timeLimit != 0) {
         endGame();
@@ -186,16 +199,18 @@ class AppModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void decrementPlayer1Timer() {
+  void decrementPlayer1Timer([int elapsedMs = TIMER_ACCURACY_MS]) {
     if (player1TimeLeft.inMilliseconds > 0 && !gameOver) {
-      player1TimeLeft = Duration(milliseconds: player1TimeLeft.inMilliseconds - TIMER_ACCURACY_MS);
+      final remainingMs = player1TimeLeft.inMilliseconds - elapsedMs;
+      player1TimeLeft = Duration(milliseconds: remainingMs > 0 ? remainingMs : 0);
       notifyListeners();
     }
   }
 
-  void decrementPlayer2Timer() {
+  void decrementPlayer2Timer([int elapsedMs = TIMER_ACCURACY_MS]) {
     if (player2TimeLeft.inMilliseconds > 0 && !gameOver) {
-      player2TimeLeft = Duration(milliseconds: player2TimeLeft.inMilliseconds - TIMER_ACCURACY_MS);
+      final remainingMs = player2TimeLeft.inMilliseconds - elapsedMs;
+      player2TimeLeft = Duration(milliseconds: remainingMs > 0 ? remainingMs : 0);
       notifyListeners();
     }
   }

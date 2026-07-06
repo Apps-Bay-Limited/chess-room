@@ -4,11 +4,23 @@ import 'package:flutter/cupertino.dart';
 import 'game_info_and_controls/moves_undo_redo_row.dart';
 import 'game_info_and_controls/timers.dart';
 
-class GameInfoAndControls extends StatelessWidget {
+class GameInfoAndControls extends StatefulWidget {
   final AppModel appModel;
+
+  const GameInfoAndControls({super.key, required this.appModel});
+
+  @override
+  State<GameInfoAndControls> createState() => _GameInfoAndControlsState();
+}
+
+class _GameInfoAndControlsState extends State<GameInfoAndControls> {
   final ScrollController scrollController = ScrollController();
 
-  GameInfoAndControls({super.key, required this.appModel});
+  @override
+  void dispose() {
+    scrollController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -19,20 +31,21 @@ class GameInfoAndControls extends StatelessWidget {
       ),
       child: ListView(
         controller: scrollController,
-        physics: ClampingScrollPhysics(),
+        physics: const ClampingScrollPhysics(),
         shrinkWrap: true,
         padding: EdgeInsets.zero,
         children: [
           const SizedBox(height: 10),
-          MovesUndoRedoRow(appModel),
+          MovesUndoRedoRow(widget.appModel),
           const SizedBox(height: 10),
-          Timers(appModel),
+          Timers(widget.appModel),
         ],
       ),
     );
   }
 
   void _scrollToBottom() {
+    if (!scrollController.hasClients) return;
     scrollController.jumpTo(scrollController.position.maxScrollExtent);
   }
 }

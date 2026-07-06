@@ -174,6 +174,41 @@ class S {
     return Intl.message('You Win', name: 'You_Win', desc: '', args: []);
   }
 
+  /// `White's turn`
+  String get Whites_Turn {
+    return Intl.message(
+      'White\'s turn',
+      name: 'Whites_Turn',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Black's turn`
+  String get Blacks_Turn {
+    return Intl.message(
+      'Black\'s turn',
+      name: 'Blacks_Turn',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Stalemate`
+  String get Stalemate {
+    return Intl.message('Stalemate', name: 'Stalemate', desc: '', args: []);
+  }
+
+  /// `White wins!`
+  String get White_Wins {
+    return Intl.message('White wins!', name: 'White_Wins', desc: '', args: []);
+  }
+
+  /// `Black wins!`
+  String get Black_Wins {
+    return Intl.message('Black wins!', name: 'Black_Wins', desc: '', args: []);
+  }
+
   /// `More Apps`
   String get More_Apps {
     return Intl.message('More Apps', name: 'More_Apps', desc: '', args: []);

@@ -1,137 +1,70 @@
 import 'dart:io';
 
-import 'package:chess_room/secrets.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 class AdsManager {
   static bool disableAllAdsForScreenshot = false;
-  static String bannerAdUnitIdIOS = Secrets.bannerAdUnitIdAndroid;
-  static String openAdUnitIDIOS = Secrets.openAdUnitIDIOS;
-  static String rewardedAdIDIOS = Secrets.rewardedAdIDIOS;
-  static String rewardedInterstitialAdIDIOS = Secrets.rewardedInterstitialAdIDIOS;
 
-  static String bannerAdUnitIdAndroid = Secrets.bannerAdUnitIdAndroid;
-  static String openAdUnitIDAndroid =   Secrets.openAdUnitIDAndroid;
-  static String rewardedAdIDAndroid =   Secrets.rewardedAdIDAndroid;
-  static String rewardedInterstitialAdIDAndroid = Secrets.rewardedInterstitialAdIDAndroid;
+  // Android Release IDs (Injected via --dart-define)
+  static const String _bannerAdUnitIdAndroidRelease = String.fromEnvironment('BANNER_ID_ANDROID', defaultValue: 'ca-app-pub-3940256099942544/6300978111');
+  static const String _openAdUnitIDAndroidRelease = String.fromEnvironment('OPEN_AD_ID_ANDROID', defaultValue: 'ca-app-pub-3940256099942544/3419835294');
+  static const String _rewardedAdIDAndroidRelease = String.fromEnvironment('REWARD_AD_ID_ANDROID', defaultValue: 'ca-app-pub-3940256099942544/5224354917');
+  static const String _rewardedInterstitialAdIDAndroidRelease = String.fromEnvironment('REWARD_INTERSTITIAL_AD_ID_ANDROID', defaultValue: 'ca-app-pub-3940256099942544/5354046379');
+
+  // iOS Release IDs (Injected via --dart-define)
+  static const String _bannerAdUnitIdIOSRelease = String.fromEnvironment('BANNER_ID_IOS', defaultValue: 'ca-app-pub-3940256099942544/2934735716');
+  static const String _openAdUnitIDIOSRelease = String.fromEnvironment('OPEN_AD_ID_IOS', defaultValue: 'ca-app-pub-3940256099942544/5575463023');
+  static const String _rewardedAdIDIOSRelease = String.fromEnvironment('REWARD_AD_ID_IOS', defaultValue: 'ca-app-pub-3940256099942544/1712485313');
+  static const String _rewardedInterstitialAdIDIOSRelease = String.fromEnvironment('REWARD_INTERSTITIAL_AD_ID_IOS', defaultValue: 'ca-app-pub-3940256099942544/6978759866');
 
   static String get bannerAdUnitId {
+    if (disableAllAdsForScreenshot) return "";
     if (Platform.isAndroid) {
-      if (kDebugMode) {
-        if (disableAllAdsForScreenshot) {
-          return "";
-        } else {
-          return "ca-app-pub-3940256099942544/6300978111";
-        }
-      } else {
-        // android banner ID
-        return bannerAdUnitIdAndroid;
-      }
+      return kDebugMode ? "ca-app-pub-3940256099942544/6300978111" : _bannerAdUnitIdAndroidRelease;
     } else if (Platform.isIOS) {
-      if (kDebugMode) {
-        if (disableAllAdsForScreenshot) {
-          return "";
-        } else {
-          return "ca-app-pub-3940256099942544/2934735716";
-        }
-      } else {
-        // ios banner ID
-        return bannerAdUnitIdIOS;
-      }
+      return kDebugMode ? "ca-app-pub-3940256099942544/2934735716" : _bannerAdUnitIdIOSRelease;
     } else {
-      throw new UnsupportedError("Unsupported platform");
+      throw UnsupportedError("Unsupported platform");
     }
   }
 
   static String get openAdUnitID {
+    if (disableAllAdsForScreenshot) return "";
     if (Platform.isAndroid) {
-      if (kDebugMode) {
-        if (disableAllAdsForScreenshot) {
-          return "";
-        } else {
-          return 'ca-app-pub-3940256099942544/3419835294';
-        }
-      } else {
-        // android openAd ID
-        return openAdUnitIDAndroid;
-      }
+      return kDebugMode ? 'ca-app-pub-3940256099942544/3419835294' : _openAdUnitIDAndroidRelease;
     } else if (Platform.isIOS) {
-      if (kDebugMode) {
-        if (disableAllAdsForScreenshot) {
-          return "";
-        } else {
-          return 'ca-app-pub-3940256099942544/5575463023';
-        }
-      } else {
-        // ios openAd ID
-        return openAdUnitIDIOS;
-      }
+      return kDebugMode ? 'ca-app-pub-3940256099942544/5575463023' : _openAdUnitIDIOSRelease;
     } else {
-      throw new UnsupportedError("Unsupported platform");
+      throw UnsupportedError("Unsupported platform");
     }
   }
 
   static String get rewardAdUnitID {
+    if (disableAllAdsForScreenshot) return "";
     if (Platform.isAndroid) {
-      if (kDebugMode) {
-        if (disableAllAdsForScreenshot) {
-          return "";
-        } else {
-          return 'ca-app-pub-3940256099942544/5224354917';
-        }
-      } else {
-        // android openAd ID
-        return rewardedAdIDAndroid;
-      }
+      return kDebugMode ? 'ca-app-pub-3940256099942544/5224354917' : _rewardedAdIDAndroidRelease;
     } else if (Platform.isIOS) {
-      if (kDebugMode) {
-        if (disableAllAdsForScreenshot) {
-          return "";
-        } else {
-          return 'ca-app-pub-3940256099942544/1712485313';
-        }
-      } else {
-        // ios openAd ID
-        return rewardedAdIDIOS;
-      }
+      return kDebugMode ? 'ca-app-pub-3940256099942544/1712485313' : _rewardedAdIDIOSRelease;
     } else {
-      throw new UnsupportedError("Unsupported platform");
+      throw UnsupportedError("Unsupported platform");
     }
   }
 
   static String get rewardInterstitialAdUnitID {
+    if (disableAllAdsForScreenshot) return "";
     if (Platform.isAndroid) {
-      if (kDebugMode) {
-        if (disableAllAdsForScreenshot) {
-          return "";
-        } else {
-          return 'ca-app-pub-3940256099942544/5354046379';
-        }
-      } else {
-        // android openAd ID
-        return rewardedInterstitialAdIDAndroid;
-      }
+      return kDebugMode ? 'ca-app-pub-3940256099942544/5354046379' : _rewardedInterstitialAdIDAndroidRelease;
     } else if (Platform.isIOS) {
-      if (kDebugMode) {
-        if (disableAllAdsForScreenshot) {
-          return "";
-        } else {
-          return 'ca-app-pub-3940256099942544/6978759866';
-        }
-      } else {
-        // ios openAd ID
-        return rewardedInterstitialAdIDIOS;
-      }
+      return kDebugMode ? 'ca-app-pub-3940256099942544/6978759866' : _rewardedInterstitialAdIDIOSRelease;
     } else {
-      throw new UnsupportedError("Unsupported platform");
+      throw UnsupportedError("Unsupported platform");
     }
   }
 
   static void debugPrintID() {
     print("bannerAdUnitId: ${AdsManager.bannerAdUnitId}");
-    // print("openAdUnitID: ${AdsManager.openAdUnitID}");
   }
 }
 
@@ -140,7 +73,7 @@ class AppOpenAdManager {
   bool _isShowingAd = false;
 
   /// Maximum duration allowed between loading and showing the ad.
-  final Duration maxCacheDuration = Duration(hours: 4);
+  final Duration maxCacheDuration = const Duration(hours: 4);
 
   /// Keep track of load time so we don't show an expired ad.
   DateTime? _appOpenLoadTime;
@@ -149,8 +82,7 @@ class AppOpenAdManager {
   void loadAd() {
     AppOpenAd.load(
       adUnitId: AdsManager.openAdUnitID,
-      orientation: AppOpenAd.orientationPortrait,
-      request: AdRequest(),
+      request: const AdRequest(),
       adLoadCallback: AppOpenAdLoadCallback(
         onAdLoaded: (ad) {
           print('$ad loaded');
@@ -159,7 +91,6 @@ class AppOpenAdManager {
         },
         onAdFailedToLoad: (error) {
           print('AppOpenAd failed to load: $error');
-          // Handle the error.
         },
       ),
     );
@@ -216,9 +147,13 @@ class AppOpenAdManager {
 class AppLifecycleReactor extends WidgetsBindingObserver {
   final AppOpenAdManager appOpenAdManager;
 
+  /// Called to check whether a game is currently in progress; when true,
+  /// the app-open ad is skipped so it can't interrupt an active match.
+  final bool Function() isGameInProgress;
+
   bool hasEnterBackground = false;
 
-  AppLifecycleReactor({required this.appOpenAdManager});
+  AppLifecycleReactor({required this.appOpenAdManager, required this.isGameInProgress});
 
   @override
   Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {
@@ -229,9 +164,10 @@ class AppLifecycleReactor extends WidgetsBindingObserver {
       hasEnterBackground = true;
     }
     if (state == AppLifecycleState.resumed && hasEnterBackground) {
-      appOpenAdManager.showAdIfAvailable();
+      if (!isGameInProgress()) {
+        appOpenAdManager.showAdIfAvailable();
+      }
       hasEnterBackground = false;
     }
   }
 }
-

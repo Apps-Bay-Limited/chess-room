@@ -26,6 +26,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "AI_is_thinking": MessageLookupByLibrary.simpleMessage("AI is thinking"),
     "Back": MessageLookupByLibrary.simpleMessage("Back"),
     "Black": MessageLookupByLibrary.simpleMessage("Black"),
+    "Black_Wins": MessageLookupByLibrary.simpleMessage("Black wins!"),
+    "Blacks_Turn": MessageLookupByLibrary.simpleMessage("Black\'s turn"),
     "Classical_Music_Box": MessageLookupByLibrary.simpleMessage(
       "Classical Music Box",
     ),
@@ -57,6 +59,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Simple_Calculator": MessageLookupByLibrary.simpleMessage(
       "Simple Calculator",
     ),
+    "Stalemate": MessageLookupByLibrary.simpleMessage("Stalemate"),
     "Start": MessageLookupByLibrary.simpleMessage("Start"),
     "Sudoku_Lover": MessageLookupByLibrary.simpleMessage("Sudoku Lover"),
     "Time_Limit": MessageLookupByLibrary.simpleMessage("Time Limit"),
@@ -65,6 +68,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "Vs_AI_Player": MessageLookupByLibrary.simpleMessage("Vs AI Player"),
     "We_Play_Piano": MessageLookupByLibrary.simpleMessage("We Play Piano"),
     "White": MessageLookupByLibrary.simpleMessage("White"),
+    "White_Wins": MessageLookupByLibrary.simpleMessage("White wins!"),
+    "Whites_Turn": MessageLookupByLibrary.simpleMessage("White\'s turn"),
     "World_Weather_Live": MessageLookupByLibrary.simpleMessage(
       "World Weather Live",
     ),

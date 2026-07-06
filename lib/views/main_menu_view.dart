@@ -23,7 +23,11 @@ class _MainMenuViewState extends State<MainMenuView> {
     super.initState();
 
     AppOpenAdManager appOpenAdManager = AppOpenAdManager()..loadAd();
-    WidgetsBinding.instance.addObserver(AppLifecycleReactor(appOpenAdManager: appOpenAdManager));
+    final appModel = Provider.of<AppModel>(context, listen: false);
+    WidgetsBinding.instance.addObserver(AppLifecycleReactor(
+      appOpenAdManager: appOpenAdManager,
+      isGameInProgress: () => appModel.gameInProgress,
+    ));
   }
 
   @override

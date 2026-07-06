@@ -46,8 +46,9 @@ class ChessGame extends FlameGame with TapCallbacks {
 
   @override
   void onTapDown(TapDownEvent event) {
-    if (appModel.gameOver || !(appModel.isAIsTurn)) {
+    if (!appModel.gameOver && !appModel.isAIsTurn) {
       var tile = _vector2ToTile(event.localPosition);
+      if (tile < 0 || tile > 63) return;
       var touchedPiece = board.tiles[tile];
       if (touchedPiece == selectedPiece) {
         validMoves = [];
@@ -146,6 +147,9 @@ class ChessGame extends FlameGame with TapCallbacks {
           promote(move.promotionType);
         }
       }
+    }).onError((error, stackTrace) {
+      debugPrint('AI move calculation failed: $error');
+      appModel.endGame();
     });
   }
 
@@ -224,7 +228,7 @@ class ChessGame extends FlameGame with TapCallbacks {
         checkHintTile = king.tile;
       }
     }
-    if (kingInCheckmate(oppositeTurn, board)) {
+    if (hasNoLegalMoves(oppositeTurn, board)) {
       if (!meta.isCheck) {
         appModel.stalemate = true;
         meta.isStalemate = true;

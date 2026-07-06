@@ -33,7 +33,8 @@ class UndoRedoButtons extends StatelessWidget {
           child: RoundedIconButton(
             icon: CupertinoIcons.back,
             onPressed: () {
-              appModel.exitChessView();
+              // exitChessView() runs once via PopScope.onPopInvoked in
+              // chess_view.dart when this pop completes.
               Navigator.pop(context);
             },
           ),

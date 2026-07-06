@@ -19,6 +19,11 @@
   "Undo" : "撤销/悔棋",
   "You_Lose" : "你输了",
   "You_Win" : "你赢了",
+  "Whites_Turn" : "轮到白棋",
+  "Blacks_Turn" : "轮到黑棋",
+  "Stalemate" : "和棋",
+  "White_Wins" : "白棋获胜！",
+  "Black_Wins" : "黑棋获胜！",
 
   "More_Apps" : "更多App",
   "Image_Guru" : "咕噜滤镜",

@@ -19,6 +19,11 @@
   "Undo" : "Undo/Redo",
   "You_Lose" : "You Lose",
   "You_Win" : "You Win",
+  "Whites_Turn" : "White's turn",
+  "Blacks_Turn" : "Black's turn",
+  "Stalemate" : "Stalemate",
+  "White_Wins" : "White wins!",
+  "Black_Wins" : "Black wins!",
 
   "More_Apps" : "More Apps",
   "World_Weather_Live" : "World Weather Live",

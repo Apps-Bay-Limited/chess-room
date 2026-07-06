@@ -32,14 +32,14 @@ class GameStatus extends StatelessWidget {
         }
       } else {
         if (appModel.turn == Player.player1) {
-          return 'White\'s turn';
+          return S.of(context).Whites_Turn;
         } else {
-          return 'Black\'s turn';
+          return S.of(context).Blacks_Turn;
         }
       }
     } else {
       if (appModel.stalemate) {
-        return 'Stalemate';
+        return S.of(context).Stalemate;
       } else {
         if (appModel.playerCount == 1) {
           if (appModel.isAIsTurn) {
@@ -49,9 +49,9 @@ class GameStatus extends StatelessWidget {
           }
         } else {
           if (appModel.turn == Player.player1) {
-            return 'Black wins!';
+            return S.of(context).Black_Wins;
           } else {
-            return 'White wins!';
+            return S.of(context).White_Wins;
           }
         }
       }

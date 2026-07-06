@@ -195,7 +195,7 @@ bool _canCastle(ChessPiece king, ChessPiece rook, ChessBoard board, bool legal) 
     var tile = rook.tile;
     while (tile != king.tile) {
       tile += offset;
-      if ((tile != king.tile) ||
+      if ((tile != king.tile && board.tiles[tile] != null) ||
           (legal && _kingInCheckAtTile(tile, king.player, board))) {
         return false;
       }
@@ -262,7 +262,9 @@ bool kingInCheck(Player player, ChessBoard board) {
   return false;
 }
 
-bool kingInCheckmate(Player player, ChessBoard board) {
+/// True when [player] has no legal moves — this is checkmate if their king
+/// is in check, or stalemate otherwise; callers must check kingInCheck too.
+bool hasNoLegalMoves(Player player, ChessBoard board) {
   for (var piece in piecesForPlayer(player, board)) {
     if (movesForPiece(piece, board).isNotEmpty) {
       return false;
