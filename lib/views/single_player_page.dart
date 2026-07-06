@@ -70,13 +70,11 @@ class _SinglePlayerViewState extends State<SinglePlayerView> {
                     SizedBox(height: 50),
                     Btn(
                       onTap: () {
+                        appModel.newGame(context, notify: false);
                         Navigator.push(
                           context,
                           CupertinoPageRoute(
-                            builder: (context) {
-                              appModel.newGame(context, notify: false);
-                              return ChessView(appModel: appModel);
-                            },
+                            builder: (context) => ChessView(appModel: appModel),
                           ),
                         );
                       },

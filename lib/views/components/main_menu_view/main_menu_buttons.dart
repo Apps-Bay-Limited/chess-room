@@ -20,13 +20,11 @@ class MainMenuButtons extends StatelessWidget {
           RoundedButton(
             label: 'Start',
             onPressed: () {
+              appModel.newGame(context, notify: false);
               Navigator.push(
                 context,
                 CupertinoPageRoute(
-                  builder: (context) {
-                    appModel.newGame(context, notify: false);
-                    return ChessView(appModel: appModel);
-                  },
+                  builder: (context) => ChessView(appModel: appModel),
                 ),
               );
             },

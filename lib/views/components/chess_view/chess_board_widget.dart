@@ -31,7 +31,7 @@ class ChessBoardWidget extends StatelessWidget {
             appModel.theme.name != 'Video Chess' ? BorderRadius.circular(10) : BorderRadius.zero,
         child: Container(
           child: appModel.game != null 
-              ? GameWidget(game: appModel.game!)
+              ? GameWidget(key: ValueKey(appModel.game), game: appModel.game!)
               : const SizedBox(),
           width: MediaQuery.of(context).size.width - 68,
           height: MediaQuery.of(context).size.width - 68,
