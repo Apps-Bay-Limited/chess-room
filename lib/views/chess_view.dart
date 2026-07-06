@@ -1,15 +1,12 @@
-import 'dart:async';
-
 import 'package:chess_room/model/app_model.dart';
 import 'package:chess_room/views/components/chess_view/chess_board_widget.dart';
 import 'package:chess_room/views/components/chess_view/game_info_and_controls.dart';
 import 'package:chess_room/views/components/chess_view/promotion_dialog.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:provider/provider.dart';
 
-import '../util/ads_manager.dart';
 import 'components/chess_view/game_info_and_controls/game_status.dart';
+import 'components/shared/banner_ad_slot.dart';
 
 class ChessView extends StatefulWidget {
   final AppModel appModel;
@@ -24,42 +21,6 @@ class _ChessViewState extends State<ChessView> {
   AppModel appModel;
 
   _ChessViewState(this.appModel);
-
-  BannerAd? _ad;
-
-  bool _isAdLoaded = false;
-
-  @override
-  void initState() {
-    super.initState();
-
-    _ad = BannerAd(
-      adUnitId: AdsManager.bannerAdUnitId,
-      size: AdSize.banner,
-      request: AdRequest(),
-      listener: BannerAdListener(
-        onAdLoaded: (_) {
-          setState(() {
-            _isAdLoaded = true;
-          });
-        },
-        onAdFailedToLoad: (ad, error) {
-          // Releases an ad resource when it fails to load
-          ad.dispose();
-
-          print('Ad load failed (code=${error.code} message=${error.message})');
-        },
-      ),
-    );
-
-    _ad?.load();
-  }
-
-  @override
-  void dispose() {
-    _ad?.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -78,32 +39,26 @@ class _ChessViewState extends State<ChessView> {
           },
           child: Container(
             decoration: BoxDecoration(gradient: appModel.theme.background),
-            child: Stack(
+            child: Column(
               children: [
-                Container(
-                  padding: const EdgeInsets.all(30),
-                  child: Column(
-                    children: [
-                      const SizedBox(
-                        height: 30,
-                      ),
-                      GameInfoAndControls(appModel: appModel),
-                      const SizedBox(height: 30),
-                      ChessBoardWidget(appModel),
-                      const SizedBox(height: 30),
-                      GameStatus(),
-                    ],
-                  ),
-                ),
-                if (_isAdLoaded && _ad != null)
-                  Align(
-                    alignment: Alignment.bottomCenter,
-                    child: Container(
-                      margin: EdgeInsets.fromLTRB(0, 0, 0, MediaQuery.of(context).padding.bottom),
-                      child: AdWidget(ad: _ad!),
-                      height: 50.0,
+                Expanded(
+                  child: SingleChildScrollView(
+                    padding: const EdgeInsets.all(30),
+                    child: Column(
+                      children: [
+                        const SizedBox(
+                          height: 30,
+                        ),
+                        GameInfoAndControls(appModel: appModel),
+                        const SizedBox(height: 30),
+                        ChessBoardWidget(appModel),
+                        const SizedBox(height: 30),
+                        GameStatus(),
+                      ],
                     ),
                   ),
+                ),
+                const BannerAdSlot(),
               ],
             ),
           ),

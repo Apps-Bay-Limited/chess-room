@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/services.dart';
 
+import '../../../util/app_design.dart';
 import '../shared/text_variable.dart';
 
 class Toggle extends StatelessWidget {
@@ -16,7 +18,8 @@ class Toggle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
+      height: kMinTouchTarget,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -24,9 +27,10 @@ class Toggle extends StatelessWidget {
           CupertinoSwitch(
             value: toggle,
             onChanged: (bool value) {
+              HapticFeedback.selectionClick();
               setFunc(value);
             },
-            activeTrackColor: const Color(0xffCC996F),
+            activeTrackColor: AppColors.accent,
           ),
         ],
       ),

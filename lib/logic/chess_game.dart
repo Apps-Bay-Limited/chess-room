@@ -11,6 +11,7 @@ import 'package:flame/events.dart';
 import 'package:flame/game.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 
 import 'chess_board.dart';
 import 'chess_piece.dart';
@@ -101,6 +102,7 @@ class ChessGame extends FlameGame with TapCallbacks {
 
   void _selectPiece(ChessPiece piece) {
     if (piece.player == appModel.turn) {
+      HapticFeedback.selectionClick();
       selectedPiece = piece;
       validMoves = movesForPiece(piece, board);
       // print('Selected piece: type=${piece.type}, tile=${piece.tile}, validMoves: $validMoves');
@@ -115,6 +117,7 @@ class ChessGame extends FlameGame with TapCallbacks {
     if (validMoves.contains(tile)) {
       validMoves = [];
       var meta = push(Move(selectedPiece!.tile, tile), board, getMeta: true);
+      HapticFeedback.mediumImpact();
       if (meta.promotion) {
         appModel.requestPromotion();
       }
@@ -137,6 +140,7 @@ class ChessGame extends FlameGame with TapCallbacks {
       } else {
         validMoves = [];
         var meta = push(move, board, getMeta: true);
+        HapticFeedback.lightImpact();
         _moveCompletion(meta, changeTurn: !meta.promotion);
         if (meta.promotion) {
           promote(move.promotionType);

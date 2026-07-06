@@ -3,12 +3,12 @@ import 'package:chess_room/views/more_apps_page.dart';
 import 'package:chess_room/views/settings_view.dart';
 import 'package:chess_room/views/single_player_page.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:provider/provider.dart';
 
 import '../generated/l10n.dart';
 import '../util/ads_manager.dart';
-import 'btn.dart';
+import 'components/shared/banner_ad_slot.dart';
+import 'components/shared/menu_button.dart';
 
 class MainMenuView extends StatefulWidget {
   const MainMenuView({super.key});
@@ -18,43 +18,12 @@ class MainMenuView extends StatefulWidget {
 }
 
 class _MainMenuViewState extends State<MainMenuView> {
-  BannerAd? _ad;
-
-  bool _isAdLoaded = false;
-
   @override
   void initState() {
     super.initState();
 
-    _ad = BannerAd(
-      adUnitId: AdsManager.bannerAdUnitId,
-      size: AdSize.banner,
-      request: AdRequest(),
-      listener: BannerAdListener(
-        onAdLoaded: (_) {
-          setState(() {
-            _isAdLoaded = true;
-          });
-        },
-        onAdFailedToLoad: (ad, error) {
-          // Releases an ad resource when it fails to load
-          ad.dispose();
-
-          print('Ad load failed (code=${error.code} message=${error.message})');
-        },
-      ),
-    );
-
-    _ad?.load();
-
     AppOpenAdManager appOpenAdManager = AppOpenAdManager()..loadAd();
     WidgetsBinding.instance.addObserver(AppLifecycleReactor(appOpenAdManager: appOpenAdManager));
-  }
-
-  @override
-  void dispose() {
-    _ad?.dispose();
-    super.dispose();
   }
 
   @override
@@ -65,11 +34,13 @@ class _MainMenuViewState extends State<MainMenuView> {
       builder: (context, appModel, child) {
         return Container(
           decoration: BoxDecoration(gradient: appModel.theme.background),
-          child: Stack(
+          child: Column(
             children: [
-              Center(
-                child: Column(
-                  children: [
+              Expanded(
+                child: Center(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
                     const SizedBox(height: 20),
                     Container(
                       padding:
@@ -80,7 +51,8 @@ class _MainMenuViewState extends State<MainMenuView> {
                       ),
                     ),
                     const SizedBox(height: 40),
-                    Btn(
+                    MenuButton(
+                      label: S.of(context).Vs_AI_Player,
                       onTap: () {
                         appModel.setPlayerCount(1);
                         Navigator.push(
@@ -90,18 +62,10 @@ class _MainMenuViewState extends State<MainMenuView> {
                           ),
                         );
                       },
-                      height: 60,
-                      width: 260,
-                      borderRadius: 250,
-                      color: const Color(0xffCC996F),
-                      child: Text(
-                        S.of(context).Vs_AI_Player,
-                        style: const TextStyle(
-                            color: Color(0xff473D3D), fontSize: 20, fontWeight: FontWeight.w800),
-                      ),
                     ),
                     const SizedBox(height: 30),
-                    Btn(
+                    MenuButton(
+                      label: S.of(context).Two_Players,
                       onTap: () {
                         appModel.setPlayerCount(2);
                         Navigator.push(
@@ -111,18 +75,10 @@ class _MainMenuViewState extends State<MainMenuView> {
                           ),
                         );
                       },
-                      height: 60,
-                      width: 260,
-                      borderRadius: 250,
-                      color: const Color(0xffCC996F),
-                      child: Text(
-                        S.of(context).Two_Players,
-                        style: const TextStyle(
-                            color: Color(0xff473D3D), fontSize: 20, fontWeight: FontWeight.w800),
-                      ),
                     ),
                     const SizedBox(height: 30),
-                    Btn(
+                    MenuButton(
+                      label: S.of(context).Settings,
                       onTap: () {
                         Navigator.push(
                           context,
@@ -131,18 +87,10 @@ class _MainMenuViewState extends State<MainMenuView> {
                           ),
                         );
                       },
-                      height: 60,
-                      width: 260,
-                      borderRadius: 250,
-                      color: const Color(0xffCC996F),
-                      child: Text(
-                        S.of(context).Settings,
-                        style: const TextStyle(
-                            color: Color(0xff473D3D), fontSize: 20, fontWeight: FontWeight.w800),
-                      ),
                     ),
                     const SizedBox(height: 30),
-                    Btn(
+                    MenuButton(
+                      label: S.of(context).More_Apps,
                       onTap: () {
                         Navigator.push(
                           context,
@@ -151,28 +99,12 @@ class _MainMenuViewState extends State<MainMenuView> {
                           ),
                         );
                       },
-                      height: 60,
-                      width: 260,
-                      borderRadius: 250,
-                      color: const Color(0xffCC996F),
-                      child: Text(
-                        S.of(context).More_Apps,
-                        style: const TextStyle(
-                            color: Color(0xff473D3D), fontSize: 20, fontWeight: FontWeight.w800),
-                      ),
                     ),
-                  ],
-                ),
-              ),
-              if (_isAdLoaded && _ad != null)
-                Align(
-                  alignment: Alignment.bottomCenter,
-                  child: Container(
-                    margin: EdgeInsets.fromLTRB(0, 0, 0, MediaQuery.of(context).padding.bottom),
-                    child: AdWidget(ad: _ad!),
-                    height: 50.0,
+                    ],
                   ),
                 ),
+              ),
+              const BannerAdSlot(),
             ],
           ),
         );

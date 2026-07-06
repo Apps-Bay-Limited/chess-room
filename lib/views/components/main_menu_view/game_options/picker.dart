@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/services.dart';
 
 import '../../shared/text_variable.dart';
 
@@ -32,7 +33,12 @@ class Picker<T extends Object> extends StatelessWidget {
             child: CupertinoSlidingSegmentedControl<T>(
               children: options,
               groupValue: selection,
-              onValueChanged: setFunc,
+              onValueChanged: (value) {
+                if (value != selection) {
+                  HapticFeedback.selectionClick();
+                }
+                setFunc(value);
+              },
               thumbColor: const Color(0x88FFFFFF),
               backgroundColor: const Color(0x20000000),
             ),

@@ -6,6 +6,7 @@ import 'package:chess_room/logic/move_calculation/move_classes/move_meta.dart';
 import 'package:chess_room/logic/shared_functions.dart';
 import 'package:chess_room/views/components/main_menu_view/game_options/side_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'app_themes.dart';
@@ -138,6 +139,9 @@ class AppModel extends ChangeNotifier {
   }
 
   void endGame() {
+    if (!gameOver) {
+      HapticFeedback.heavyImpact();
+    }
     gameOver = true;
     notifyListeners();
   }

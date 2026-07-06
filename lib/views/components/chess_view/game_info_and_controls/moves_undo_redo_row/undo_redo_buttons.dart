@@ -52,7 +52,7 @@ class UndoRedoButtons extends StatelessWidget {
             ? Expanded(
                 child: RoundedIconButton(
                   icon: CupertinoIcons.arrow_counterclockwise,
-                  onPressed: undoEnabled ? () => undo() : () {},
+                  onPressed: undoEnabled ? () => undo() : null,
                 ),
               )
             : Container(),
@@ -61,7 +61,7 @@ class UndoRedoButtons extends StatelessWidget {
             ? Expanded(
                 child: RoundedIconButton(
                   icon: CupertinoIcons.arrow_clockwise,
-                  onPressed: redoEnabled ? () => redo() : () {},
+                  onPressed: redoEnabled ? () => redo() : null,
                 ),
               )
             : Container(),

@@ -233,6 +233,8 @@ class MoreAppsRow extends StatelessWidget {
         customBorder: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(24),
         ),
+        splashColor: const Color(0xffCC996F).withValues(alpha: 0.3),
+        highlightColor: const Color(0xffCC996F).withValues(alpha: 0.15),
         onTap: onTap,
         child: ListTile(
           visualDensity: VisualDensity(vertical: 4), // to compact
@@ -244,9 +246,16 @@ class MoreAppsRow extends StatelessWidget {
               child: appIcon,
             ),
           ),
-          trailing: Icon(trailingIcon),
+          trailing: Icon(
+            trailingIcon,
+            color: const Color(0xff493B24),
+          ),
           title: Text(
             title,
+            style: const TextStyle(
+              color: Color(0xff24201C),
+              fontWeight: FontWeight.w600,
+            ),
           ),
         ),
       ),

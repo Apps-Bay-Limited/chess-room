@@ -1,57 +1,15 @@
 import 'package:chess_room/model/app_model.dart';
 import 'package:chess_room/views/components/main_menu_view/game_options.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:provider/provider.dart';
 
 import '../generated/l10n.dart';
-import '../util/ads_manager.dart';
-import 'btn.dart';
 import 'chess_view.dart';
+import 'components/shared/banner_ad_slot.dart';
+import 'components/shared/menu_button.dart';
 
-class SinglePlayerView extends StatefulWidget {
+class SinglePlayerView extends StatelessWidget {
   const SinglePlayerView({super.key});
-
-  @override
-  _SinglePlayerViewState createState() => _SinglePlayerViewState();
-}
-
-class _SinglePlayerViewState extends State<SinglePlayerView> {
-  BannerAd? _ad;
-
-  bool _isAdLoaded = false;
-
-  @override
-  void initState() {
-    super.initState();
-
-    _ad = BannerAd(
-      adUnitId: AdsManager.bannerAdUnitId,
-      size: AdSize.banner,
-      request: AdRequest(),
-      listener: BannerAdListener(
-        onAdLoaded: (_) {
-          setState(() {
-            _isAdLoaded = true;
-          });
-        },
-        onAdFailedToLoad: (ad, error) {
-          // Releases an ad resource when it fails to load
-          ad.dispose();
-
-          print('Ad load failed (code=${error.code} message=${error.message})');
-        },
-      ),
-    );
-
-    _ad?.load();
-  }
-
-  @override
-  void dispose() {
-    _ad?.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -59,62 +17,40 @@ class _SinglePlayerViewState extends State<SinglePlayerView> {
       builder: (context, appModel, child) {
         return Container(
           decoration: BoxDecoration(gradient: appModel.theme.background),
-          child: Stack(
+          child: Column(
             children: [
-              Container(
-                padding: EdgeInsets.all(30),
-                child: Column(
-                  children: [
-                    SizedBox(height: 40),
-                    GameOptions(appModel: appModel),
-                    SizedBox(height: 50),
-                    Btn(
-                      onTap: () {
-                        appModel.newGame(context, notify: false);
-                        Navigator.push(
-                          context,
-                          CupertinoPageRoute(
-                            builder: (context) => ChessView(appModel: appModel),
-                          ),
-                        );
-                      },
-                      height: 60,
-                      width: 260,
-                      borderRadius: 250,
-                      color: Color(0xffCC996F),
-                      child: Text(
-                        S.of(context).Start,
-                        style: TextStyle(
-                            color: Color(0xff473D3D), fontSize: 20, fontWeight: FontWeight.w800),
+              Expanded(
+                child: SingleChildScrollView(
+                  padding: const EdgeInsets.all(30),
+                  child: Column(
+                    children: [
+                      SizedBox(height: MediaQuery.of(context).padding.top + 10),
+                      GameOptions(appModel: appModel),
+                      const SizedBox(height: 50),
+                      MenuButton(
+                        label: S.of(context).Start,
+                        onTap: () {
+                          appModel.newGame(context, notify: false);
+                          Navigator.push(
+                            context,
+                            CupertinoPageRoute(
+                              builder: (context) => ChessView(appModel: appModel),
+                            ),
+                          );
+                        },
                       ),
-                    ),
-                    SizedBox(height: 20),
-                    Btn(
-                      onTap: () {
-                        Navigator.pop(context);
-                      },
-                      height: 60,
-                      width: 260,
-                      borderRadius: 250,
-                      color: Color(0xffCC996F),
-                      child: Text(
-                        S.of(context).Back,
-                        style: TextStyle(
-                            color: Color(0xff473D3D), fontSize: 20, fontWeight: FontWeight.w800),
+                      const SizedBox(height: 20),
+                      MenuButton(
+                        label: S.of(context).Back,
+                        onTap: () {
+                          Navigator.pop(context);
+                        },
                       ),
-                    ),
-                  ],
-                ),
-              ),
-              if (_isAdLoaded)
-                Align(
-                  alignment: Alignment.bottomCenter,
-                  child: Container(
-                    margin: EdgeInsets.fromLTRB(0, 0, 0, MediaQuery.of(context).padding.bottom),
-                    child: AdWidget(ad: _ad!),
-                    height: 50.0,
+                    ],
                   ),
                 ),
+              ),
+              const BannerAdSlot(),
             ],
           ),
         );
