@@ -115,7 +115,8 @@ MoveMeta push(Move move, ChessBoard board,
 }
 
 MoveMeta pushMSO(MoveStackObject mso, ChessBoard board) {
-  return push(mso.move, board, promotionType: mso.promotionType);
+  return push(mso.move, board,
+      promotionType: mso.promotion ? mso.promotionType : ChessPieceType.promotion);
 }
 
 MoveStackObject pop(ChessBoard board) {
