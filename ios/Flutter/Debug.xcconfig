@@ -1,0 +1,5 @@
+#include? "Pods/Target Support Files/Pods-Runner/Pods-Runner.debug.xcconfig"
+#include "Generated.xcconfig"
+
+FLUTTER_XCODE_USE_SWIFT_PACKAGE_MANAGER=NO
+GADApplicationIdentifier = ca-app-pub-3940256099942544~1458002511

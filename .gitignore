@@ -49,5 +49,6 @@ app.*.map.json
 .fvm/
 ios/Secret.xcconfig
 lib/secrets.dart
+lib/config/ads_release.json
 chess icon.sketch
 chess_room.sketch
