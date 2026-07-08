@@ -1,13 +1,8 @@
-import 'package:app_tracking_transparency/app_tracking_transparency.dart';
-import 'package:chess_room/util/ads_manager.dart';
-import 'package:chess_room/util/in_app_reviewer_helper.dart';
 import 'package:chess_room/views/main_menu_view.dart';
 import 'package:flame/flame.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:provider/provider.dart';
 
 import 'generated/l10n.dart';
@@ -16,18 +11,6 @@ import 'model/app_model.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
-  if (!kIsWeb) {
-    Future.delayed(const Duration(seconds: 1), () {
-      AppTrackingTransparency.requestTrackingAuthorization();
-    });
-
-    MobileAds.instance.initialize();
-
-    AdsManager.debugPrintID();
-
-    InAppReviewHelper.checkAndAskForReview();
-  }
 
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitDown,
@@ -48,7 +31,8 @@ void _loadFlameAssets() async {
   for (var theme in PIECE_THEMES) {
     for (var color in ['black', 'white']) {
       for (var piece in ['king', 'queen', 'rook', 'bishop', 'knight', 'pawn']) {
-        pieceImages.add('pieces/${formatPieceTheme(theme)}/${piece}_$color.png');
+        pieceImages
+            .add('pieces/${formatPieceTheme(theme)}/${piece}_$color.png');
       }
     }
   }
@@ -56,6 +40,8 @@ void _loadFlameAssets() async {
 }
 
 class App extends StatelessWidget {
+  const App({super.key});
+
   @override
   Widget build(BuildContext context) {
     return AnnotatedRegion<SystemUiOverlayStyle>(

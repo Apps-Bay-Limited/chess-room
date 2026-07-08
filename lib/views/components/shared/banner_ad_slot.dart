@@ -22,8 +22,29 @@ class _BannerAdSlotState extends State<BannerAdSlot> {
   @override
   void initState() {
     super.initState();
+    AdsManager.isInitialized.addListener(_maybeLoadAd);
+    _maybeLoadAd();
+  }
+
+  @override
+  void dispose() {
+    AdsManager.isInitialized.removeListener(_maybeLoadAd);
+    _ad?.dispose();
+    super.dispose();
+  }
+
+  void _maybeLoadAd() {
+    if (!mounted || !AdsManager.isInitialized.value || _ad != null) {
+      return;
+    }
+
+    final adUnitId = AdsManager.bannerAdUnitId;
+    if (adUnitId.isEmpty) {
+      return;
+    }
+
     _ad = BannerAd(
-      adUnitId: AdsManager.bannerAdUnitId,
+      adUnitId: adUnitId,
       size: AdSize.banner,
       request: const AdRequest(),
       listener: BannerAdListener(
@@ -32,16 +53,12 @@ class _BannerAdSlotState extends State<BannerAdSlot> {
         },
         onAdFailedToLoad: (ad, error) {
           ad.dispose();
-          debugPrint('Ad load failed (code=${error.code} message=${error.message})');
+          _ad = null;
+          debugPrint(
+              'Ad load failed (code=${error.code} message=${error.message})');
         },
       ),
     )..load();
-  }
-
-  @override
-  void dispose() {
-    _ad?.dispose();
-    super.dispose();
   }
 
   @override

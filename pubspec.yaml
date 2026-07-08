@@ -1,6 +1,6 @@
 name: chess_room
 description: A Flutter chess app.
-version: 1.1.0+7
+version: 1.1.0+8
 
 environment:
   sdk: ">=3.3.0 <4.0.0"
