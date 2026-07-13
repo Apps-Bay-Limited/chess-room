@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 
 import '../generated/l10n.dart';
+import 'components/settings_view/remove_ads_section.dart';
 import 'components/settings_view/toggles.dart';
 import 'components/shared/banner_ad_slot.dart';
 import 'components/shared/menu_button.dart';
@@ -40,6 +41,8 @@ class SettingsView extends StatelessWidget {
                 children: [
                   const SizedBox(height: 10),
                   Toggles(appModel),
+                  const SizedBox(height: 30),
+                  RemoveAdsSection(appModel: appModel),
                   const SizedBox(height: 50),
                   MenuButton(
                     label: S.of(context).Back,

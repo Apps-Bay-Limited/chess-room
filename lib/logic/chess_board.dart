@@ -43,6 +43,8 @@ class ChessBoard {
     _addPiecesForPlayer(Player.player2);
   }
 
+  ChessBoard.empty();
+
   void _addPiecesForPlayer(Player player) {
     var kingRowOffset = player == Player.player1 ? 56 : 0;
     var pawnRowOffset = player == Player.player1 ? -8 : 8;
@@ -50,8 +52,8 @@ class ChessBoard {
     for (var pieceType in KING_ROW_PIECES) {
       var id = player == Player.player1 ? index * 2 : index * 2 + 16;
       var piece = ChessPiece(id, pieceType, player, kingRowOffset + index);
-      var pawn =
-          ChessPiece(id + 1, ChessPieceType.pawn, player, kingRowOffset + pawnRowOffset + index);
+      var pawn = ChessPiece(id + 1, ChessPieceType.pawn, player,
+          kingRowOffset + pawnRowOffset + index);
       _setTile(piece.tile, piece, this);
       _setTile(pawn.tile, pawn, this);
       piecesForPlayer(player, this).addAll([piece, pawn]);
@@ -67,6 +69,142 @@ class ChessBoard {
   }
 }
 
+class ChessPosition {
+  final ChessBoard board;
+  final Player activePlayer;
+
+  const ChessPosition(this.board, this.activePlayer);
+}
+
+ChessPosition chessPositionFromFen(String fen) {
+  final fields = fen.trim().split(RegExp(r'\s+'));
+  if (fields.length < 2) {
+    throw const FormatException('FEN must include a board and active color.');
+  }
+
+  final ranks = fields.first.split('/');
+  if (ranks.length != 8) {
+    throw const FormatException('FEN board must contain eight ranks.');
+  }
+
+  final board = ChessBoard.empty();
+  var id = 0;
+  for (var row = 0; row < ranks.length; row++) {
+    var col = 0;
+    for (final symbol in ranks[row].split('')) {
+      final emptySquares = int.tryParse(symbol);
+      if (emptySquares != null) {
+        col += emptySquares;
+        continue;
+      }
+      if (col > 7) {
+        throw const FormatException('FEN rank contains too many squares.');
+      }
+
+      final player =
+          symbol == symbol.toUpperCase() ? Player.player1 : Player.player2;
+      final type = _pieceTypeFromFen(symbol.toLowerCase());
+      final tile = row * 8 + col;
+      final piece = ChessPiece(id++, type, player, tile);
+      if (type == ChessPieceType.king || type == ChessPieceType.rook) {
+        piece.moveCount = 1;
+      } else if (type == ChessPieceType.pawn && row != 1 && row != 6) {
+        piece.moveCount = 1;
+      }
+      board.tiles[tile] = piece;
+      piecesForPlayer(player, board).add(piece);
+      if (type == ChessPieceType.king) {
+        if (player == Player.player1) {
+          board.player1King = piece;
+        } else {
+          board.player2King = piece;
+        }
+      } else if (type == ChessPieceType.queen) {
+        _queensForPlayer(player, board).add(piece);
+      } else if (type == ChessPieceType.rook) {
+        rooksForPlayer(player, board).add(piece);
+      }
+      col++;
+    }
+    if (col != 8) {
+      throw const FormatException('Every FEN rank must contain eight squares.');
+    }
+  }
+
+  board.possibleOpenings = [];
+  return ChessPosition(
+    board,
+    fields[1] == 'b' ? Player.player2 : Player.player1,
+  );
+}
+
+String chessPositionToFen(ChessBoard board, Player activePlayer) {
+  final ranks = <String>[];
+  for (var row = 0; row < 8; row++) {
+    final rank = StringBuffer();
+    var emptySquares = 0;
+    for (var col = 0; col < 8; col++) {
+      final piece = board.tiles[row * 8 + col];
+      if (piece == null) {
+        emptySquares++;
+        continue;
+      }
+      if (emptySquares > 0) {
+        rank.write(emptySquares);
+        emptySquares = 0;
+      }
+      var symbol = _pieceTypeToFen(piece.type);
+      if (piece.player == Player.player1) {
+        symbol = symbol.toUpperCase();
+      }
+      rank.write(symbol);
+    }
+    if (emptySquares > 0) {
+      rank.write(emptySquares);
+    }
+    ranks.add(rank.toString());
+  }
+  final activeColor = activePlayer == Player.player1 ? 'w' : 'b';
+  return '${ranks.join('/')} $activeColor - - 0 1';
+}
+
+ChessPieceType _pieceTypeFromFen(String symbol) {
+  switch (symbol) {
+    case 'p':
+      return ChessPieceType.pawn;
+    case 'r':
+      return ChessPieceType.rook;
+    case 'n':
+      return ChessPieceType.knight;
+    case 'b':
+      return ChessPieceType.bishop;
+    case 'q':
+      return ChessPieceType.queen;
+    case 'k':
+      return ChessPieceType.king;
+  }
+  throw FormatException('Unsupported FEN piece: $symbol');
+}
+
+String _pieceTypeToFen(ChessPieceType type) {
+  switch (type) {
+    case ChessPieceType.pawn:
+      return 'p';
+    case ChessPieceType.rook:
+      return 'r';
+    case ChessPieceType.knight:
+      return 'n';
+    case ChessPieceType.bishop:
+      return 'b';
+    case ChessPieceType.queen:
+      return 'q';
+    case ChessPieceType.king:
+      return 'k';
+    case ChessPieceType.promotion:
+      return 'p';
+  }
+}
+
 int boardValue(ChessBoard board) {
   int value = 0;
   for (var piece in board.player1Pieces + board.player2Pieces) {
@@ -76,11 +214,13 @@ int boardValue(ChessBoard board) {
 }
 
 MoveMeta push(Move move, ChessBoard board,
-    {bool getMeta = false, ChessPieceType promotionType = ChessPieceType.promotion}) {
-  var movedPiece = board.tiles[move.from]!; // We know this exists when making a move
+    {bool getMeta = false,
+    ChessPieceType promotionType = ChessPieceType.promotion}) {
+  var movedPiece =
+      board.tiles[move.from]!; // We know this exists when making a move
   var takenPiece = board.tiles[move.to]; // This can be null
-  var mso = MoveStackObject(move, movedPiece, takenPiece,
-      board.enPassantPiece, List.from(board.possibleOpenings));
+  var mso = MoveStackObject(move, movedPiece, takenPiece, board.enPassantPiece,
+      List.from(board.possibleOpenings));
   var meta = MoveMeta(move, mso.movedPiece.player, mso.movedPiece.type);
   if (board.possibleOpenings.isNotEmpty) {
     _filterPossibleOpenings(board, move);
@@ -116,7 +256,8 @@ MoveMeta push(Move move, ChessBoard board,
 
 MoveMeta pushMSO(MoveStackObject mso, ChessBoard board) {
   return push(mso.move, board,
-      promotionType: mso.promotion ? mso.promotionType : ChessPieceType.promotion);
+      promotionType:
+          mso.promotion ? mso.promotionType : ChessPieceType.promotion);
 }
 
 MoveStackObject pop(ChessBoard board) {
@@ -160,8 +301,12 @@ void _undoStandardMove(ChessBoard board, MoveStackObject mso) {
 }
 
 void _castle(ChessBoard board, MoveStackObject mso, MoveMeta meta) {
-  var king = mso.movedPiece.type == ChessPieceType.king ? mso.movedPiece : mso.takenPiece!;
-  var rook = mso.movedPiece.type == ChessPieceType.rook ? mso.movedPiece : mso.takenPiece!;
+  var king = mso.movedPiece.type == ChessPieceType.king
+      ? mso.movedPiece
+      : mso.takenPiece!;
+  var rook = mso.movedPiece.type == ChessPieceType.rook
+      ? mso.movedPiece
+      : mso.takenPiece!;
   _setTile(king.tile, null, board);
   _setTile(rook.tile, null, board);
   var kingCol = tileToCol(rook.tile) == 0 ? 2 : 6;
@@ -175,8 +320,12 @@ void _castle(ChessBoard board, MoveStackObject mso, MoveMeta meta) {
 }
 
 void _undoCastle(ChessBoard board, MoveStackObject mso) {
-  var king = mso.movedPiece.type == ChessPieceType.king ? mso.movedPiece : mso.takenPiece!;
-  var rook = mso.movedPiece.type == ChessPieceType.rook ? mso.movedPiece : mso.takenPiece!;
+  var king = mso.movedPiece.type == ChessPieceType.king
+      ? mso.movedPiece
+      : mso.takenPiece!;
+  var rook = mso.movedPiece.type == ChessPieceType.rook
+      ? mso.movedPiece
+      : mso.takenPiece!;
   _setTile(king.tile, null, board);
   _setTile(rook.tile, null, board);
   var rookCol = tileToCol(rook.tile) == 3 ? 0 : 7;
@@ -244,7 +393,8 @@ void _checkEnPassant(ChessBoard board, MoveStackObject mso, MoveMeta meta) {
 void _checkMoveAmbiguity(Move move, MoveMeta moveMeta, ChessBoard board) {
   var piece = board.tiles[move.from];
   if (piece != null) {
-    for (var otherPiece in _piecesOfTypeForPlayer(piece.type, piece.player, board)) {
+    for (var otherPiece
+        in _piecesOfTypeForPlayer(piece.type, piece.player, board)) {
       if (piece != otherPiece) {
         if (movesForPiece(otherPiece, board).contains(move.to)) {
           if (tileToCol(otherPiece.tile) == tileToCol(piece.tile)) {
@@ -260,7 +410,9 @@ void _checkMoveAmbiguity(Move move, MoveMeta moveMeta, ChessBoard board) {
 
 void _filterPossibleOpenings(ChessBoard board, Move move) {
   board.possibleOpenings = board.possibleOpenings
-      .where((opening) => opening[board.moveCount] == move && opening.length > board.moveCount + 1)
+      .where((opening) =>
+          opening[board.moveCount] == move &&
+          opening.length > board.moveCount + 1)
       .toList();
 }
 
@@ -307,7 +459,8 @@ List<ChessPiece> _queensForPlayer(Player player, ChessBoard board) {
   return player == Player.player1 ? board.player1Queens : board.player2Queens;
 }
 
-List<ChessPiece> _piecesOfTypeForPlayer(ChessPieceType type, Player player, ChessBoard board) {
+List<ChessPiece> _piecesOfTypeForPlayer(
+    ChessPieceType type, Player player, ChessBoard board) {
   List<ChessPiece> pieces = [];
   for (var piece in piecesForPlayer(player, board)) {
     if (piece.type == type) {

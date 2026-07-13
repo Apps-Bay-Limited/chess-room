@@ -164,6 +164,141 @@ class S {
     return Intl.message('Undo/Redo', name: 'Undo', desc: '', args: []);
   }
 
+  /// `Remove Ads`
+  String get Remove_Ads {
+    return Intl.message('Remove Ads', name: 'Remove_Ads', desc: '', args: []);
+  }
+
+  /// `Remove Ads {price}`
+  String Remove_Ads_With_Price(Object price) {
+    return Intl.message(
+      'Remove Ads $price',
+      name: 'Remove_Ads_With_Price',
+      desc: '',
+      args: [price],
+    );
+  }
+
+  /// `Remove ads permanently from this app.`
+  String get Remove_Ads_Description {
+    return Intl.message(
+      'Remove ads permanently from this app.',
+      name: 'Remove_Ads_Description',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Ads are removed on this device.`
+  String get Remove_Ads_Purchased {
+    return Intl.message(
+      'Ads are removed on this device.',
+      name: 'Remove_Ads_Purchased',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Loading purchase options...`
+  String get Remove_Ads_Loading {
+    return Intl.message(
+      'Loading purchase options...',
+      name: 'Remove_Ads_Loading',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Remove Ads is currently unavailable.`
+  String get Remove_Ads_Unavailable {
+    return Intl.message(
+      'Remove Ads is currently unavailable.',
+      name: 'Remove_Ads_Unavailable',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Restore Purchases`
+  String get Restore_Purchases {
+    return Intl.message(
+      'Restore Purchases',
+      name: 'Restore_Purchases',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Purchase in progress...`
+  String get Purchase_In_Progress {
+    return Intl.message(
+      'Purchase in progress...',
+      name: 'Purchase_In_Progress',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Purchase is pending approval.`
+  String get Purchase_Pending {
+    return Intl.message(
+      'Purchase is pending approval.',
+      name: 'Purchase_Pending',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Purchase complete. Ads are removed.`
+  String get Purchase_Success {
+    return Intl.message(
+      'Purchase complete. Ads are removed.',
+      name: 'Purchase_Success',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Purchase restored. Ads are removed.`
+  String get Purchase_Restored {
+    return Intl.message(
+      'Purchase restored. Ads are removed.',
+      name: 'Purchase_Restored',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Purchase cancelled.`
+  String get Purchase_Cancelled {
+    return Intl.message(
+      'Purchase cancelled.',
+      name: 'Purchase_Cancelled',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Purchase failed. Please try again.`
+  String get Purchase_Failed {
+    return Intl.message(
+      'Purchase failed. Please try again.',
+      name: 'Purchase_Failed',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No previous Remove Ads purchase was found.`
+  String get Restore_Not_Found {
+    return Intl.message(
+      'No previous Remove Ads purchase was found.',
+      name: 'Restore_Not_Found',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `You Lose`
   String get You_Lose {
     return Intl.message('You Lose', name: 'You_Lose', desc: '', args: []);
@@ -367,6 +502,151 @@ class S {
   /// `Easy Unit`
   String get Easy_Unit {
     return Intl.message('Easy Unit', name: 'Easy_Unit', desc: '', args: []);
+  }
+
+  /// `Daily Puzzle`
+  String get Daily_Puzzle {
+    return Intl.message(
+      'Daily Puzzle',
+      name: 'Daily_Puzzle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Mate in One`
+  String get Mate_In_One {
+    return Intl.message('Mate in One', name: 'Mate_In_One', desc: '', args: []);
+  }
+
+  /// `White or black to move. Find checkmate in one.`
+  String get Puzzle_Instruction {
+    return Intl.message(
+      'White or black to move. Find checkmate in one.',
+      name: 'Puzzle_Instruction',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Streak: {count}`
+  String Puzzle_Streak(Object count) {
+    return Intl.message(
+      'Streak: $count',
+      name: 'Puzzle_Streak',
+      desc: '',
+      args: [count],
+    );
+  }
+
+  /// `Today's puzzle is complete.`
+  String get Puzzle_Solved {
+    return Intl.message(
+      'Today\'s puzzle is complete.',
+      name: 'Puzzle_Solved',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Not quite — try again`
+  String get Try_Again {
+    return Intl.message(
+      'Not quite — try again',
+      name: 'Try_Again',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Correct! Checkmate.`
+  String get Correct {
+    return Intl.message(
+      'Correct! Checkmate.',
+      name: 'Correct',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Review Biggest Mistake`
+  String get Review_Game {
+    return Intl.message(
+      'Review Biggest Mistake',
+      name: 'Review_Game',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Biggest Mistake`
+  String get Biggest_Mistake {
+    return Intl.message(
+      'Biggest Mistake',
+      name: 'Biggest_Mistake',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Played`
+  String get Played_Move {
+    return Intl.message('Played', name: 'Played_Move', desc: '', args: []);
+  }
+
+  /// `Best move`
+  String get Best_Move {
+    return Intl.message('Best move', name: 'Best_Move', desc: '', args: []);
+  }
+
+  /// `Lost {value} pawns of evaluation`
+  String Pawns_Lost(Object value) {
+    return Intl.message(
+      'Lost $value pawns of evaluation',
+      name: 'Pawns_Lost',
+      desc: '',
+      args: [value],
+    );
+  }
+
+  /// `Share Result`
+  String get Share_Result {
+    return Intl.message(
+      'Share Result',
+      name: 'Share_Result',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Creating result card...`
+  String get Sharing_Result {
+    return Intl.message(
+      'Creating result card...',
+      name: 'Sharing_Result',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `{count} moves`
+  String Move_Count(Object count) {
+    return Intl.message(
+      '$count moves',
+      name: 'Move_Count',
+      desc: '',
+      args: [count],
+    );
+  }
+
+  /// `Chess Room Result`
+  String get Chess_Room_Result {
+    return Intl.message(
+      'Chess Room Result',
+      name: 'Chess_Room_Result',
+      desc: '',
+      args: [],
+    );
   }
 }
 

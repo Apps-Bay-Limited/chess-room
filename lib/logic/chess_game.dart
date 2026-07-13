@@ -1,4 +1,3 @@
-
 import 'package:async/async.dart';
 import 'package:chess_room/logic/chess_piece_sprite.dart';
 import 'package:chess_room/logic/move_calculation/ai_move_calculation.dart';
@@ -6,9 +5,11 @@ import 'package:chess_room/logic/move_calculation/move_calculation.dart';
 import 'package:chess_room/logic/move_calculation/move_classes/move_meta.dart';
 import 'package:chess_room/logic/shared_functions.dart';
 import 'package:chess_room/model/app_model.dart';
+import 'package:chess_room/model/game_review.dart';
 import 'package:chess_room/views/components/main_menu_view/game_options/side_picker.dart';
 import 'package:flame/events.dart';
 import 'package:flame/game.dart';
+import 'package:flame/input.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
@@ -17,7 +18,7 @@ import 'chess_board.dart';
 import 'chess_piece.dart';
 import 'move_calculation/move_classes/move.dart';
 
-class ChessGame extends FlameGame with TapCallbacks {
+class ChessGame extends Game with TapDetector {
   late double width;
   late double tileSize;
   AppModel appModel;
@@ -45,9 +46,9 @@ class ChessGame extends FlameGame with TapCallbacks {
   }
 
   @override
-  void onTapDown(TapDownEvent event) {
-    if (!appModel.gameOver && !appModel.isAIsTurn) {
-      var tile = _vector2ToTile(event.localPosition);
+  void onTapDown(TapDownInfo info) {
+    if (appModel.gameOver || !appModel.isAIsTurn) {
+      var tile = _vector2ToTile(info.eventPosition.widget);
       if (tile < 0 || tile > 63) return;
       var touchedPiece = board.tiles[tile];
       if (touchedPiece == selectedPiece) {
@@ -63,7 +64,7 @@ class ChessGame extends FlameGame with TapCallbacks {
             validMoves = [];
             _selectPiece(touchedPiece);
           }
-        } else if (selectedPiece == null  && touchedPiece != null) {
+        } else if (selectedPiece == null && touchedPiece != null) {
           _selectPiece(touchedPiece);
         } else {
           _movePiece(tile);
@@ -74,7 +75,6 @@ class ChessGame extends FlameGame with TapCallbacks {
 
   @override
   void render(Canvas canvas) {
-    super.render(canvas);
     _drawBoard(canvas);
     if (appModel.showHints) {
       _drawCheckHint(canvas);
@@ -85,15 +85,14 @@ class ChessGame extends FlameGame with TapCallbacks {
     if (appModel.showHints) {
       _drawMoveHints(canvas);
     }
-    }
+  }
 
   @override
   void update(double t) {
-    super.update(t);
     for (var piece in board.player1Pieces + board.player2Pieces) {
       spriteMap[piece]?.update(tileSize, appModel, piece);
     }
-    }
+  }
 
   void _initSpritePositions() {
     for (var piece in board.player1Pieces + board.player2Pieces) {
@@ -117,7 +116,10 @@ class ChessGame extends FlameGame with TapCallbacks {
   void _movePiece(int tile) {
     if (validMoves.contains(tile)) {
       validMoves = [];
-      var meta = push(Move(selectedPiece!.tile, tile), board, getMeta: true);
+      final move = Move(selectedPiece!.tile, tile);
+      final review = _reviewForMove(move);
+      var meta = push(move, board, getMeta: true);
+      appModel.pushMoveReview(review);
       HapticFeedback.mediumImpact();
       if (meta.promotion) {
         appModel.requestPromotion();
@@ -140,7 +142,9 @@ class ChessGame extends FlameGame with TapCallbacks {
         appModel.endGame();
       } else {
         validMoves = [];
+        final review = _reviewForMove(move);
         var meta = push(move, board, getMeta: true);
+        appModel.pushMoveReview(review);
         HapticFeedback.lightImpact();
         _moveCompletion(meta, changeTurn: !meta.promotion);
         if (meta.promotion) {
@@ -155,10 +159,11 @@ class ChessGame extends FlameGame with TapCallbacks {
 
   void cancelAIMove() {
     aiOperation.cancel();
-    }
+  }
 
   void undoMove() {
     board.redoStack.add(pop(board));
+    appModel.popMoveReview();
     if (appModel.moveMetaList.length > 1) {
       var meta = appModel.moveMetaList[appModel.moveMetaList.length - 2];
       _moveCompletion(meta, clearRedo: false, undoing: true);
@@ -171,6 +176,8 @@ class ChessGame extends FlameGame with TapCallbacks {
   void undoTwoMoves() {
     board.redoStack.add(pop(board));
     board.redoStack.add(pop(board));
+    appModel.popMoveReview();
+    appModel.popMoveReview();
     appModel.popMoveMeta();
     if (appModel.moveMetaList.length > 1) {
       _moveCompletion(appModel.moveMetaList[appModel.moveMetaList.length - 2],
@@ -189,17 +196,59 @@ class ChessGame extends FlameGame with TapCallbacks {
   }
 
   void redoMove() {
-    _moveCompletion(pushMSO(board.redoStack.removeLast(), board), clearRedo: false);
+    final moveStackObject = board.redoStack.removeLast();
+    appModel.pushMoveReview(_reviewForMove(moveStackObject.move));
+    _moveCompletion(pushMSO(moveStackObject, board), clearRedo: false);
   }
 
   void redoTwoMoves() {
-    _moveCompletion(pushMSO(board.redoStack.removeLast(), board),
+    var moveStackObject = board.redoStack.removeLast();
+    appModel.pushMoveReview(_reviewForMove(moveStackObject.move));
+    _moveCompletion(pushMSO(moveStackObject, board),
         clearRedo: false, updateMetaList: true);
-    _moveCompletion(pushMSO(board.redoStack.removeLast(), board),
+    moveStackObject = board.redoStack.removeLast();
+    appModel.pushMoveReview(_reviewForMove(moveStackObject.move));
+    _moveCompletion(pushMSO(moveStackObject, board),
         clearRedo: false, updateMetaList: true);
   }
 
+  MoveReviewRecord _reviewForMove(Move move) {
+    final movedPiece = board.tiles[move.from];
+    final reachesPromotionRank = move.to ~/ 8 == 0 || move.to ~/ 8 == 7;
+    final analyzedMove = movedPiece?.type == ChessPieceType.pawn &&
+            reachesPromotionRank &&
+            move.promotionType == ChessPieceType.promotion
+        ? Move(
+            move.from,
+            move.to,
+            promotionType: ChessPieceType.queen,
+          )
+        : move;
+    return MoveReviewRecord.analyze(
+      board: board,
+      playedMove: analyzedMove,
+      player: appModel.turn,
+      moveIndex: appModel.moveMetaList.length,
+    );
+  }
+
   void promote(ChessPieceType type) {
+    if (appModel.moveReviewRecords.isNotEmpty) {
+      final previousReview = appModel.moveReviewRecords.last;
+      final position = chessPositionFromFen(previousReview.positionBeforeFen);
+      appModel.replaceLastMoveReview(
+        MoveReviewRecord.analyze(
+          board: position.board,
+          playedMove: Move(
+            previousReview.playedMove.from,
+            previousReview.playedMove.to,
+            promotionType: type,
+          ),
+          player: previousReview.player,
+          moveIndex: previousReview.moveIndex,
+        ),
+      );
+    }
     board.moveStack.last.movedPiece.type = type;
     board.moveStack.last.promotionType = type;
     addPromotedPiece(board, board.moveStack.last);
@@ -253,10 +302,14 @@ class ChessGame extends FlameGame with TapCallbacks {
   }
 
   int _vector2ToTile(Vector2 vector2) {
-    if (appModel.flip && appModel.playingWithAI && appModel.playerSide == Player.player2) {
-      return (7 - (vector2.y / tileSize).floor()) * 8 + (7 - (vector2.x / tileSize).floor());
+    if (appModel.flip &&
+        appModel.playingWithAI &&
+        appModel.playerSide == Player.player2) {
+      return (7 - (vector2.y / tileSize).floor()) * 8 +
+          (7 - (vector2.x / tileSize).floor());
     } else {
-      return (vector2.y / tileSize).floor() * 8 + (vector2.x / tileSize).floor();
+      return (vector2.y / tileSize).floor() * 8 +
+          (vector2.x / tileSize).floor();
     }
   }
 

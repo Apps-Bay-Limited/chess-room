@@ -1,5 +1,7 @@
+import 'package:chess_room/model/app_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:provider/provider.dart';
 
 import '../../../util/ads_manager.dart';
 
@@ -18,23 +20,72 @@ class BannerAdSlot extends StatefulWidget {
 class _BannerAdSlotState extends State<BannerAdSlot> {
   BannerAd? _ad;
   bool _isAdLoaded = false;
+  AppModel? _appModel;
 
   @override
   void initState() {
     super.initState();
     AdsManager.isInitialized.addListener(_maybeLoadAd);
+    AdsManager.isAdsRemoved.addListener(_handleAdsRemovedChanged);
+    AdsManager.isPurchaseFlowActive.addListener(_handleAdsRemovedChanged);
     _maybeLoadAd();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final appModel = Provider.of<AppModel>(context, listen: false);
+    if (_appModel == appModel) {
+      return;
+    }
+    _appModel?.removeListener(_handleAdsRemovedChanged);
+    _appModel = appModel;
+    _appModel?.addListener(_handleAdsRemovedChanged);
+    _handleAdsRemovedChanged();
   }
 
   @override
   void dispose() {
     AdsManager.isInitialized.removeListener(_maybeLoadAd);
+    AdsManager.isAdsRemoved.removeListener(_handleAdsRemovedChanged);
+    AdsManager.isPurchaseFlowActive.removeListener(_handleAdsRemovedChanged);
+    _appModel?.removeListener(_handleAdsRemovedChanged);
     _ad?.dispose();
     super.dispose();
   }
 
+  void _handleAdsRemovedChanged() {
+    final adsBlocked = AdsManager.isAdsRemoved.value ||
+        AdsManager.isPurchaseFlowActive.value ||
+        (_appModel?.isAdsRemoved ?? false) ||
+        (_appModel?.purchaseService.isStoreFlowActive ?? false);
+    if (adsBlocked) {
+      _disposeAd();
+      return;
+    }
+    _maybeLoadAd();
+  }
+
+  void _disposeAd() {
+    final ad = _ad;
+    if (ad == null && !_isAdLoaded) {
+      return;
+    }
+    ad?.dispose();
+    _ad = null;
+    if (mounted) {
+      setState(() => _isAdLoaded = false);
+    } else {
+      _isAdLoaded = false;
+    }
+  }
+
   void _maybeLoadAd() {
-    if (!mounted || !AdsManager.isInitialized.value || _ad != null) {
+    if (!mounted ||
+        !AdsManager.canRequestAds ||
+        (_appModel?.isAdsRemoved ?? false) ||
+        (_appModel?.purchaseService.isStoreFlowActive ?? false) ||
+        _ad != null) {
       return;
     }
 
@@ -63,6 +114,11 @@ class _BannerAdSlotState extends State<BannerAdSlot> {
 
   @override
   Widget build(BuildContext context) {
+    if ((_appModel?.isAdsRemoved ?? false) ||
+        (_appModel?.purchaseService.isStoreFlowActive ?? false)) {
+      return const SizedBox.shrink();
+    }
+
     return SafeArea(
       top: false,
       child: SizedBox(

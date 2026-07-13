@@ -2,9 +2,12 @@ import 'package:chess_room/model/app_model.dart';
 import 'package:chess_room/views/components/chess_view/chess_board_widget.dart';
 import 'package:chess_room/views/components/chess_view/game_info_and_controls.dart';
 import 'package:chess_room/views/components/chess_view/promotion_dialog.dart';
+import 'package:chess_room/features/game_review/game_review_page.dart';
+import 'package:chess_room/features/share_result/result_share_section.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 
+import '../generated/l10n.dart';
 import 'components/chess_view/game_info_and_controls/game_status.dart';
 import 'components/shared/banner_ad_slot.dart';
 
@@ -28,7 +31,8 @@ class _ChessViewState extends State<ChessView> {
       builder: (context, appModel, child) {
         if (appModel.promotionRequested) {
           appModel.promotionRequested = false;
-          WidgetsBinding.instance.addPostFrameCallback((_) => _showPromotionDialog(appModel));
+          WidgetsBinding.instance
+              .addPostFrameCallback((_) => _showPromotionDialog(appModel));
         }
         return PopScope(
           canPop: true,
@@ -54,6 +58,28 @@ class _ChessViewState extends State<ChessView> {
                         ChessBoardWidget(appModel),
                         const SizedBox(height: 30),
                         GameStatus(),
+                        if (appModel.gameOver) ...[
+                          const SizedBox(height: 24),
+                          if (appModel.biggestMistake != null) ...[
+                            CupertinoButton.filled(
+                              key: const ValueKey('review-game-button'),
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  CupertinoPageRoute(
+                                    builder: (context) => GameReviewPage(
+                                      record: appModel.biggestMistake!,
+                                      pieceTheme: appModel.pieceTheme,
+                                    ),
+                                  ),
+                                );
+                              },
+                              child: Text(S.of(context).Review_Game),
+                            ),
+                            const SizedBox(height: 24),
+                          ],
+                          ResultShareSection(appModel: appModel),
+                        ],
                       ],
                     ),
                   ),

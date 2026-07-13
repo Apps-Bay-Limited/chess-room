@@ -4,6 +4,8 @@ import 'dart:math';
 import 'package:chess_room/logic/chess_game.dart';
 import 'package:chess_room/logic/move_calculation/move_classes/move_meta.dart';
 import 'package:chess_room/logic/shared_functions.dart';
+import 'package:chess_room/model/game_review.dart';
+import 'package:chess_room/util/remove_ads_purchase_service.dart';
 import 'package:chess_room/views/components/main_menu_view/game_options/side_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -23,6 +25,9 @@ const PIECE_THEMES = [
 ];
 
 class AppModel extends ChangeNotifier {
+  final RemoveAdsPurchaseService purchaseService;
+  late final Future<void> purchaseInitialization;
+
   int playerCount = 1;
   int aiDifficulty = 3;
   Player selectedSide = Player.player1;
@@ -45,6 +50,7 @@ class AppModel extends ChangeNotifier {
   bool moveListUpdated = false;
   Player turn = Player.player1;
   List<MoveMeta> moveMetaList = [];
+  List<MoveReviewRecord> moveReviewRecords = [];
   Duration player1TimeLeft = Duration.zero;
   Duration player2TimeLeft = Duration.zero;
 
@@ -96,8 +102,39 @@ class AppModel extends ChangeNotifier {
     return playerCount == 1;
   }
 
-  AppModel() {
+  bool get isAdsRemoved {
+    return purchaseService.isAdsRemoved;
+  }
+
+  bool get canPurchaseRemoveAds {
+    return purchaseService.isSupported;
+  }
+
+  MoveReviewRecord? get biggestMistake {
+    final candidates = playingWithAI
+        ? moveReviewRecords.where((record) => record.player == playerSide)
+        : moveReviewRecords;
+    MoveReviewRecord? biggest;
+    for (final record in candidates) {
+      if (biggest == null || record.evaluationLoss > biggest.evaluationLoss) {
+        biggest = record;
+      }
+    }
+    return biggest?.evaluationLoss == 0 ? null : biggest;
+  }
+
+  AppModel({RemoveAdsPurchaseService? purchaseService})
+      : purchaseService = purchaseService ?? RemoveAdsPurchaseService() {
+    this.purchaseService.addListener(notifyListeners);
     loadSharedPrefs();
+    purchaseInitialization = this.purchaseService.init();
+  }
+
+  @override
+  void dispose() {
+    purchaseService.removeListener(notifyListeners);
+    purchaseService.dispose();
+    super.dispose();
   }
 
   void newGame(BuildContext context, {bool notify = true}) {
@@ -107,10 +144,12 @@ class AppModel extends ChangeNotifier {
     stalemate = false;
     turn = Player.player1;
     moveMetaList = [];
+    moveReviewRecords = [];
     player1TimeLeft = Duration(minutes: timeLimit);
     player2TimeLeft = Duration(minutes: timeLimit);
     if (selectedSide == Player.random) {
-      playerSide = Random.secure().nextInt(2) == 0 ? Player.player1 : Player.player2;
+      playerSide =
+          Random.secure().nextInt(2) == 0 ? Player.player1 : Player.player2;
     }
     // Ensure the turn starts with the human player if appropriate
     turn = playerSide;
@@ -123,7 +162,8 @@ class AppModel extends ChangeNotifier {
       turn == Player.player1
           ? decrementPlayer1Timer(elapsedMs)
           : decrementPlayer2Timer(elapsedMs);
-      if ((player1TimeLeft == Duration.zero || player2TimeLeft == Duration.zero) &&
+      if ((player1TimeLeft == Duration.zero ||
+              player2TimeLeft == Duration.zero) &&
           timeLimit != 0) {
         endGame();
       }
@@ -149,6 +189,22 @@ class AppModel extends ChangeNotifier {
     moveMetaList.removeLast();
     moveListUpdated = true;
     notifyListeners();
+  }
+
+  void pushMoveReview(MoveReviewRecord record) {
+    moveReviewRecords.add(record);
+  }
+
+  void popMoveReview() {
+    if (moveReviewRecords.isNotEmpty) {
+      moveReviewRecords.removeLast();
+    }
+  }
+
+  void replaceLastMoveReview(MoveReviewRecord record) {
+    if (moveReviewRecords.isNotEmpty) {
+      moveReviewRecords[moveReviewRecords.length - 1] = record;
+    }
   }
 
   void endGame() {
@@ -202,7 +258,8 @@ class AppModel extends ChangeNotifier {
   void decrementPlayer1Timer([int elapsedMs = TIMER_ACCURACY_MS]) {
     if (player1TimeLeft.inMilliseconds > 0 && !gameOver) {
       final remainingMs = player1TimeLeft.inMilliseconds - elapsedMs;
-      player1TimeLeft = Duration(milliseconds: remainingMs > 0 ? remainingMs : 0);
+      player1TimeLeft =
+          Duration(milliseconds: remainingMs > 0 ? remainingMs : 0);
       notifyListeners();
     }
   }
@@ -210,7 +267,8 @@ class AppModel extends ChangeNotifier {
   void decrementPlayer2Timer([int elapsedMs = TIMER_ACCURACY_MS]) {
     if (player2TimeLeft.inMilliseconds > 0 && !gameOver) {
       final remainingMs = player2TimeLeft.inMilliseconds - elapsedMs;
-      player2TimeLeft = Duration(milliseconds: remainingMs > 0 ? remainingMs : 0);
+      player2TimeLeft =
+          Duration(milliseconds: remainingMs > 0 ? remainingMs : 0);
       notifyListeners();
     }
   }

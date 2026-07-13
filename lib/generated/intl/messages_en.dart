@@ -20,17 +20,32 @@ typedef String MessageIfAbsent(String messageStr, List<dynamic> args);
 class MessageLookup extends MessageLookupByLibrary {
   String get localeName => 'en';
 
+  static String m0(count) => "${count} moves";
+
+  static String m1(value) => "Lost ${value} pawns of evaluation";
+
+  static String m2(count) => "Streak: ${count}";
+
+  static String m3(price) => "Remove Ads ${price}";
+
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
     "AI_Difficulty": MessageLookupByLibrary.simpleMessage("AI Difficulty"),
     "AI_is_thinking": MessageLookupByLibrary.simpleMessage("AI is thinking"),
     "Back": MessageLookupByLibrary.simpleMessage("Back"),
+    "Best_Move": MessageLookupByLibrary.simpleMessage("Best move"),
+    "Biggest_Mistake": MessageLookupByLibrary.simpleMessage("Biggest Mistake"),
     "Black": MessageLookupByLibrary.simpleMessage("Black"),
     "Black_Wins": MessageLookupByLibrary.simpleMessage("Black wins!"),
     "Blacks_Turn": MessageLookupByLibrary.simpleMessage("Black\'s turn"),
+    "Chess_Room_Result": MessageLookupByLibrary.simpleMessage(
+      "Chess Room Result",
+    ),
     "Classical_Music_Box": MessageLookupByLibrary.simpleMessage(
       "Classical Music Box",
     ),
+    "Correct": MessageLookupByLibrary.simpleMessage("Correct! Checkmate."),
+    "Daily_Puzzle": MessageLookupByLibrary.simpleMessage("Daily Puzzle"),
     "Easy": MessageLookupByLibrary.simpleMessage("Easy"),
     "Easy_Unit": MessageLookupByLibrary.simpleMessage("Easy Unit"),
     "Extreme": MessageLookupByLibrary.simpleMessage("Extreme"),
@@ -42,19 +57,75 @@ class MessageLookup extends MessageLookupByLibrary {
     "Hints": MessageLookupByLibrary.simpleMessage("Hints"),
     "Image_Guru": MessageLookupByLibrary.simpleMessage("Image Guru"),
     "Instant_Face": MessageLookupByLibrary.simpleMessage("Instant Face"),
+    "Mate_In_One": MessageLookupByLibrary.simpleMessage("Mate in One"),
     "Medium": MessageLookupByLibrary.simpleMessage("Medium"),
     "Metronome_Go": MessageLookupByLibrary.simpleMessage("Metronome Go"),
     "Minesweeper_Go": MessageLookupByLibrary.simpleMessage("Minesweeper Go"),
     "Mint_Translate": MessageLookupByLibrary.simpleMessage("Mint Translate"),
     "Money_Tracker": MessageLookupByLibrary.simpleMessage("Money Tracker"),
     "More_Apps": MessageLookupByLibrary.simpleMessage("More Apps"),
+    "Move_Count": m0,
     "Novels_Hub": MessageLookupByLibrary.simpleMessage("Novels Hub"),
     "Onlynote": MessageLookupByLibrary.simpleMessage("Onlynote"),
+    "Pawns_Lost": m1,
     "Pick_Your_Side": MessageLookupByLibrary.simpleMessage("Pick Your Side"),
+    "Played_Move": MessageLookupByLibrary.simpleMessage("Played"),
+    "Purchase_Cancelled": MessageLookupByLibrary.simpleMessage(
+      "Purchase cancelled.",
+    ),
+    "Purchase_Failed": MessageLookupByLibrary.simpleMessage(
+      "Purchase failed. Please try again.",
+    ),
+    "Purchase_In_Progress": MessageLookupByLibrary.simpleMessage(
+      "Purchase in progress...",
+    ),
+    "Purchase_Pending": MessageLookupByLibrary.simpleMessage(
+      "Purchase is pending approval.",
+    ),
+    "Purchase_Restored": MessageLookupByLibrary.simpleMessage(
+      "Purchase restored. Ads are removed.",
+    ),
+    "Purchase_Success": MessageLookupByLibrary.simpleMessage(
+      "Purchase complete. Ads are removed.",
+    ),
+    "Puzzle_Instruction": MessageLookupByLibrary.simpleMessage(
+      "White or black to move. Find checkmate in one.",
+    ),
+    "Puzzle_Solved": MessageLookupByLibrary.simpleMessage(
+      "Today\'s puzzle is complete.",
+    ),
+    "Puzzle_Streak": m2,
+    "Remove_Ads": MessageLookupByLibrary.simpleMessage("Remove Ads"),
+    "Remove_Ads_Description": MessageLookupByLibrary.simpleMessage(
+      "Remove ads permanently from this app.",
+    ),
+    "Remove_Ads_Loading": MessageLookupByLibrary.simpleMessage(
+      "Loading purchase options...",
+    ),
+    "Remove_Ads_Purchased": MessageLookupByLibrary.simpleMessage(
+      "Ads are removed on this device.",
+    ),
+    "Remove_Ads_Unavailable": MessageLookupByLibrary.simpleMessage(
+      "Remove Ads is currently unavailable.",
+    ),
+    "Remove_Ads_With_Price": m3,
+    "Restore_Not_Found": MessageLookupByLibrary.simpleMessage(
+      "No previous Remove Ads purchase was found.",
+    ),
+    "Restore_Purchases": MessageLookupByLibrary.simpleMessage(
+      "Restore Purchases",
+    ),
+    "Review_Game": MessageLookupByLibrary.simpleMessage(
+      "Review Biggest Mistake",
+    ),
     "Saving_Ambulance": MessageLookupByLibrary.simpleMessage(
       "Saving Ambulance",
     ),
     "Settings": MessageLookupByLibrary.simpleMessage("Settings"),
+    "Share_Result": MessageLookupByLibrary.simpleMessage("Share Result"),
+    "Sharing_Result": MessageLookupByLibrary.simpleMessage(
+      "Creating result card...",
+    ),
     "Shows": MessageLookupByLibrary.simpleMessage("Shows"),
     "Simple_Calculator": MessageLookupByLibrary.simpleMessage(
       "Simple Calculator",
@@ -63,6 +134,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Start": MessageLookupByLibrary.simpleMessage("Start"),
     "Sudoku_Lover": MessageLookupByLibrary.simpleMessage("Sudoku Lover"),
     "Time_Limit": MessageLookupByLibrary.simpleMessage("Time Limit"),
+    "Try_Again": MessageLookupByLibrary.simpleMessage("Not quite — try again"),
     "Two_Players": MessageLookupByLibrary.simpleMessage("Two Players"),
     "Undo": MessageLookupByLibrary.simpleMessage("Undo/Redo"),
     "Vs_AI_Player": MessageLookupByLibrary.simpleMessage("Vs AI Player"),

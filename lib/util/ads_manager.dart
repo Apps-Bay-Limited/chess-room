@@ -7,6 +7,9 @@ import 'package:google_mobile_ads/google_mobile_ads.dart';
 class AdsManager {
   static bool disableAllAdsForScreenshot = false;
   static final ValueNotifier<bool> isInitialized = ValueNotifier<bool>(false);
+  static final ValueNotifier<bool> isAdsRemoved = ValueNotifier<bool>(false);
+  static final ValueNotifier<bool> isPurchaseFlowActive =
+      ValueNotifier<bool>(false);
 
   // Android Release IDs (Injected via --dart-define)
   static const String _bannerAdUnitIdAndroidRelease = String.fromEnvironment(
@@ -100,14 +103,30 @@ class AdsManager {
     print("bannerAdUnitId: ${AdsManager.bannerAdUnitId}");
   }
 
-  static Future<void> initialize() async {
-    if (isInitialized.value || disableAllAdsForScreenshot) {
+  static bool get canRequestAds {
+    return isInitialized.value &&
+        !isAdsRemoved.value &&
+        !isPurchaseFlowActive.value &&
+        !disableAllAdsForScreenshot;
+  }
+
+  static Future<void> initialize({required bool adsRemoved}) async {
+    isAdsRemoved.value = adsRemoved;
+    if (adsRemoved || isInitialized.value || disableAllAdsForScreenshot) {
       return;
     }
 
     await MobileAds.instance.initialize();
     debugPrintID();
     isInitialized.value = true;
+  }
+
+  static void setAdsRemoved(bool adsRemoved) {
+    isAdsRemoved.value = adsRemoved;
+  }
+
+  static void setPurchaseFlowActive(bool active) {
+    isPurchaseFlowActive.value = active;
   }
 }
 
@@ -123,7 +142,7 @@ class AppOpenAdManager {
 
   /// Load an AppOpenAd.
   void loadAd() {
-    if (!AdsManager.isInitialized.value || AdsManager.openAdUnitID.isEmpty) {
+    if (!AdsManager.canRequestAds || AdsManager.openAdUnitID.isEmpty) {
       return;
     }
 
@@ -148,7 +167,19 @@ class AppOpenAdManager {
     return _appOpenAd != null;
   }
 
+  void dispose() {
+    _appOpenAd?.dispose();
+    _appOpenAd = null;
+    _isShowingAd = false;
+  }
+
   void showAdIfAvailable() {
+    if (AdsManager.isAdsRemoved.value ||
+        AdsManager.isPurchaseFlowActive.value) {
+      dispose();
+      return;
+    }
+
     if (!isAdAvailable) {
       print('Tried to show ad before available.');
       loadAd();
@@ -198,11 +229,15 @@ class AppLifecycleReactor extends WidgetsBindingObserver {
   /// Called to check whether a game is currently in progress; when true,
   /// the app-open ad is skipped so it can't interrupt an active match.
   final bool Function() isGameInProgress;
+  final bool Function() isPurchaseFlowActive;
 
   bool hasEnterBackground = false;
 
-  AppLifecycleReactor(
-      {required this.appOpenAdManager, required this.isGameInProgress});
+  AppLifecycleReactor({
+    required this.appOpenAdManager,
+    required this.isGameInProgress,
+    required this.isPurchaseFlowActive,
+  });
 
   @override
   Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {
@@ -213,7 +248,7 @@ class AppLifecycleReactor extends WidgetsBindingObserver {
       hasEnterBackground = true;
     }
     if (state == AppLifecycleState.resumed && hasEnterBackground) {
-      if (!isGameInProgress()) {
+      if (!isGameInProgress() && !isPurchaseFlowActive()) {
         appOpenAdManager.showAdIfAvailable();
       }
       hasEnterBackground = false;

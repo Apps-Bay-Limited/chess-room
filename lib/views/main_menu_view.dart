@@ -1,5 +1,6 @@
 import 'package:app_tracking_transparency/app_tracking_transparency.dart';
 import 'package:chess_room/model/app_model.dart';
+import 'package:chess_room/features/daily_puzzle/daily_puzzle_page.dart';
 import 'package:chess_room/util/in_app_reviewer_helper.dart';
 import 'package:chess_room/views/more_apps_page.dart';
 import 'package:chess_room/views/settings_view.dart';
@@ -23,12 +24,12 @@ class MainMenuView extends StatefulWidget {
 class _MainMenuViewState extends State<MainMenuView> {
   AppLifecycleReactor? _appLifecycleReactor;
   AppOpenAdManager? _appOpenAdManager;
+  AppModel? _appModel;
 
   @override
   void dispose() {
-    if (_appLifecycleReactor != null) {
-      WidgetsBinding.instance.removeObserver(_appLifecycleReactor!);
-    }
+    _appModel?.purchaseService.removeListener(_handleRemoveAdsChanged);
+    _stopAppOpenAds();
     super.dispose();
   }
 
@@ -48,6 +49,20 @@ class _MainMenuViewState extends State<MainMenuView> {
         return;
       }
 
+      _appModel = Provider.of<AppModel>(context, listen: false);
+      _appModel?.purchaseService.addListener(_handleRemoveAdsChanged);
+      await _appModel!.purchaseInitialization;
+      if (!mounted) {
+        return;
+      }
+
+      AdsManager.setAdsRemoved(_appModel!.isAdsRemoved);
+      if (_appModel!.isAdsRemoved) {
+        _stopAppOpenAds();
+        InAppReviewHelper.checkAndAskForReview();
+        return;
+      }
+
       if (defaultTargetPlatform == TargetPlatform.iOS) {
         final status =
             await AppTrackingTransparency.trackingAuthorizationStatus;
@@ -56,21 +71,46 @@ class _MainMenuViewState extends State<MainMenuView> {
         }
       }
 
-      await AdsManager.initialize();
+      await AdsManager.initialize(adsRemoved: _appModel!.isAdsRemoved);
       if (!mounted) {
         return;
       }
 
       _appOpenAdManager = AppOpenAdManager()..loadAd();
-      final appModel = Provider.of<AppModel>(context, listen: false);
       _appLifecycleReactor = AppLifecycleReactor(
         appOpenAdManager: _appOpenAdManager!,
-        isGameInProgress: () => appModel.gameInProgress,
+        isGameInProgress: () => _appModel!.gameInProgress,
+        isPurchaseFlowActive: () =>
+            _appModel!.purchaseService.isStoreFlowActive,
       );
       WidgetsBinding.instance.addObserver(_appLifecycleReactor!);
-    });
 
-    InAppReviewHelper.checkAndAskForReview();
+      InAppReviewHelper.checkAndAskForReview();
+    });
+  }
+
+  void _handleRemoveAdsChanged() {
+    final appModel = _appModel;
+    if (appModel == null) {
+      return;
+    }
+
+    AdsManager.setAdsRemoved(appModel.isAdsRemoved);
+    AdsManager.setPurchaseFlowActive(
+        appModel.purchaseService.isStoreFlowActive);
+    if (appModel.isAdsRemoved) {
+      _stopAppOpenAds();
+    }
+  }
+
+  void _stopAppOpenAds() {
+    final reactor = _appLifecycleReactor;
+    if (reactor != null) {
+      WidgetsBinding.instance.removeObserver(reactor);
+      _appLifecycleReactor = null;
+    }
+    _appOpenAdManager?.dispose();
+    _appOpenAdManager = null;
   }
 
   @override
@@ -84,7 +124,8 @@ class _MainMenuViewState extends State<MainMenuView> {
           child: Column(
             children: [
               Expanded(
-                child: Center(
+                child: SingleChildScrollView(
+                  padding: const EdgeInsets.symmetric(vertical: 20),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
@@ -97,7 +138,21 @@ class _MainMenuViewState extends State<MainMenuView> {
                           width: width,
                         ),
                       ),
-                      const SizedBox(height: 40),
+                      const SizedBox(height: 30),
+                      MenuButton(
+                        label: S.of(context).Daily_Puzzle,
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            CupertinoPageRoute(
+                              builder: (context) => DailyPuzzlePage(
+                                pieceTheme: appModel.pieceTheme,
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                      const SizedBox(height: 20),
                       MenuButton(
                         label: S.of(context).Vs_AI_Player,
                         onTap: () {
@@ -110,7 +165,7 @@ class _MainMenuViewState extends State<MainMenuView> {
                           );
                         },
                       ),
-                      const SizedBox(height: 30),
+                      const SizedBox(height: 20),
                       MenuButton(
                         label: S.of(context).Two_Players,
                         onTap: () {
@@ -123,7 +178,7 @@ class _MainMenuViewState extends State<MainMenuView> {
                           );
                         },
                       ),
-                      const SizedBox(height: 30),
+                      const SizedBox(height: 20),
                       MenuButton(
                         label: S.of(context).Settings,
                         onTap: () {
@@ -136,7 +191,7 @@ class _MainMenuViewState extends State<MainMenuView> {
                           );
                         },
                       ),
-                      const SizedBox(height: 30),
+                      const SizedBox(height: 20),
                       MenuButton(
                         label: S.of(context).More_Apps,
                         onTap: () {

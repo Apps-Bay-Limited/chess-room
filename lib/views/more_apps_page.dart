@@ -17,12 +17,6 @@ class MoreAppsPage extends StatelessWidget {
       OpenStore.instance.open(appStoreId: "1625021625", androidAppBundleId: "");
     });
 
-    var Mint_Translate = MoreAppItem(
-        Image.asset("assets/app_icons/mint_translate.png"), S.of(context).Mint_Translate, () {
-      OpenStore.instance
-          .open(appStoreId: "1638456603", androidAppBundleId: "com.appsbay.mint_translate");
-    });
-
     var Yes_Habit =
         MoreAppItem(Image.asset("assets/app_icons/yes_habit.png"), S.of(context).Yes_Habit, () {
       OpenStore.instance.open(appStoreId: "1637643734", androidAppBundleId: "");
@@ -37,12 +31,6 @@ class MoreAppsPage extends StatelessWidget {
     var Falling_Block_Puzzle = MoreAppItem(Image.asset("assets/app_icons/falling_block_puzzle.png"),
         S.of(context).Falling_Block_Puzzle, () {
       OpenStore.instance.open(appStoreId: "1609440799", androidAppBundleId: "");
-    });
-
-    var Instant_Face = MoreAppItem(
-        Image.asset("assets/app_icons/instant_face.png"), S.of(context).Instant_Face, () {
-      OpenStore.instance
-          .open(appStoreId: "1638563222", androidAppBundleId: "com.appsbay.instant_face");
     });
 
     var World_Weather_Live = MoreAppItem(
@@ -123,7 +111,6 @@ class MoreAppsPage extends StatelessWidget {
         Falling_Block_Puzzle,
         Fling_Knife,
         World_Weather_Live,
-        Mint_Translate,
         Easy_Unit,
         Shows,
         Classical_Music_Box,
@@ -131,13 +118,11 @@ class MoreAppsPage extends StatelessWidget {
         Sudoku_Lover,
         Image_Guru,
         Onlynote,
-        Instant_Face,
         Novels_Hub,
         Simple_Calculator
       ];
     } else {
       _items = [
-        Mint_Translate,
         We_Play_Piano,
         minesweeper_go,
         Saving_Ambulance,
@@ -148,7 +133,6 @@ class MoreAppsPage extends StatelessWidget {
         Sudoku_Lover,
         Onlynote,
         Novels_Hub,
-        Instant_Face,
         Simple_Calculator
       ];
     }
