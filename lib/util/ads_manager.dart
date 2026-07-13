@@ -100,7 +100,9 @@ class AdsManager {
   }
 
   static void debugPrintID() {
-    print("bannerAdUnitId: ${AdsManager.bannerAdUnitId}");
+    if (kDebugMode) {
+      debugPrint('bannerAdUnitId: ${AdsManager.bannerAdUnitId}');
+    }
   }
 
   static bool get canRequestAds {
@@ -151,12 +153,16 @@ class AppOpenAdManager {
       request: const AdRequest(),
       adLoadCallback: AppOpenAdLoadCallback(
         onAdLoaded: (ad) {
-          print('$ad loaded');
+          if (kDebugMode) {
+            debugPrint('$ad loaded');
+          }
           _appOpenLoadTime = DateTime.now();
           _appOpenAd = ad;
         },
         onAdFailedToLoad: (error) {
-          print('AppOpenAd failed to load: $error');
+          if (kDebugMode) {
+            debugPrint('AppOpenAd failed to load: $error');
+          }
         },
       ),
     );
@@ -181,17 +187,23 @@ class AppOpenAdManager {
     }
 
     if (!isAdAvailable) {
-      print('Tried to show ad before available.');
+      if (kDebugMode) {
+        debugPrint('Tried to show ad before available.');
+      }
       loadAd();
       return;
     }
     if (_isShowingAd) {
-      print('Tried to show ad while already showing an ad.');
+      if (kDebugMode) {
+        debugPrint('Tried to show ad while already showing an ad.');
+      }
       return;
     }
     if (_appOpenLoadTime != null &&
         DateTime.now().subtract(maxCacheDuration).isAfter(_appOpenLoadTime!)) {
-      print('Maximum cache duration exceeded. Loading another ad.');
+      if (kDebugMode) {
+        debugPrint('Maximum cache duration exceeded. Loading another ad.');
+      }
       _appOpenAd?.dispose();
       _appOpenAd = null;
       loadAd();
@@ -202,16 +214,22 @@ class AppOpenAdManager {
     _appOpenAd?.fullScreenContentCallback = FullScreenContentCallback(
       onAdShowedFullScreenContent: (ad) {
         _isShowingAd = true;
-        print('$ad onAdShowedFullScreenContent');
+        if (kDebugMode) {
+          debugPrint('$ad onAdShowedFullScreenContent');
+        }
       },
       onAdFailedToShowFullScreenContent: (ad, error) {
-        print('$ad onAdFailedToShowFullScreenContent: $error');
+        if (kDebugMode) {
+          debugPrint('$ad onAdFailedToShowFullScreenContent: $error');
+        }
         _isShowingAd = false;
         ad.dispose();
         _appOpenAd = null;
       },
       onAdDismissedFullScreenContent: (ad) {
-        print('$ad onAdDismissedFullScreenContent');
+        if (kDebugMode) {
+          debugPrint('$ad onAdDismissedFullScreenContent');
+        }
         _isShowingAd = false;
         ad.dispose();
         _appOpenAd = null;
@@ -243,7 +261,9 @@ class AppLifecycleReactor extends WidgetsBindingObserver {
   Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {
     // Try to show an app open ad if the app is being resumed and
     // we're not already showing an app open ad.
-    print("didChangeAppLifecycleState: $state");
+    if (kDebugMode) {
+      debugPrint('didChangeAppLifecycleState: $state');
+    }
     if (state == AppLifecycleState.paused) {
       hasEnterBackground = true;
     }

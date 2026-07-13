@@ -1,7 +1,6 @@
 import 'package:chess_room/model/app_model.dart';
 import 'package:flame/game.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:chess_room/logic/chess_game.dart';
 
 class ChessBoardWidget extends StatelessWidget {
   final AppModel appModel;
@@ -27,10 +26,11 @@ class ChessBoardWidget extends StatelessWidget {
             )
           : const BoxDecoration(),
       child: ClipRRect(
-        borderRadius:
-            appModel.theme.name != 'Video Chess' ? BorderRadius.circular(10) : BorderRadius.zero,
+        borderRadius: appModel.theme.name != 'Video Chess'
+            ? BorderRadius.circular(10)
+            : BorderRadius.zero,
         child: Container(
-          child: appModel.game != null 
+          child: appModel.game != null
               ? GameWidget(key: ValueKey(appModel.game), game: appModel.game!)
               : const SizedBox(),
           width: MediaQuery.of(context).size.width - 68,

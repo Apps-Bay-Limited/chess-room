@@ -1,6 +1,7 @@
 import 'package:chess_room/views/main_menu_view.dart';
 import 'package:flame/flame.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
@@ -57,7 +58,9 @@ class App extends StatelessWidget {
         ],
         supportedLocales: S.delegate.supportedLocales,
         localeResolutionCallback: (locale, supportLocales) {
-          print(locale);
+          if (kDebugMode) {
+            debugPrint('$locale');
+          }
           // 中文 简繁体处理
           if (locale?.languageCode == 'zh') {
             if (locale?.scriptCode == 'Hant') {

@@ -1,5 +1,18 @@
 # Changelog
 
+## 1.2.0+9
+
+### Added
+- Daily Puzzle with streak tracking.
+- Biggest Mistake Review after games.
+- Shareable result cards.
+- Optional in-game tips powered by a stronger chess search than the selected opponent difficulty.
+- More time-limit choices in a compact one-row picker.
+
+### Changed
+- Daily Puzzle and review actions now match the game menu style.
+- Daily Puzzle navigation styling now matches the app accent color.
+
 ## 1.1.0+7
 
 ### Fixed

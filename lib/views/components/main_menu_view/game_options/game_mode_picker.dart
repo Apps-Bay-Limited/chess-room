@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 
-import '../../../../generated/l10n.dart';
 import 'picker.dart';
 
 class GameModePicker extends StatelessWidget {
