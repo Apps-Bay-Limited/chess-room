@@ -20,13 +20,15 @@ typedef String MessageIfAbsent(String messageStr, List<dynamic> args);
 class MessageLookup extends MessageLookupByLibrary {
   String get localeName => 'en';
 
-  static String m0(count) => "${count} moves";
+  static String m0(count) => "${count} min";
 
-  static String m1(value) => "Lost ${value} pawns of evaluation";
+  static String m1(count) => "${count} moves";
 
-  static String m2(count) => "Streak: ${count}";
+  static String m2(value) => "Lost ${value} pawns of evaluation";
 
-  static String m3(price) => "Remove Ads ${price}";
+  static String m3(count) => "Streak: ${count}";
+
+  static String m4(price) => "Remove Ads ${price}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -38,6 +40,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Black": MessageLookupByLibrary.simpleMessage("Black"),
     "Black_Wins": MessageLookupByLibrary.simpleMessage("Black wins!"),
     "Blacks_Turn": MessageLookupByLibrary.simpleMessage("Black\'s turn"),
+    "Cancel": MessageLookupByLibrary.simpleMessage("Cancel"),
     "Chess_Room_Result": MessageLookupByLibrary.simpleMessage(
       "Chess Room Result",
     ),
@@ -46,6 +49,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "Correct": MessageLookupByLibrary.simpleMessage("Correct! Checkmate."),
     "Daily_Puzzle": MessageLookupByLibrary.simpleMessage("Daily Puzzle"),
+    "Done": MessageLookupByLibrary.simpleMessage("Done"),
     "Easy": MessageLookupByLibrary.simpleMessage("Easy"),
     "Easy_Unit": MessageLookupByLibrary.simpleMessage("Easy Unit"),
     "Extreme": MessageLookupByLibrary.simpleMessage("Extreme"),
@@ -62,12 +66,14 @@ class MessageLookup extends MessageLookupByLibrary {
     "Metronome_Go": MessageLookupByLibrary.simpleMessage("Metronome Go"),
     "Minesweeper_Go": MessageLookupByLibrary.simpleMessage("Minesweeper Go"),
     "Mint_Translate": MessageLookupByLibrary.simpleMessage("Mint Translate"),
+    "Minute_Count": m0,
     "Money_Tracker": MessageLookupByLibrary.simpleMessage("Money Tracker"),
     "More_Apps": MessageLookupByLibrary.simpleMessage("More Apps"),
-    "Move_Count": m0,
+    "Move_Count": m1,
+    "No_Limit": MessageLookupByLibrary.simpleMessage("No limit"),
     "Novels_Hub": MessageLookupByLibrary.simpleMessage("Novels Hub"),
     "Onlynote": MessageLookupByLibrary.simpleMessage("Onlynote"),
-    "Pawns_Lost": m1,
+    "Pawns_Lost": m2,
     "Pick_Your_Side": MessageLookupByLibrary.simpleMessage("Pick Your Side"),
     "Played_Move": MessageLookupByLibrary.simpleMessage("Played"),
     "Purchase_Cancelled": MessageLookupByLibrary.simpleMessage(
@@ -94,7 +100,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Puzzle_Solved": MessageLookupByLibrary.simpleMessage(
       "Today\'s puzzle is complete.",
     ),
-    "Puzzle_Streak": m2,
+    "Puzzle_Streak": m3,
     "Remove_Ads": MessageLookupByLibrary.simpleMessage("Remove Ads"),
     "Remove_Ads_Description": MessageLookupByLibrary.simpleMessage(
       "Remove ads permanently from this app.",
@@ -108,7 +114,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Remove_Ads_Unavailable": MessageLookupByLibrary.simpleMessage(
       "Remove Ads is currently unavailable.",
     ),
-    "Remove_Ads_With_Price": m3,
+    "Remove_Ads_With_Price": m4,
     "Restore_Not_Found": MessageLookupByLibrary.simpleMessage(
       "No previous Remove Ads purchase was found.",
     ),
@@ -134,6 +140,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "Start": MessageLookupByLibrary.simpleMessage("Start"),
     "Sudoku_Lover": MessageLookupByLibrary.simpleMessage("Sudoku Lover"),
     "Time_Limit": MessageLookupByLibrary.simpleMessage("Time Limit"),
+    "Tip": MessageLookupByLibrary.simpleMessage("Tip"),
+    "Tip_Button": MessageLookupByLibrary.simpleMessage("Show Tip Button"),
     "Try_Again": MessageLookupByLibrary.simpleMessage("Not quite — try again"),
     "Two_Players": MessageLookupByLibrary.simpleMessage("Two Players"),
     "Undo": MessageLookupByLibrary.simpleMessage("Undo/Redo"),

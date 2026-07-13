@@ -129,6 +129,31 @@ class S {
     return Intl.message('Time Limit', name: 'Time_Limit', desc: '', args: []);
   }
 
+  /// `No limit`
+  String get No_Limit {
+    return Intl.message('No limit', name: 'No_Limit', desc: '', args: []);
+  }
+
+  /// `{count} min`
+  String Minute_Count(Object count) {
+    return Intl.message(
+      '$count min',
+      name: 'Minute_Count',
+      desc: '',
+      args: [count],
+    );
+  }
+
+  /// `Cancel`
+  String get Cancel {
+    return Intl.message('Cancel', name: 'Cancel', desc: '', args: []);
+  }
+
+  /// `Done`
+  String get Done {
+    return Intl.message('Done', name: 'Done', desc: '', args: []);
+  }
+
   /// `Start`
   String get Start {
     return Intl.message('Start', name: 'Start', desc: '', args: []);
@@ -157,6 +182,21 @@ class S {
   /// `Hints`
   String get Hints {
     return Intl.message('Hints', name: 'Hints', desc: '', args: []);
+  }
+
+  /// `Tip`
+  String get Tip {
+    return Intl.message('Tip', name: 'Tip', desc: '', args: []);
+  }
+
+  /// `Show Tip Button`
+  String get Tip_Button {
+    return Intl.message(
+      'Show Tip Button',
+      name: 'Tip_Button',
+      desc: '',
+      args: [],
+    );
   }
 
   /// `Undo/Redo`

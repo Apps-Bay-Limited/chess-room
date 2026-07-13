@@ -19,6 +19,11 @@ class Toggles extends StatelessWidget {
           setFunc: appModel.setShowHints,
         ),
         Toggle(
+          label: S.of(context).Tip_Button,
+          toggle: appModel.showTipButton,
+          setFunc: appModel.setShowTipButton,
+        ),
+        Toggle(
           label: S.of(context).Undo,
           toggle: appModel.allowUndoRedo,
           setFunc: appModel.setAllowUndoRedo,

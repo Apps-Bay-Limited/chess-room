@@ -20,13 +20,15 @@ typedef String MessageIfAbsent(String messageStr, List<dynamic> args);
 class MessageLookup extends MessageLookupByLibrary {
   String get localeName => 'zh';
 
-  static String m0(count) => "${count} 回合";
+  static String m0(count) => "${count} 分钟";
 
-  static String m1(value) => "损失 ${value} 个兵的局面分";
+  static String m1(count) => "${count} 回合";
 
-  static String m2(count) => "连续：${count} 天";
+  static String m2(value) => "损失 ${value} 个兵的局面分";
 
-  static String m3(price) => "移除广告 ${price}";
+  static String m3(count) => "连续：${count} 天";
+
+  static String m4(price) => "移除广告 ${price}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -38,12 +40,14 @@ class MessageLookup extends MessageLookupByLibrary {
     "Black": MessageLookupByLibrary.simpleMessage("黑棋"),
     "Black_Wins": MessageLookupByLibrary.simpleMessage("黑棋获胜！"),
     "Blacks_Turn": MessageLookupByLibrary.simpleMessage("轮到黑棋"),
+    "Cancel": MessageLookupByLibrary.simpleMessage("取消"),
     "Chess_Room_Result": MessageLookupByLibrary.simpleMessage(
       "Chess Room 对局结果",
     ),
     "Classical_Music_Box": MessageLookupByLibrary.simpleMessage("古典音乐盒"),
     "Correct": MessageLookupByLibrary.simpleMessage("正确！将杀。"),
     "Daily_Puzzle": MessageLookupByLibrary.simpleMessage("每日棋题"),
+    "Done": MessageLookupByLibrary.simpleMessage("完成"),
     "Easy": MessageLookupByLibrary.simpleMessage("简单"),
     "Easy_Unit": MessageLookupByLibrary.simpleMessage("易换算"),
     "Extreme": MessageLookupByLibrary.simpleMessage("非常困难"),
@@ -58,12 +62,14 @@ class MessageLookup extends MessageLookupByLibrary {
     "Metronome_Go": MessageLookupByLibrary.simpleMessage("打拍节拍器"),
     "Minesweeper_Go": MessageLookupByLibrary.simpleMessage("经典扫雷"),
     "Mint_Translate": MessageLookupByLibrary.simpleMessage("薄荷翻译"),
+    "Minute_Count": m0,
     "Money_Tracker": MessageLookupByLibrary.simpleMessage("极简记账"),
     "More_Apps": MessageLookupByLibrary.simpleMessage("更多App"),
-    "Move_Count": m0,
+    "Move_Count": m1,
+    "No_Limit": MessageLookupByLibrary.simpleMessage("不限时"),
     "Novels_Hub": MessageLookupByLibrary.simpleMessage("英文小说站"),
     "Onlynote": MessageLookupByLibrary.simpleMessage("极简备忘录"),
-    "Pawns_Lost": m1,
+    "Pawns_Lost": m2,
     "Pick_Your_Side": MessageLookupByLibrary.simpleMessage("选择棋子"),
     "Played_Move": MessageLookupByLibrary.simpleMessage("实战走法"),
     "Purchase_Cancelled": MessageLookupByLibrary.simpleMessage("购买已取消。"),
@@ -76,7 +82,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "轮到白方或黑方。找出一步将杀。",
     ),
     "Puzzle_Solved": MessageLookupByLibrary.simpleMessage("今天的棋题已完成。"),
-    "Puzzle_Streak": m2,
+    "Puzzle_Streak": m3,
     "Remove_Ads": MessageLookupByLibrary.simpleMessage("移除广告"),
     "Remove_Ads_Description": MessageLookupByLibrary.simpleMessage(
       "永久移除此 App 中的广告。",
@@ -86,7 +92,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Remove_Ads_Unavailable": MessageLookupByLibrary.simpleMessage(
       "移除广告暂时不可用。",
     ),
-    "Remove_Ads_With_Price": m3,
+    "Remove_Ads_With_Price": m4,
     "Restore_Not_Found": MessageLookupByLibrary.simpleMessage(
       "未找到之前的移除广告购买记录。",
     ),
@@ -102,6 +108,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "Start": MessageLookupByLibrary.simpleMessage("开始"),
     "Sudoku_Lover": MessageLookupByLibrary.simpleMessage("数独迷"),
     "Time_Limit": MessageLookupByLibrary.simpleMessage("时间限制"),
+    "Tip": MessageLookupByLibrary.simpleMessage("最佳走法提示"),
+    "Tip_Button": MessageLookupByLibrary.simpleMessage("显示提示按钮"),
     "Try_Again": MessageLookupByLibrary.simpleMessage("还差一点，再试一次"),
     "Two_Players": MessageLookupByLibrary.simpleMessage("二人对战"),
     "Undo": MessageLookupByLibrary.simpleMessage("撤销/悔棋"),

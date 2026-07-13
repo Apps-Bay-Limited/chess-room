@@ -18,21 +18,38 @@ Move calculateAIMove(Map args) {
   if (board.possibleOpenings.isNotEmpty) {
     return _openingMove(board, args['aiPlayer']);
   } else {
-    var result = _alphaBeta(
-            board, args['aiPlayer'], null, 0, args['aiDifficulty'], INITIAL_ALPHA, INITIAL_BETA);
-    return result.move ?? Move(0, 0); // Fallback move if null
+    return calculateBestMove(
+          board,
+          args['aiPlayer'],
+          args['aiDifficulty'],
+        ) ??
+        Move(0, 0); // Fallback move if null
   }
 }
 
-MoveAndValue _alphaBeta(
-    ChessBoard board, Player player, Move? move, int depth, int maxDepth, int alpha, int beta) {
+Move? calculateBestMove(ChessBoard board, Player player, int searchDepth) {
+  return _alphaBeta(
+    board,
+    player,
+    null,
+    0,
+    searchDepth,
+    INITIAL_ALPHA,
+    INITIAL_BETA,
+  ).move;
+}
+
+MoveAndValue _alphaBeta(ChessBoard board, Player player, Move? move, int depth,
+    int maxDepth, int alpha, int beta) {
   if (depth == maxDepth) {
     return MoveAndValue(move, boardValue(board));
   }
-  var bestMove = MoveAndValue(null, player == Player.player1 ? INITIAL_ALPHA : INITIAL_BETA);
+  var bestMove = MoveAndValue(
+      null, player == Player.player1 ? INITIAL_ALPHA : INITIAL_BETA);
   for (var move in allMoves(player, board, maxDepth)) {
     push(move, board, promotionType: move.promotionType);
-    var result = _alphaBeta(board, oppositePlayer(player), move, depth + 1, maxDepth, alpha, beta);
+    var result = _alphaBeta(
+        board, oppositePlayer(player), move, depth + 1, maxDepth, alpha, beta);
     result.move = move;
     pop(board);
     if (player == Player.player1) {
@@ -55,16 +72,19 @@ MoveAndValue _alphaBeta(
   }
   if (bestMove.value.abs() == INITIAL_BETA && !kingInCheck(player, board)) {
     if (piecesForPlayer(player, board).length == 1) {
-      bestMove.value = player == Player.player1 ? STALEMATE_BETA : STALEMATE_ALPHA;
+      bestMove.value =
+          player == Player.player1 ? STALEMATE_BETA : STALEMATE_ALPHA;
     } else {
-      bestMove.value = player == Player.player1 ? STALEMATE_ALPHA : STALEMATE_BETA;
+      bestMove.value =
+          player == Player.player1 ? STALEMATE_ALPHA : STALEMATE_BETA;
     }
   }
   return bestMove;
 }
 
 Move _openingMove(ChessBoard board, Player aiPlayer) {
-  List<Move> possibleMoves =
-      board.possibleOpenings.map((opening) => opening[board.moveCount]).toList();
+  List<Move> possibleMoves = board.possibleOpenings
+      .map((opening) => opening[board.moveCount])
+      .toList();
   return possibleMoves[Random.secure().nextInt(possibleMoves.length)];
 }

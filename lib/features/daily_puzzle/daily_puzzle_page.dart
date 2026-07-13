@@ -3,6 +3,7 @@ import 'package:chess_room/features/daily_puzzle/daily_puzzle_progress.dart';
 import 'package:chess_room/generated/l10n.dart';
 import 'package:chess_room/logic/chess_board.dart';
 import 'package:chess_room/logic/move_calculation/move_classes/move.dart';
+import 'package:chess_room/util/app_design.dart';
 import 'package:chess_room/views/components/shared/position_board.dart';
 import 'package:chess_room/views/components/main_menu_view/game_options/side_picker.dart';
 import 'package:flutter/cupertino.dart';
@@ -116,6 +117,11 @@ class _DailyPuzzlePageState extends State<DailyPuzzlePage> {
       backgroundColor: const Color(0xff493B24),
       navigationBar: CupertinoNavigationBar(
         backgroundColor: const Color(0xff24201C),
+        leading: CupertinoNavigationBarBackButton(
+          key: const ValueKey('daily-puzzle-back-button'),
+          color: AppColors.accent,
+          onPressed: () => Navigator.maybePop(context),
+        ),
         middle: Text(strings.Daily_Puzzle),
       ),
       child: SafeArea(

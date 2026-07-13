@@ -6,12 +6,32 @@ import 'package:chess_room/features/share_result/result_share_section.dart';
 import 'package:chess_room/generated/l10n.dart';
 import 'package:chess_room/logic/chess_board.dart';
 import 'package:chess_room/model/game_review.dart';
+import 'package:chess_room/util/app_design.dart';
 import 'package:chess_room/views/components/main_menu_view/game_options/side_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
+  testWidgets('daily puzzle back button uses the game accent color',
+      (tester) async {
+    await tester.pumpWidget(
+      _localizedApp(
+        DailyPuzzlePage(
+          puzzle: dailyPuzzles.first,
+          today: DateTime(2026, 7, 13),
+          progressStore: _MemoryPuzzleProgressStore(),
+        ),
+      ),
+    );
+    await tester.pump();
+
+    final backButton = tester.widget<CupertinoNavigationBarBackButton>(
+      find.byKey(const ValueKey('daily-puzzle-back-button')),
+    );
+    expect(backButton.color, AppColors.accent);
+  });
+
   testWidgets('daily puzzle accepts the solution and updates the streak',
       (tester) async {
     final store = _MemoryPuzzleProgressStore();

@@ -140,6 +140,7 @@ class _MainMenuViewState extends State<MainMenuView> {
                       ),
                       const SizedBox(height: 30),
                       MenuButton(
+                        key: const ValueKey('daily-puzzle-button'),
                         label: S.of(context).Daily_Puzzle,
                         onTap: () {
                           Navigator.push(

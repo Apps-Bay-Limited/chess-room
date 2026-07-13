@@ -1,6 +1,7 @@
 import 'package:chess_room/features/daily_puzzle/daily_puzzle.dart';
 import 'package:chess_room/features/daily_puzzle/daily_puzzle_progress.dart';
 import 'package:chess_room/logic/chess_board.dart';
+import 'package:chess_room/logic/chess_tip.dart';
 import 'package:chess_room/logic/move_calculation/move_calculation.dart';
 import 'package:chess_room/model/game_review.dart';
 import 'package:chess_room/views/components/main_menu_view/game_options/side_picker.dart';
@@ -81,5 +82,46 @@ void main() {
       chessPositionToFen(position.board, Player.player1),
       'q6k/8/8/8/8/8/8/Q6K w - - 0 1',
     );
+  });
+
+  test('tip searches deeper than every selectable AI difficulty', () {
+    for (final difficulty in <int>[1, 3, 5, 6]) {
+      expect(tipSearchDepth(difficulty), greaterThan(difficulty));
+    }
+  });
+
+  test('tip uses the alpha-beta engine to select its move', () {
+    final position = chessPositionFromFen(
+      'q6k/8/8/8/8/8/8/Q6K w - - 0 1',
+    );
+
+    final tip = calculateTipMove({
+      'board': position.board,
+      'player': Player.player1,
+      'searchDepth': 3,
+    });
+
+    expect(tip, isNotNull);
+    expect(readableMove(tip!), 'a1 → a8');
+  });
+
+  test('deeper tip finds a checkmate missed by the old one-ply hint', () {
+    final puzzle = dailyPuzzles.firstWhere(
+      (candidate) => candidate.id == 'back-rank-e8',
+    );
+    final position = chessPositionFromFen(puzzle.fen);
+    final oldTip = allMoves(
+      position.activePlayer,
+      position.board,
+      1,
+    ).first;
+    final deeperTip = calculateTipMove({
+      'board': position.board,
+      'player': position.activePlayer,
+      'searchDepth': 3,
+    });
+
+    expect(oldTip, isNot(moveFromUci(puzzle.solution)));
+    expect(deeperTip, moveFromUci(puzzle.solution));
   });
 }

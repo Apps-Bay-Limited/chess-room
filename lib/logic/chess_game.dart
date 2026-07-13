@@ -1,11 +1,13 @@
 import 'package:async/async.dart';
 import 'package:chess_room/logic/chess_piece_sprite.dart';
+import 'package:chess_room/logic/chess_tip.dart';
 import 'package:chess_room/logic/move_calculation/ai_move_calculation.dart';
 import 'package:chess_room/logic/move_calculation/move_calculation.dart';
 import 'package:chess_room/logic/move_calculation/move_classes/move_meta.dart';
 import 'package:chess_room/logic/shared_functions.dart';
 import 'package:chess_room/model/app_model.dart';
 import 'package:chess_room/model/game_review.dart';
+import 'package:chess_room/util/app_design.dart';
 import 'package:chess_room/views/components/main_menu_view/game_options/side_picker.dart';
 import 'package:flame/events.dart';
 import 'package:flame/game.dart';
@@ -27,10 +29,12 @@ class ChessGame extends Game with TapDetector {
   Map<ChessPiece, ChessPieceSprite> spriteMap = Map();
 
   late CancelableOperation aiOperation;
+  CancelableOperation<Move?>? tipOperation;
   List<int> validMoves = [];
   ChessPiece? selectedPiece;
   int? checkHintTile;
   Move? latestMove;
+  Move? tipMove;
 
   ChessGame(this.appModel, this.context) {
     width = MediaQuery.of(context).size.width - 68;
@@ -48,6 +52,8 @@ class ChessGame extends Game with TapDetector {
   @override
   void onTapDown(TapDownInfo info) {
     if (appModel.gameOver || !appModel.isAIsTurn) {
+      _cancelTip();
+      tipMove = null;
       var tile = _vector2ToTile(info.eventPosition.widget);
       if (tile < 0 || tile > 63) return;
       var touchedPiece = board.tiles[tile];
@@ -81,6 +87,7 @@ class ChessGame extends Game with TapDetector {
       _drawLatestMove(canvas);
     }
     _drawSelectedPieceHint(canvas);
+    _drawTipMove(canvas);
     _drawPieces(canvas);
     if (appModel.showHints) {
       _drawMoveHints(canvas);
@@ -159,6 +166,7 @@ class ChessGame extends Game with TapDetector {
 
   void cancelAIMove() {
     aiOperation.cancel();
+    _cancelTip();
   }
 
   void undoMove() {
@@ -267,6 +275,7 @@ class ChessGame extends Game with TapDetector {
       board.redoStack = [];
     }
     validMoves = [];
+    tipMove = null;
     latestMove = meta.move;
     checkHintTile = null;
     var oppositeTurn = oppositePlayer(appModel.turn);
@@ -313,6 +322,43 @@ class ChessGame extends Game with TapDetector {
     }
   }
 
+  Future<void> showTip() async {
+    if (appModel.gameOver || appModel.isAIsTurn || appModel.tipInProgress) {
+      return;
+    }
+    final moveCount = board.moveCount;
+    final turn = appModel.turn;
+    final operation = CancelableOperation<Move?>.fromFuture(
+      compute(calculateTipMove, {
+        'board': board,
+        'player': turn,
+        'searchDepth': tipSearchDepth(appModel.aiDifficulty),
+      }),
+    );
+    tipOperation = operation;
+    appModel.setTipInProgress(true);
+
+    final move = await operation.valueOrCancellation();
+    if (tipOperation != operation) return;
+    tipOperation = null;
+    appModel.setTipInProgress(false);
+    if (move == null ||
+        appModel.gameOver ||
+        appModel.turn != turn ||
+        board.moveCount != moveCount) {
+      return;
+    }
+    tipMove = move;
+    selectedPiece = null;
+    validMoves = [];
+  }
+
+  void _cancelTip() {
+    tipOperation?.cancel();
+    tipOperation = null;
+    appModel.setTipInProgress(false);
+  }
+
   void _drawBoard(Canvas canvas) {
     for (int tileNo = 0; tileNo < 64; tileNo++) {
       canvas.drawRect(
@@ -357,6 +403,33 @@ class ChessGame extends Game with TapDetector {
         Paint()..color = appModel.theme.moveHint,
       );
     }
+  }
+
+  void _drawTipMove(Canvas canvas) {
+    final move = tipMove;
+    if (move == null) return;
+    final fromPaint = Paint()..color = AppColors.accent.withValues(alpha: 0.48);
+    final toPaint = Paint()
+      ..color = AppColors.accent.withValues(alpha: 0.9)
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 4;
+    canvas.drawRect(
+      Rect.fromLTWH(
+        getXFromTile(move.from, tileSize, appModel),
+        getYFromTile(move.from, tileSize, appModel),
+        tileSize,
+        tileSize,
+      ),
+      fromPaint,
+    );
+    canvas.drawCircle(
+      Offset(
+        getXFromTile(move.to, tileSize, appModel) + tileSize / 2,
+        getYFromTile(move.to, tileSize, appModel) + tileSize / 2,
+      ),
+      tileSize * 0.32,
+      toPaint,
+    );
   }
 
   void _drawLatestMove(Canvas canvas) {

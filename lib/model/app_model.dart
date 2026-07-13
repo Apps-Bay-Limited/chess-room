@@ -39,6 +39,8 @@ class AppModel extends ChangeNotifier {
   bool allowUndoRedo = true;
   bool soundEnabled = true;
   bool showHints = true;
+  bool showTipButton = true;
+  bool tipInProgress = false;
   bool flip = true;
 
   ChessGame? game;
@@ -140,6 +142,7 @@ class AppModel extends ChangeNotifier {
   void newGame(BuildContext context, {bool notify = true}) {
     game?.cancelAIMove();
     timer?.cancel();
+    tipInProgress = false;
     gameOver = false;
     stalemate = false;
     turn = Player.player1;
@@ -308,6 +311,19 @@ class AppModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  void setShowTipButton(bool show) async {
+    final prefs = await SharedPreferences.getInstance();
+    showTipButton = show;
+    await prefs.setBool('showTipButton', show);
+    notifyListeners();
+  }
+
+  void setTipInProgress(bool inProgress) {
+    if (tipInProgress == inProgress) return;
+    tipInProgress = inProgress;
+    notifyListeners();
+  }
+
   void setFlipBoard(bool flip) async {
     final prefs = await SharedPreferences.getInstance();
     this.flip = flip;
@@ -329,6 +345,7 @@ class AppModel extends ChangeNotifier {
     showMoveHistory = prefs.getBool('showMoveHistory') ?? true;
     soundEnabled = prefs.getBool('soundEnabled') ?? true;
     showHints = prefs.getBool('showHints') ?? true;
+    showTipButton = prefs.getBool('showTipButton') ?? true;
     flip = prefs.getBool('flip') ?? true;
     allowUndoRedo = prefs.getBool('allowUndoRedo') ?? true;
     notifyListeners();
