@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:chess_room/logic/chess_board.dart';
+import 'package:chess_room/logic/chess_piece.dart';
 import 'package:chess_room/logic/move_calculation/move_calculation.dart';
 import 'package:chess_room/logic/move_calculation/move_classes/move.dart';
 import 'package:chess_room/views/components/main_menu_view/game_options/side_picker.dart';
@@ -23,6 +24,28 @@ class MoveReviewRecord {
   });
 
   double get pawnsLost => evaluationLoss / 100;
+
+  Map<String, Object?> toJson() => {
+        'moveIndex': moveIndex,
+        'player': player.name,
+        'playedMove': _moveToJson(playedMove),
+        'bestMove': _moveToJson(bestMove),
+        'evaluationLoss': evaluationLoss,
+        'positionBeforeFen': positionBeforeFen,
+      };
+
+  factory MoveReviewRecord.fromJson(Map<String, Object?> json) {
+    return MoveReviewRecord(
+      moveIndex: json['moveIndex']! as int,
+      player: Player.values.byName(json['player']! as String),
+      playedMove:
+          _moveFromJson(Map<String, Object?>.from(json['playedMove']! as Map)),
+      bestMove:
+          _moveFromJson(Map<String, Object?>.from(json['bestMove']! as Map)),
+      evaluationLoss: json['evaluationLoss']! as int,
+      positionBeforeFen: json['positionBeforeFen']! as String,
+    );
+  }
 
   static MoveReviewRecord analyze({
     required ChessBoard board,
@@ -59,6 +82,20 @@ class MoveReviewRecord {
   static Move _copyMove(Move move) =>
       Move(move.from, move.to, promotionType: move.promotionType);
 }
+
+Map<String, Object?> _moveToJson(Move move) => {
+      'from': move.from,
+      'to': move.to,
+      'promotionType': move.promotionType.name,
+    };
+
+Move _moveFromJson(Map<String, Object?> json) => Move(
+      json['from']! as int,
+      json['to']! as int,
+      promotionType: ChessPieceType.values.byName(
+        json['promotionType'] as String? ?? ChessPieceType.promotion.name,
+      ),
+    );
 
 String tileName(int tile) {
   final file = String.fromCharCode(97 + tile % 8);

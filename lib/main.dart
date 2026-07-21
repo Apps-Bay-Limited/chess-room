@@ -69,7 +69,12 @@ class App extends StatelessWidget {
               return const Locale('zh', ''); //简体
             }
           }
-          return Locale('en', '');
+          for (final supportedLocale in supportLocales) {
+            if (supportedLocale.languageCode == locale?.languageCode) {
+              return supportedLocale;
+            }
+          }
+          return const Locale('en', '');
         },
         theme: CupertinoThemeData(
           brightness: Brightness.dark,

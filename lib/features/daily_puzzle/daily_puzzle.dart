@@ -1,4 +1,4 @@
-import 'package:chess_room/logic/move_calculation/move_classes/move.dart';
+export 'package:chess_room/logic/chess_notation.dart' show moveFromUci;
 
 class DailyPuzzle {
   final String id;
@@ -55,20 +55,4 @@ DailyPuzzle puzzleForDate(DateTime date) {
   final epoch = DateTime.utc(2024);
   final index = day.difference(epoch).inDays % dailyPuzzles.length;
   return dailyPuzzles[index];
-}
-
-Move moveFromUci(String uci) {
-  if (uci.length < 4) {
-    throw FormatException('Invalid puzzle move: $uci');
-  }
-  return Move(
-    tileFromName(uci.substring(0, 2)),
-    tileFromName(uci.substring(2, 4)),
-  );
-}
-
-int tileFromName(String square) {
-  final col = square.codeUnitAt(0) - 97;
-  final row = 8 - int.parse(square[1]);
-  return row * 8 + col;
 }

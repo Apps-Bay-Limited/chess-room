@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:chess_room/util/remove_ads_purchase_service.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:in_app_purchase_platform_interface/in_app_purchase_platform_interface.dart';
+import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
@@ -79,6 +79,48 @@ void main() {
     service.dispose();
   });
 
+  test('restore grants and persists a prior Remove Ads purchase', () async {
+    store.emitRestorePurchase = true;
+    final service = RemoveAdsPurchaseService(store: store);
+
+    await service.init();
+    await service.restorePurchases();
+    await Future<void>.delayed(Duration.zero);
+
+    final prefs = await SharedPreferences.getInstance();
+    expect(service.isAdsRemoved, isTrue);
+    expect(service.state, RemoveAdsStoreState.restored);
+    expect(prefs.getBool(removeAdsEntitlementKey), isTrue);
+
+    service.dispose();
+  });
+
+  test('store failures leave the app usable and report unavailable', () async {
+    store.throwWhenLoadingProducts = true;
+    final service = RemoveAdsPurchaseService(store: store);
+
+    await service.init();
+
+    expect(service.isAdsRemoved, isFalse);
+    expect(service.state, RemoveAdsStoreState.unavailable);
+    expect(service.localizedPrice, isNull);
+
+    service.dispose();
+  });
+
+  test('offline launches retain the locally cached entitlement', () async {
+    SharedPreferences.setMockInitialValues({removeAdsEntitlementKey: true});
+    store.available = false;
+    final service = RemoveAdsPurchaseService(store: store);
+
+    await service.init();
+
+    expect(service.isAdsRemoved, isTrue);
+    expect(service.state, RemoveAdsStoreState.unavailable);
+
+    service.dispose();
+  });
+
   test('Android does not query products or expose purchase support', () async {
     debugDefaultTargetPlatformOverride = TargetPlatform.android;
     final service = RemoveAdsPurchaseService(store: store);
@@ -100,6 +142,8 @@ class FakeRemoveAdsStore implements RemoveAdsStore {
   final Set<String> queriedProductIds = <String>{};
   bool available = true;
   bool emitPurchaseOnBuy = true;
+  bool emitRestorePurchase = false;
+  bool throwWhenLoadingProducts = false;
   int completedPurchaseCount = 0;
 
   @override
@@ -113,6 +157,9 @@ class FakeRemoveAdsStore implements RemoveAdsStore {
   Future<ProductDetailsResponse> queryProductDetails(
       Set<String> productIds) async {
     queriedProductIds.addAll(productIds);
+    if (throwWhenLoadingProducts) {
+      throw StateError('Store unavailable');
+    }
     return ProductDetailsResponse(
       productDetails: <ProductDetails>[
         ProductDetails(
@@ -138,7 +185,11 @@ class FakeRemoveAdsStore implements RemoveAdsStore {
   }
 
   @override
-  Future<void> restorePurchases() async {}
+  Future<void> restorePurchases() async {
+    if (emitRestorePurchase) {
+      addPurchase(PurchaseStatus.restored, pendingCompletePurchase: true);
+    }
+  }
 
   @override
   Future<void> completePurchase(PurchaseDetails purchase) async {

@@ -1,9 +1,19 @@
 import 'package:chess_room/features/daily_puzzle/daily_puzzle.dart';
 import 'package:chess_room/features/daily_puzzle/daily_puzzle_page.dart';
 import 'package:chess_room/features/daily_puzzle/daily_puzzle_progress.dart';
+import 'package:chess_room/features/game_history/game_history_page.dart';
+import 'package:chess_room/features/game_history/saved_game.dart';
+import 'package:chess_room/features/game_review/game_review_page.dart';
+import 'package:chess_room/features/opening_trainer/opening_trainer_page.dart';
+import 'package:chess_room/features/opening_trainer/opening_course.dart';
+import 'package:chess_room/features/puzzle_library/puzzle_library_page.dart';
+import 'package:chess_room/features/puzzle_library/themed_puzzle.dart';
+import 'package:chess_room/features/training/training_hub_page.dart';
 import 'package:chess_room/features/share_result/result_share_section.dart';
 import 'package:chess_room/generated/l10n.dart';
 import 'package:chess_room/logic/chess_board.dart';
+import 'package:chess_room/model/game_review.dart';
+import 'package:chess_room/views/components/main_menu_view/game_options/side_picker.dart';
 import 'package:chess_room/views/components/chess_view/game_tip_button.dart';
 import 'package:chess_room/views/components/main_menu_view/game_options/time_limit_picker.dart';
 import 'package:chess_room/views/components/shared/menu_button.dart';
@@ -141,6 +151,83 @@ Widget styledGameActionsPreview() {
   );
 }
 
+@Preview(
+  name: 'Training hub',
+  group: 'Learning features',
+  size: Size(390, 760),
+)
+Widget trainingHubPreview() {
+  return _localizedPreview(
+    const TrainingHubPage(
+      puzzleProgressStore: PreviewPuzzleLibraryStore(),
+      openingProgressStore: PreviewOpeningProgressStore(),
+    ),
+  );
+}
+
+@Preview(
+  name: 'Puzzle library',
+  group: 'Learning features',
+  size: Size(390, 760),
+)
+Widget puzzleLibraryPreview() {
+  return _localizedPreview(
+    const PuzzleLibraryPage(progressStore: PreviewPuzzleLibraryStore()),
+  );
+}
+
+@Preview(
+  name: 'Opening trainer',
+  group: 'Learning features',
+  size: Size(390, 760),
+)
+Widget openingTrainerPreview() {
+  return _localizedPreview(
+    const OpeningTrainerPage(progressStore: PreviewOpeningProgressStore()),
+  );
+}
+
+@Preview(
+  name: 'Game history',
+  group: 'Learning features',
+  size: Size(390, 760),
+)
+Widget gameHistoryPreview() {
+  return _localizedPreview(
+    GameHistoryPage(store: PreviewGameHistoryStore()),
+  );
+}
+
+@Preview(
+  name: 'Full game review',
+  group: 'Learning features',
+  size: Size(390, 760),
+)
+Widget fullGameReviewPreview() {
+  return _localizedPreview(
+    GameReviewPage(
+      records: [
+        MoveReviewRecord(
+          moveIndex: 0,
+          player: Player.player1,
+          playedMove: moveFromUci('a1a2'),
+          bestMove: moveFromUci('a1a8'),
+          evaluationLoss: 900,
+          positionBeforeFen: 'q6k/8/8/8/8/8/8/Q6K w - - 0 1',
+        ),
+        MoveReviewRecord(
+          moveIndex: 1,
+          player: Player.player2,
+          playedMove: moveFromUci('a8a7'),
+          bestMove: moveFromUci('a8a2'),
+          evaluationLoss: 120,
+          positionBeforeFen: 'q6k/8/8/8/8/8/Q7/7K b - - 0 1',
+        ),
+      ],
+    ),
+  );
+}
+
 Widget _localizedPreview(Widget child) {
   return CupertinoApp(
     localizationsDelegates: const [
@@ -171,4 +258,40 @@ class PreviewPuzzleProgressStore implements PuzzleProgressStore {
   Future<PuzzleProgress> markSolved(DateTime today) async {
     return const PuzzleProgress(streak: 5, solvedToday: true);
   }
+}
+
+class PreviewPuzzleLibraryStore implements PuzzleLibraryProgressStore {
+  const PreviewPuzzleLibraryStore();
+
+  @override
+  Future<Set<String>> loadSolvedIds() async => {'mate-queen-g7'};
+
+  @override
+  Future<void> markSolved(String puzzleId) async {}
+}
+
+class PreviewGameHistoryStore implements GameHistoryStore {
+  @override
+  Future<List<SavedGame>> loadGames() async => [
+        SavedGame.fromPgn(
+          '[Result "1-0"]\n\n1. e4 e5 2. Nf3 Nc6 3. Bc4 Bc5 1-0',
+          importedAt: DateTime(2026, 7, 22, 9, 30),
+        ),
+      ];
+
+  @override
+  Future<void> deleteGame(String id) async {}
+
+  @override
+  Future<void> saveGame(SavedGame game) async {}
+}
+
+class PreviewOpeningProgressStore implements OpeningProgressStore {
+  const PreviewOpeningProgressStore();
+
+  @override
+  Future<Set<String>> loadCompletedIds() async => {'italian'};
+
+  @override
+  Future<void> markCompleted(String openingId) async {}
 }

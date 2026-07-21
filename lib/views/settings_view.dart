@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 
 import '../generated/l10n.dart';
+import 'more_apps_page.dart';
 import 'components/settings_view/remove_ads_section.dart';
 import 'components/settings_view/toggles.dart';
 import 'components/shared/banner_ad_slot.dart';
@@ -44,6 +45,19 @@ class SettingsView extends StatelessWidget {
                   const SizedBox(height: 30),
                   RemoveAdsSection(appModel: appModel),
                   const SizedBox(height: 50),
+                  MenuButton(
+                    key: const ValueKey('settings-more-apps-button'),
+                    label: S.of(context).More_Apps,
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        CupertinoPageRoute(
+                          builder: (context) => const MoreAppsPage(),
+                        ),
+                      );
+                    },
+                  ),
+                  const SizedBox(height: 20),
                   MenuButton(
                     label: S.of(context).Back,
                     onTap: () {

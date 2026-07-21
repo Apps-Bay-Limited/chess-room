@@ -73,7 +73,7 @@ class _ChessViewState extends State<ChessView> {
                         ],
                         if (appModel.gameOver) ...[
                           const SizedBox(height: 24),
-                          if (appModel.biggestMistake != null) ...[
+                          if (appModel.moveReviewRecords.isNotEmpty) ...[
                             MenuButton(
                               key: const ValueKey('review-game-button'),
                               label: S.of(context).Review_Game,
@@ -82,7 +82,7 @@ class _ChessViewState extends State<ChessView> {
                                   context,
                                   CupertinoPageRoute(
                                     builder: (context) => GameReviewPage(
-                                      record: appModel.biggestMistake!,
+                                      records: appModel.moveReviewRecords,
                                       pieceTheme: appModel.pieceTheme,
                                     ),
                                   ),

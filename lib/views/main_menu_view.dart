@@ -1,8 +1,9 @@
 import 'package:app_tracking_transparency/app_tracking_transparency.dart';
-import 'package:chess_room/model/app_model.dart';
 import 'package:chess_room/features/daily_puzzle/daily_puzzle_page.dart';
+import 'package:chess_room/features/game_history/game_history_page.dart';
+import 'package:chess_room/features/training/training_hub_page.dart';
+import 'package:chess_room/model/app_model.dart';
 import 'package:chess_room/util/in_app_reviewer_helper.dart';
-import 'package:chess_room/views/more_apps_page.dart';
 import 'package:chess_room/views/settings_view.dart';
 import 'package:chess_room/views/single_player_page.dart';
 import 'package:flutter/cupertino.dart';
@@ -155,6 +156,22 @@ class _MainMenuViewState extends State<MainMenuView> {
                       ),
                       const SizedBox(height: 20),
                       MenuButton(
+                        key: const ValueKey('training-button'),
+                        label: S.of(context).Training,
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            CupertinoPageRoute(
+                              builder: (context) => TrainingHubPage(
+                                pieceTheme: appModel.pieceTheme,
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                      const SizedBox(height: 20),
+                      MenuButton(
+                        key: const ValueKey('vs-ai-button'),
                         label: S.of(context).Vs_AI_Player,
                         onTap: () {
                           appModel.setPlayerCount(1);
@@ -168,6 +185,7 @@ class _MainMenuViewState extends State<MainMenuView> {
                       ),
                       const SizedBox(height: 20),
                       MenuButton(
+                        key: const ValueKey('two-players-button'),
                         label: S.of(context).Two_Players,
                         onTap: () {
                           appModel.setPlayerCount(2);
@@ -181,6 +199,23 @@ class _MainMenuViewState extends State<MainMenuView> {
                       ),
                       const SizedBox(height: 20),
                       MenuButton(
+                        key: const ValueKey('game-history-button'),
+                        label: S.of(context).Game_History,
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            CupertinoPageRoute(
+                              builder: (context) => GameHistoryPage(
+                                store: appModel.gameHistoryStore,
+                                pieceTheme: appModel.pieceTheme,
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                      const SizedBox(height: 20),
+                      MenuButton(
+                        key: const ValueKey('settings-button'),
                         label: S.of(context).Settings,
                         onTap: () {
                           Navigator.push(
@@ -188,18 +223,6 @@ class _MainMenuViewState extends State<MainMenuView> {
                             CupertinoPageRoute(
                               builder: (context) =>
                                   SettingsView(appModel: appModel),
-                            ),
-                          );
-                        },
-                      ),
-                      const SizedBox(height: 20),
-                      MenuButton(
-                        label: S.of(context).More_Apps,
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            CupertinoPageRoute(
-                              builder: (context) => const MoreAppsPage(),
                             ),
                           );
                         },

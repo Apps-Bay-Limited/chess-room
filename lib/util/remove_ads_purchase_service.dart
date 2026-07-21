@@ -1,8 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/foundation.dart';
-import 'package:in_app_purchase_platform_interface/in_app_purchase_platform_interface.dart';
-import 'package:in_app_purchase_storekit/in_app_purchase_storekit.dart';
+import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 const String removeAdsProductId = 'com.appsbay.chessRoom1.remove_ads';
@@ -36,16 +35,28 @@ abstract class RemoveAdsStore {
   Future<void> completePurchase(PurchaseDetails purchase);
 }
 
-class InAppPurchaseRemoveAdsStore implements RemoveAdsStore {
-  final InAppPurchasePlatform _iap;
+/// Boundary for a future server-side receipt verifier. The App Store purchase
+/// stream remains the authority for this client-only implementation.
+abstract class RemoveAdsPurchaseVerifier {
+  Future<bool> grantsRemoveAdsEntitlement(PurchaseDetails purchase);
+}
 
-  InAppPurchaseRemoveAdsStore({InAppPurchasePlatform? iap})
-      : _iap = iap ?? _storeKitPlatform();
+class StorePurchaseVerifier implements RemoveAdsPurchaseVerifier {
+  const StorePurchaseVerifier();
 
-  static InAppPurchasePlatform _storeKitPlatform() {
-    InAppPurchaseStoreKitPlatform.registerPlatform();
-    return InAppPurchasePlatform.instance;
+  @override
+  Future<bool> grantsRemoveAdsEntitlement(PurchaseDetails purchase) async {
+    return purchase.productID == removeAdsProductId &&
+        (purchase.status == PurchaseStatus.purchased ||
+            purchase.status == PurchaseStatus.restored);
   }
+}
+
+class InAppPurchaseRemoveAdsStore implements RemoveAdsStore {
+  final InAppPurchase _iap;
+
+  InAppPurchaseRemoveAdsStore({InAppPurchase? iap})
+      : _iap = iap ?? InAppPurchase.instance;
 
   @override
   Stream<List<PurchaseDetails>> get purchaseStream => _iap.purchaseStream;
@@ -75,11 +86,17 @@ class InAppPurchaseRemoveAdsStore implements RemoveAdsStore {
 }
 
 class RemoveAdsPurchaseService extends ChangeNotifier {
-  RemoveAdsPurchaseService({RemoveAdsStore? store}) : _injectedStore = store;
+  RemoveAdsPurchaseService({
+    RemoveAdsStore? store,
+    RemoveAdsPurchaseVerifier? verifier,
+  })  : _injectedStore = store,
+        _verifier = verifier ?? const StorePurchaseVerifier();
 
   final RemoveAdsStore? _injectedStore;
+  final RemoveAdsPurchaseVerifier _verifier;
   RemoveAdsStore? _store;
   StreamSubscription<List<PurchaseDetails>>? _purchaseSubscription;
+  Future<void>? _initialization;
   ProductDetails? _removeAdsProduct;
   bool _isAdsRemoved = false;
   bool _isAvailable = false;
@@ -110,16 +127,20 @@ class RemoveAdsPurchaseService extends ChangeNotifier {
     return _store ??= _injectedStore ?? InAppPurchaseRemoveAdsStore();
   }
 
-  Future<void> init() async {
-    await _loadPersistedEntitlement();
-    if (!isSupported) {
-      return;
+  Future<void> init() => _initialization ??= _initialize();
+
+  Future<void> _initialize() async {
+    if (isSupported) {
+      // Subscribe before any awaited work so StoreKit updates are not missed
+      // while the app is launching.
+      _purchaseSubscription ??= _activeStore.purchaseStream.listen(
+        _handlePurchaseUpdates,
+        onError: (_) => _setState(RemoveAdsStoreState.failed),
+      );
     }
 
-    _purchaseSubscription ??= _activeStore.purchaseStream.listen(
-      _handlePurchaseUpdates,
-      onError: (_) => _setState(RemoveAdsStoreState.failed),
-    );
+    await _loadPersistedEntitlement();
+    if (!isSupported) return;
 
     await loadProducts();
     await restorePurchases(userInitiated: false);
@@ -131,45 +152,63 @@ class RemoveAdsPurchaseService extends ChangeNotifier {
     }
 
     _setState(RemoveAdsStoreState.loading);
-    _isAvailable = await _activeStore.isAvailable();
-    if (!_isAvailable) {
-      _removeAdsProduct = null;
-      _setState(RemoveAdsStoreState.unavailable);
-      return;
-    }
+    try {
+      _isAvailable = await _activeStore.isAvailable();
+      if (!_isAvailable) {
+        _setUnavailable();
+        return;
+      }
 
-    final response =
-        await _activeStore.queryProductDetails({removeAdsProductId});
-    if (response.productDetails.isEmpty) {
-      _removeAdsProduct = null;
-      _setState(RemoveAdsStoreState.unavailable);
-      return;
-    }
+      final response =
+          await _activeStore.queryProductDetails({removeAdsProductId});
+      ProductDetails? product;
+      for (final candidate in response.productDetails) {
+        if (candidate.id == removeAdsProductId) {
+          product = candidate;
+          break;
+        }
+      }
+      if (response.error != null || product == null) {
+        _setUnavailable();
+        return;
+      }
 
-    _removeAdsProduct = response.productDetails.first;
-    _setState(RemoveAdsStoreState.available);
+      _removeAdsProduct = product;
+      _setState(RemoveAdsStoreState.available);
+    } catch (_) {
+      _setUnavailable();
+    }
+  }
+
+  void _setUnavailable() {
+    _isAvailable = false;
+    _removeAdsProduct = null;
+    _setState(RemoveAdsStoreState.unavailable);
   }
 
   Future<void> buyRemoveAds() async {
     if (!isSupported) {
-      _setState(RemoveAdsStoreState.unavailable);
+      _setUnavailable();
       return;
+    }
+
+    if (_removeAdsProduct == null) {
+      await loadProducts();
     }
 
     final product = _removeAdsProduct;
     if (product == null) {
-      await loadProducts();
-    }
-
-    final loadedProduct = _removeAdsProduct;
-    if (loadedProduct == null) {
-      _setState(RemoveAdsStoreState.unavailable);
+      _setUnavailable();
       return;
     }
 
     _setState(RemoveAdsStoreState.purchasing);
-    final started = await _activeStore.buyNonConsumable(loadedProduct);
-    if (!started) {
+    try {
+      final started = await _activeStore.buyNonConsumable(product);
+      if (!started) {
+        _setState(RemoveAdsStoreState.failed);
+      }
+    } catch (_) {
       _setState(RemoveAdsStoreState.failed);
     }
   }
@@ -177,35 +216,37 @@ class RemoveAdsPurchaseService extends ChangeNotifier {
   Future<void> restorePurchases({bool userInitiated = true}) async {
     if (!isSupported) {
       if (userInitiated) {
-        _setState(RemoveAdsStoreState.unavailable);
+        _setUnavailable();
       }
       return;
     }
 
-    _isRestoring = userInitiated;
+    _isRestoring = true;
     _restoreFoundPurchase = false;
     if (userInitiated) {
       _setState(RemoveAdsStoreState.loading);
     }
 
-    await _activeStore.restorePurchases();
-
-    if (userInitiated) {
-      await Future<void>.delayed(const Duration(seconds: 1));
+    try {
+      await _activeStore.restorePurchases();
+      // Let purchase-stream events generated by the completed restore request
+      // update the entitlement before reporting an empty restore result.
+      await Future<void>.delayed(Duration.zero);
+      if (userInitiated && !_restoreFoundPurchase) {
+        _setState(RemoveAdsStoreState.restoreEmpty);
+      }
+    } catch (_) {
+      if (userInitiated) {
+        _setState(RemoveAdsStoreState.failed);
+      }
+    } finally {
+      _isRestoring = false;
     }
-
-    if (userInitiated && !_restoreFoundPurchase) {
-      _setState(RemoveAdsStoreState.restoreEmpty);
-    }
-    _isRestoring = false;
   }
 
   Future<void> _handlePurchaseUpdates(List<PurchaseDetails> purchases) async {
     for (final purchase in purchases) {
       if (purchase.productID != removeAdsProductId) {
-        if (purchase.pendingCompletePurchase) {
-          await _activeStore.completePurchase(purchase);
-        }
         continue;
       }
 
@@ -214,15 +255,20 @@ class RemoveAdsPurchaseService extends ChangeNotifier {
           _setState(RemoveAdsStoreState.pending);
           break;
         case PurchaseStatus.purchased:
-          await _grantEntitlement(RemoveAdsStoreState.purchased);
-          break;
         case PurchaseStatus.restored:
-          _restoreFoundPurchase = true;
-          await _grantEntitlement(
-            _isRestoring
-                ? RemoveAdsStoreState.restored
-                : RemoveAdsStoreState.purchased,
-          );
+          if (purchase.status == PurchaseStatus.restored) {
+            _restoreFoundPurchase = true;
+          }
+          final isValid = await _verifier.grantsRemoveAdsEntitlement(purchase);
+          if (isValid) {
+            await _grantEntitlement(
+              purchase.status == PurchaseStatus.restored && _isRestoring
+                  ? RemoveAdsStoreState.restored
+                  : RemoveAdsStoreState.purchased,
+            );
+          } else {
+            _setState(RemoveAdsStoreState.failed);
+          }
           break;
         case PurchaseStatus.error:
           _setState(RemoveAdsStoreState.failed);
@@ -233,7 +279,11 @@ class RemoveAdsPurchaseService extends ChangeNotifier {
       }
 
       if (purchase.pendingCompletePurchase) {
-        await _activeStore.completePurchase(purchase);
+        try {
+          await _activeStore.completePurchase(purchase);
+        } catch (_) {
+          // StoreKit redelivers unfinished transactions on a later launch.
+        }
       }
     }
   }

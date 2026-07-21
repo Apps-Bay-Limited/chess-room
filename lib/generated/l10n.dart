@@ -688,6 +688,480 @@ class S {
       args: [],
     );
   }
+
+  /// `Game History`
+  String get Game_History {
+    return Intl.message(
+      'Game History',
+      name: 'Game_History',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Completed and imported games will appear here.`
+  String get No_Saved_Games {
+    return Intl.message(
+      'Completed and imported games will appear here.',
+      name: 'No_Saved_Games',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Import PGN`
+  String get Import_PGN {
+    return Intl.message('Import PGN', name: 'Import_PGN', desc: '', args: []);
+  }
+
+  /// `Paste a PGN game`
+  String get Paste_PGN {
+    return Intl.message(
+      'Paste a PGN game',
+      name: 'Paste_PGN',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Import`
+  String get Import {
+    return Intl.message('Import', name: 'Import', desc: '', args: []);
+  }
+
+  /// `PGN imported successfully.`
+  String get PGN_Imported {
+    return Intl.message(
+      'PGN imported successfully.',
+      name: 'PGN_Imported',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `This PGN could not be imported.`
+  String get PGN_Invalid {
+    return Intl.message(
+      'This PGN could not be imported.',
+      name: 'PGN_Invalid',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `PGN copied to the clipboard.`
+  String get PGN_Copied {
+    return Intl.message(
+      'PGN copied to the clipboard.',
+      name: 'PGN_Copied',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Copy PGN`
+  String get Export_PGN {
+    return Intl.message('Copy PGN', name: 'Export_PGN', desc: '', args: []);
+  }
+
+  /// `Replay`
+  String get Replay {
+    return Intl.message('Replay', name: 'Replay', desc: '', args: []);
+  }
+
+  /// `Game Replay`
+  String get Game_Replay {
+    return Intl.message('Game Replay', name: 'Game_Replay', desc: '', args: []);
+  }
+
+  /// `Move {current} of {total}`
+  String Move_Of(Object current, Object total) {
+    return Intl.message(
+      'Move $current of $total',
+      name: 'Move_Of',
+      desc: '',
+      args: [current, total],
+    );
+  }
+
+  /// `Draw`
+  String get Draw {
+    return Intl.message('Draw', name: 'Draw', desc: '', args: []);
+  }
+
+  /// `Unfinished game`
+  String get Unfinished {
+    return Intl.message(
+      'Unfinished game',
+      name: 'Unfinished',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Full Game Review`
+  String get Full_Game_Review {
+    return Intl.message(
+      'Full Game Review',
+      name: 'Full_Game_Review',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Move {current} of {total}: {classification}`
+  String Review_Move_Title(
+    Object current,
+    Object total,
+    Object classification,
+  ) {
+    return Intl.message(
+      'Move $current of $total: $classification',
+      name: 'Review_Move_Title',
+      desc: '',
+      args: [current, total, classification],
+    );
+  }
+
+  /// `Previous`
+  String get Previous {
+    return Intl.message('Previous', name: 'Previous', desc: '', args: []);
+  }
+
+  /// `Next`
+  String get Next {
+    return Intl.message('Next', name: 'Next', desc: '', args: []);
+  }
+
+  /// `Blunder`
+  String get Blunder {
+    return Intl.message('Blunder', name: 'Blunder', desc: '', args: []);
+  }
+
+  /// `Mistake`
+  String get Mistake {
+    return Intl.message('Mistake', name: 'Mistake', desc: '', args: []);
+  }
+
+  /// `Inaccuracy`
+  String get Inaccuracy {
+    return Intl.message('Inaccuracy', name: 'Inaccuracy', desc: '', args: []);
+  }
+
+  /// `Good move`
+  String get Good_Move {
+    return Intl.message('Good move', name: 'Good_Move', desc: '', args: []);
+  }
+
+  /// `This move loses significant material or allows a decisive attack.`
+  String get Blunder_Explanation {
+    return Intl.message(
+      'This move loses significant material or allows a decisive attack.',
+      name: 'Blunder_Explanation',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `A stronger move would have preserved a much better position.`
+  String get Mistake_Explanation {
+    return Intl.message(
+      'A stronger move would have preserved a much better position.',
+      name: 'Mistake_Explanation',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `This move gives away a small part of the position's advantage.`
+  String get Inaccuracy_Explanation {
+    return Intl.message(
+      'This move gives away a small part of the position\'s advantage.',
+      name: 'Inaccuracy_Explanation',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `This move stays close to the engine's best choice.`
+  String get Good_Move_Explanation {
+    return Intl.message(
+      'This move stays close to the engine\'s best choice.',
+      name: 'Good_Move_Explanation',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Puzzle Library`
+  String get Puzzle_Library {
+    return Intl.message(
+      'Puzzle Library',
+      name: 'Puzzle_Library',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Practice focused themes at your own pace. Progress is saved on this device.`
+  String get Puzzle_Library_Description {
+    return Intl.message(
+      'Practice focused themes at your own pace. Progress is saved on this device.',
+      name: 'Puzzle_Library_Description',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Checkmate`
+  String get Theme_Checkmate {
+    return Intl.message(
+      'Checkmate',
+      name: 'Theme_Checkmate',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Knight Forks`
+  String get Theme_Forks {
+    return Intl.message(
+      'Knight Forks',
+      name: 'Theme_Forks',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Pawn Promotion`
+  String get Theme_Promotion {
+    return Intl.message(
+      'Pawn Promotion',
+      name: 'Theme_Promotion',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `{solved} of {total} solved`
+  String Puzzles_Solved(Object solved, Object total) {
+    return Intl.message(
+      '$solved of $total solved',
+      name: 'Puzzles_Solved',
+      desc: '',
+      args: [solved, total],
+    );
+  }
+
+  /// `Puzzle {current} of {total}`
+  String Puzzle_Number(Object current, Object total) {
+    return Intl.message(
+      'Puzzle $current of $total',
+      name: 'Puzzle_Number',
+      desc: '',
+      args: [current, total],
+    );
+  }
+
+  /// `Find the best move.`
+  String get Find_Best_Move {
+    return Intl.message(
+      'Find the best move.',
+      name: 'Find_Best_Move',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Puzzle complete!`
+  String get Puzzle_Complete {
+    return Intl.message(
+      'Puzzle complete!',
+      name: 'Puzzle_Complete',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Next Puzzle`
+  String get Next_Puzzle {
+    return Intl.message('Next Puzzle', name: 'Next_Puzzle', desc: '', args: []);
+  }
+
+  /// `Opening Trainer`
+  String get Opening_Trainer {
+    return Intl.message(
+      'Opening Trainer',
+      name: 'Opening_Trainer',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Learn the ideas and first moves of five dependable openings.`
+  String get Opening_Trainer_Description {
+    return Intl.message(
+      'Learn the ideas and first moves of five dependable openings.',
+      name: 'Opening_Trainer_Description',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Line complete! You played every move correctly.`
+  String get Opening_Complete {
+    return Intl.message(
+      'Line complete! You played every move correctly.',
+      name: 'Opening_Complete',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Move {current} of {total}: play for {side}`
+  String Opening_Move_Prompt(Object current, Object total, Object side) {
+    return Intl.message(
+      'Move $current of $total: play for $side',
+      name: 'Opening_Move_Prompt',
+      desc: '',
+      args: [current, total, side],
+    );
+  }
+
+  /// `That move is outside this training line. Try again.`
+  String get Opening_Try_Again {
+    return Intl.message(
+      'That move is outside this training line. Try again.',
+      name: 'Opening_Try_Again',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Practice Again`
+  String get Practice_Again {
+    return Intl.message(
+      'Practice Again',
+      name: 'Practice_Again',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Italian Game`
+  String get Opening_Italian {
+    return Intl.message(
+      'Italian Game',
+      name: 'Opening_Italian',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Develop quickly and pressure the vulnerable f7 square.`
+  String get Opening_Italian_Description {
+    return Intl.message(
+      'Develop quickly and pressure the vulnerable f7 square.',
+      name: 'Opening_Italian_Description',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Ruy Lopez`
+  String get Opening_Ruy_Lopez {
+    return Intl.message(
+      'Ruy Lopez',
+      name: 'Opening_Ruy_Lopez',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Challenge Black's central defender with an early bishop pin.`
+  String get Opening_Ruy_Lopez_Description {
+    return Intl.message(
+      'Challenge Black\'s central defender with an early bishop pin.',
+      name: 'Opening_Ruy_Lopez_Description',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Queen's Gambit`
+  String get Opening_Queens_Gambit {
+    return Intl.message(
+      'Queen\'s Gambit',
+      name: 'Opening_Queens_Gambit',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Offer a wing pawn to build lasting central control.`
+  String get Opening_Queens_Gambit_Description {
+    return Intl.message(
+      'Offer a wing pawn to build lasting central control.',
+      name: 'Opening_Queens_Gambit_Description',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Sicilian Defense`
+  String get Opening_Sicilian {
+    return Intl.message(
+      'Sicilian Defense',
+      name: 'Opening_Sicilian',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Create an unbalanced fight against White's king-pawn opening.`
+  String get Opening_Sicilian_Description {
+    return Intl.message(
+      'Create an unbalanced fight against White\'s king-pawn opening.',
+      name: 'Opening_Sicilian_Description',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `London System`
+  String get Opening_London {
+    return Intl.message(
+      'London System',
+      name: 'Opening_London',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Build a reliable setup with the dark-squared bishop outside the pawn chain.`
+  String get Opening_London_Description {
+    return Intl.message(
+      'Build a reliable setup with the dark-squared bishop outside the pawn chain.',
+      name: 'Opening_London_Description',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Training`
+  String get Training {
+    return Intl.message('Training', name: 'Training', desc: '', args: []);
+  }
+
+  /// `Choose a focused puzzle session or learn a dependable opening line.`
+  String get Training_Description {
+    return Intl.message(
+      'Choose a focused puzzle session or learn a dependable opening line.',
+      name: 'Training_Description',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {
@@ -696,6 +1170,9 @@ class AppLocalizationDelegate extends LocalizationsDelegate<S> {
   List<Locale> get supportedLocales {
     return const <Locale>[
       Locale.fromSubtags(languageCode: 'en'),
+      Locale.fromSubtags(languageCode: 'es'),
+      Locale.fromSubtags(languageCode: 'fr'),
+      Locale.fromSubtags(languageCode: 'ja'),
       Locale.fromSubtags(languageCode: 'zh'),
       Locale.fromSubtags(languageCode: 'zh', countryCode: 'HK'),
     ];

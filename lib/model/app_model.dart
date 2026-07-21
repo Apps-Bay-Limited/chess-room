@@ -2,9 +2,11 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:chess_room/logic/chess_game.dart';
+import 'package:chess_room/logic/chess_notation.dart';
 import 'package:chess_room/logic/move_calculation/move_classes/move_meta.dart';
 import 'package:chess_room/logic/shared_functions.dart';
 import 'package:chess_room/model/game_review.dart';
+import 'package:chess_room/features/game_history/saved_game.dart';
 import 'package:chess_room/util/remove_ads_purchase_service.dart';
 import 'package:chess_room/views/components/main_menu_view/game_options/side_picker.dart';
 import 'package:flutter/material.dart';
@@ -26,6 +28,7 @@ const PIECE_THEMES = [
 
 class AppModel extends ChangeNotifier {
   final RemoveAdsPurchaseService purchaseService;
+  final GameHistoryStore gameHistoryStore;
   late final Future<void> purchaseInitialization;
 
   int playerCount = 1;
@@ -42,6 +45,7 @@ class AppModel extends ChangeNotifier {
   bool showTipButton = true;
   bool tipInProgress = false;
   bool flip = true;
+  bool _currentGameSaved = false;
 
   ChessGame? game;
   Timer? timer;
@@ -125,8 +129,12 @@ class AppModel extends ChangeNotifier {
     return biggest?.evaluationLoss == 0 ? null : biggest;
   }
 
-  AppModel({RemoveAdsPurchaseService? purchaseService})
-      : purchaseService = purchaseService ?? RemoveAdsPurchaseService() {
+  AppModel({
+    RemoveAdsPurchaseService? purchaseService,
+    GameHistoryStore? gameHistoryStore,
+  })  : purchaseService = purchaseService ?? RemoveAdsPurchaseService(),
+        gameHistoryStore =
+            gameHistoryStore ?? SharedPreferencesGameHistoryStore() {
     this.purchaseService.addListener(notifyListeners);
     loadSharedPrefs();
     purchaseInitialization = this.purchaseService.init();
@@ -143,6 +151,7 @@ class AppModel extends ChangeNotifier {
     game?.cancelAIMove();
     timer?.cancel();
     tipInProgress = false;
+    _currentGameSaved = false;
     gameOver = false;
     stalemate = false;
     turn = Player.player1;
@@ -216,6 +225,47 @@ class AppModel extends ChangeNotifier {
     }
     gameOver = true;
     notifyListeners();
+    Future<void>.microtask(_saveCurrentGame);
+  }
+
+  Future<void> _saveCurrentGame() async {
+    if (_currentGameSaved || moveMetaList.isEmpty) return;
+    _currentGameSaved = true;
+    final result = stalemate
+        ? SavedGameResult.draw
+        : turn == Player.player2
+            ? SavedGameResult.whiteWin
+            : SavedGameResult.blackWin;
+    final playedAt = DateTime.now();
+    final white = playerCount == 1 && playerSide == Player.player2
+        ? 'Chess Room AI'
+        : 'Player';
+    final black = playerCount == 1 && playerSide == Player.player1
+        ? 'Chess Room AI'
+        : 'Player';
+    final pgn = buildPgn(
+      moves: moveMetaList,
+      playedAt: playedAt,
+      result: savedGameResultToPgn(result),
+      white: white,
+      black: black,
+    );
+    final gameRecord = SavedGame(
+      id: 'game-${playedAt.microsecondsSinceEpoch}',
+      playedAt: playedAt,
+      result: result,
+      pgn: pgn,
+      initialFen: standardStartingFen,
+      moves: moveMetaList
+          .map((meta) => moveToUci(meta.move))
+          .toList(growable: false),
+      reviews: List<MoveReviewRecord>.unmodifiable(moveReviewRecords),
+    );
+    try {
+      await gameHistoryStore.saveGame(gameRecord);
+    } catch (_) {
+      _currentGameSaved = false;
+    }
   }
 
   void undoEndGame() {

@@ -6,14 +6,16 @@ import 'package:chess_room/views/components/main_menu_view/game_options/side_pic
 import 'package:flutter/cupertino.dart';
 
 class GameReviewPage extends StatefulWidget {
-  final MoveReviewRecord record;
+  final MoveReviewRecord? record;
+  final List<MoveReviewRecord> records;
   final String pieceTheme;
 
   const GameReviewPage({
     super.key,
-    required this.record,
+    this.record,
+    this.records = const [],
     this.pieceTheme = 'Classic',
-  });
+  }) : assert(record != null || records.length > 0);
 
   @override
   State<GameReviewPage> createState() => _GameReviewPageState();
@@ -21,13 +23,26 @@ class GameReviewPage extends StatefulWidget {
 
 class _GameReviewPageState extends State<GameReviewPage> {
   bool _showBestMove = true;
+  int _recordIndex = 0;
+
+  List<MoveReviewRecord> get _records =>
+      widget.records.isNotEmpty ? widget.records : [widget.record!];
+
+  MoveReviewRecord get _record => _records[_recordIndex];
+
+  void _showRecord(int index) {
+    setState(() {
+      _recordIndex = index.clamp(0, _records.length - 1);
+      _showBestMove = true;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     final strings = S.of(context);
-    final position = chessPositionFromFen(widget.record.positionBeforeFen);
-    final displayedMove =
-        _showBestMove ? widget.record.bestMove : widget.record.playedMove;
+    final record = _record;
+    final position = chessPositionFromFen(record.positionBeforeFen);
+    final displayedMove = _showBestMove ? record.bestMove : record.playedMove;
     final accent =
         _showBestMove ? CupertinoColors.activeGreen : CupertinoColors.systemRed;
 
@@ -35,7 +50,7 @@ class _GameReviewPageState extends State<GameReviewPage> {
       backgroundColor: const Color(0xff493B24),
       navigationBar: CupertinoNavigationBar(
         backgroundColor: const Color(0xff24201C),
-        middle: Text(strings.Biggest_Mistake),
+        middle: Text(strings.Full_Game_Review),
       ),
       child: SafeArea(
         child: SingleChildScrollView(
@@ -44,13 +59,26 @@ class _GameReviewPageState extends State<GameReviewPage> {
             children: [
               const SizedBox(height: 16),
               Text(
-                strings.Pawns_Lost(
-                  widget.record.pawnsLost.toStringAsFixed(1),
+                strings.Review_Move_Title(
+                  _recordIndex + 1,
+                  _records.length,
+                  _classification(strings, record.evaluationLoss),
                 ),
                 style: const TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
                 ),
+              ),
+              const SizedBox(height: 8),
+              Text(
+                _explanation(strings, record.evaluationLoss),
+                textAlign: TextAlign.center,
+                style: const TextStyle(fontSize: 16),
+              ),
+              const SizedBox(height: 8),
+              Text(
+                strings.Pawns_Lost(record.pawnsLost.toStringAsFixed(1)),
+                style: const TextStyle(color: CupertinoColors.systemGrey2),
               ),
               const SizedBox(height: 18),
               CupertinoSlidingSegmentedControl<bool>(
@@ -78,7 +106,7 @@ class _GameReviewPageState extends State<GameReviewPage> {
                 ),
                 board: position.board,
                 pieceTheme: widget.pieceTheme,
-                flipped: widget.record.player == Player.player2,
+                flipped: record.player == Player.player2,
                 highlightedTiles: {displayedMove.from, displayedMove.to},
                 highlightColor: accent.withValues(alpha: 0.65),
               ),
@@ -94,24 +122,122 @@ class _GameReviewPageState extends State<GameReviewPage> {
                   children: [
                     _MoveComparisonRow(
                       label: strings.Played_Move,
-                      move: readableMove(widget.record.playedMove),
+                      move: readableMove(record.playedMove),
                       color: CupertinoColors.systemRed,
                     ),
                     const SizedBox(height: 12),
                     _MoveComparisonRow(
                       label: strings.Best_Move,
-                      move: readableMove(widget.record.bestMove),
+                      move: readableMove(record.bestMove),
                       color: CupertinoColors.activeGreen,
                     ),
                   ],
                 ),
               ),
+              if (_records.length > 1) ...[
+                const SizedBox(height: 18),
+                _ReviewTimeline(
+                  records: _records,
+                  selectedIndex: _recordIndex,
+                  onSelected: _showRecord,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    CupertinoButton(
+                      key: const ValueKey('review-previous-move'),
+                      onPressed: _recordIndex > 0
+                          ? () => _showRecord(_recordIndex - 1)
+                          : null,
+                      child: Text(strings.Previous),
+                    ),
+                    CupertinoButton(
+                      key: const ValueKey('review-next-move'),
+                      onPressed: _recordIndex < _records.length - 1
+                          ? () => _showRecord(_recordIndex + 1)
+                          : null,
+                      child: Text(strings.Next),
+                    ),
+                  ],
+                ),
+              ],
             ],
           ),
         ),
       ),
     );
   }
+}
+
+class _ReviewTimeline extends StatelessWidget {
+  final List<MoveReviewRecord> records;
+  final int selectedIndex;
+  final ValueChanged<int> onSelected;
+
+  const _ReviewTimeline({
+    required this.records,
+    required this.selectedIndex,
+    required this.onSelected,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 54,
+      child: ListView.separated(
+        scrollDirection: Axis.horizontal,
+        itemCount: records.length,
+        separatorBuilder: (_, __) => const SizedBox(width: 6),
+        itemBuilder: (context, index) {
+          final loss = records[index].evaluationLoss;
+          return CupertinoButton(
+            key: ValueKey('review-timeline-$index'),
+            padding: EdgeInsets.zero,
+            onPressed: () => onSelected(index),
+            child: Container(
+              width: 36,
+              height: 36,
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                color: index == selectedIndex
+                    ? const Color(0xffCC996F)
+                    : _lossColor(loss).withValues(alpha: 0.65),
+                borderRadius: BorderRadius.circular(18),
+              ),
+              child: Text(
+                '${index + 1}',
+                style: const TextStyle(
+                  color: Color(0xff24201C),
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+}
+
+String _classification(S strings, int loss) {
+  if (loss >= 300) return strings.Blunder;
+  if (loss >= 100) return strings.Mistake;
+  if (loss >= 50) return strings.Inaccuracy;
+  return strings.Good_Move;
+}
+
+String _explanation(S strings, int loss) {
+  if (loss >= 300) return strings.Blunder_Explanation;
+  if (loss >= 100) return strings.Mistake_Explanation;
+  if (loss >= 50) return strings.Inaccuracy_Explanation;
+  return strings.Good_Move_Explanation;
+}
+
+Color _lossColor(int loss) {
+  if (loss >= 300) return CupertinoColors.systemRed;
+  if (loss >= 100) return CupertinoColors.systemOrange;
+  if (loss >= 50) return CupertinoColors.systemYellow;
+  return CupertinoColors.activeGreen;
 }
 
 class _MoveComparisonRow extends StatelessWidget {
