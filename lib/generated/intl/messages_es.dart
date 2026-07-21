@@ -61,8 +61,67 @@ class MessageLookup extends MessageLookupByLibrary {
       "Esta jugada pierde mucho material o permite un ataque decisivo.",
     ),
     "Cancel": MessageLookupByLibrary.simpleMessage("Cancelar"),
+    "Chess_Bishop_Rule": MessageLookupByLibrary.simpleMessage(
+      "Alfil — mueve cualquier número de casillas en diagonal.",
+    ),
+    "Chess_Castling_Rule": MessageLookupByLibrary.simpleMessage(
+      "Enroque — mueve el rey dos casillas hacia una torre y coloca esa torre junto al rey. Ninguna pieza puede haberse movido, el camino debe estar libre y el rey no puede estar, pasar ni terminar en jaque.",
+    ),
+    "Chess_Check_Body": MessageLookupByLibrary.simpleMessage(
+      "Cuando tu rey está en jaque, debes moverlo, capturar la pieza atacante o bloquear el ataque. Si no existe respuesta legal, es jaque mate y la partida termina.",
+    ),
+    "Chess_Check_Title": MessageLookupByLibrary.simpleMessage(
+      "Jaque y jaque mate",
+    ),
+    "Chess_Draws_Body": MessageLookupByLibrary.simpleMessage(
+      "Una partida puede acabar en tablas por ahogado, acuerdo, material insuficiente, triple repetición o cincuenta jugadas de cada bando sin mover un peón ni capturar.",
+    ),
+    "Chess_Draws_Title": MessageLookupByLibrary.simpleMessage("Tablas"),
+    "Chess_En_Passant_Rule": MessageLookupByLibrary.simpleMessage(
+      "Captura al paso — un peón puede capturar un peón rival adyacente que acaba de avanzar dos casillas como si solo hubiera avanzado una. Solo puede hacerse inmediatamente.",
+    ),
+    "Chess_Goal_Body": MessageLookupByLibrary.simpleMessage(
+      "Da jaque mate al rey rival. El jaque mate ocurre cuando el rey está atacado y no tiene ninguna forma legal de escapar.",
+    ),
+    "Chess_Goal_Title": MessageLookupByLibrary.simpleMessage("El objetivo"),
+    "Chess_King_Rule": MessageLookupByLibrary.simpleMessage(
+      "Rey — mueve una casilla en cualquier dirección y nunca puede entrar en jaque.",
+    ),
+    "Chess_Knight_Rule": MessageLookupByLibrary.simpleMessage(
+      "Caballo — mueve en forma de L: dos casillas en una dirección y una hacia un lado. Puede saltar sobre otras piezas.",
+    ),
+    "Chess_Pawn_Rule": MessageLookupByLibrary.simpleMessage(
+      "Peón — avanza una casilla, o dos desde su posición inicial, y captura una casilla en diagonal hacia delante.",
+    ),
+    "Chess_Pieces_Title": MessageLookupByLibrary.simpleMessage(
+      "Cómo se mueven las piezas",
+    ),
+    "Chess_Promotion_Rule": MessageLookupByLibrary.simpleMessage(
+      "Promoción — un peón que llega a la última fila se convierte en dama, torre, alfil o caballo.",
+    ),
+    "Chess_Queen_Rule": MessageLookupByLibrary.simpleMessage(
+      "Dama — mueve cualquier número de casillas por filas, columnas o diagonales.",
+    ),
+    "Chess_Rook_Rule": MessageLookupByLibrary.simpleMessage(
+      "Torre — mueve cualquier número de casillas en horizontal o vertical.",
+    ),
     "Chess_Room_Result": MessageLookupByLibrary.simpleMessage(
       "Resultado de Chess Room",
+    ),
+    "Chess_Setup_Body": MessageLookupByLibrary.simpleMessage(
+      "Coloca el tablero con una casilla clara a la derecha de cada jugador. La fila trasera es torre, caballo, alfil, dama, rey, alfil, caballo y torre; la dama empieza en su propio color. Los peones ocupan la fila delantera. Las blancas mueven primero.",
+    ),
+    "Chess_Setup_Title": MessageLookupByLibrary.simpleMessage(
+      "Colocación del tablero",
+    ),
+    "Chess_Special_Moves_Title": MessageLookupByLibrary.simpleMessage(
+      "Movimientos especiales",
+    ),
+    "Chess_Tips_Body": MessageLookupByLibrary.simpleMessage(
+      "Controla el centro, desarrolla pronto caballos y alfiles, enrócate para proteger al rey y revisa las amenazas del rival antes de cada jugada.",
+    ),
+    "Chess_Tips_Title": MessageLookupByLibrary.simpleMessage(
+      "Consejos para principiantes",
     ),
     "Classical_Music_Box": MessageLookupByLibrary.simpleMessage(
       "Caja de música clásica",
@@ -99,6 +158,12 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "Hard": MessageLookupByLibrary.simpleMessage("Difícil"),
     "Hints": MessageLookupByLibrary.simpleMessage("Pistas"),
+    "How_To_Play_Chess": MessageLookupByLibrary.simpleMessage(
+      "Cómo jugar al ajedrez",
+    ),
+    "How_To_Play_Intro": MessageLookupByLibrary.simpleMessage(
+      "Aprende las reglas esenciales y después usa Entrenamiento para practicar tácticas y aperturas.",
+    ),
     "Image_Guru": MessageLookupByLibrary.simpleMessage("Image Guru"),
     "Import": MessageLookupByLibrary.simpleMessage("Importar"),
     "Import_PGN": MessageLookupByLibrary.simpleMessage("Importar PGN"),

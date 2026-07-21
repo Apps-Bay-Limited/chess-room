@@ -57,9 +57,58 @@ class MessageLookup extends MessageLookupByLibrary {
       "この手は大きく駒損するか、決定的な攻撃を許します。",
     ),
     "Cancel": MessageLookupByLibrary.simpleMessage("キャンセル"),
+    "Chess_Bishop_Rule": MessageLookupByLibrary.simpleMessage(
+      "ビショップ — 斜めに好きなだけ動けます。",
+    ),
+    "Chess_Castling_Rule": MessageLookupByLibrary.simpleMessage(
+      "キャスリング — キングをルーク側へ2マス動かし、そのルークをキングの隣に置きます。両方が未移動で間に駒がなく、キングがチェック中、攻撃されるマスの通過、チェックされるマスへの着地でないことが条件です。",
+    ),
+    "Chess_Check_Body": MessageLookupByLibrary.simpleMessage(
+      "キングがチェックされたら、キングを動かす、攻撃している駒を取る、攻撃を遮る、のいずれかが必要です。合法的な応手がなければチェックメイトで対局終了です。",
+    ),
+    "Chess_Check_Title": MessageLookupByLibrary.simpleMessage("チェックとチェックメイト"),
+    "Chess_Draws_Body": MessageLookupByLibrary.simpleMessage(
+      "ステイルメイト、合意、メイトに必要な戦力不足、同一局面の3回反復、またはポーンの移動や駒取りが双方50手ない場合は引き分けになります。",
+    ),
+    "Chess_Draws_Title": MessageLookupByLibrary.simpleMessage("引き分け"),
+    "Chess_En_Passant_Rule": MessageLookupByLibrary.simpleMessage(
+      "アンパッサン — 隣の敵ポーンが直前に2マス進んだ場合、1マスだけ進んだものとして取れます。直後の手でのみ可能です。",
+    ),
+    "Chess_Goal_Body": MessageLookupByLibrary.simpleMessage(
+      "相手のキングをチェックメイトします。チェックメイトとは、キングが攻撃され、合法的に逃げる手がない状態です。",
+    ),
+    "Chess_Goal_Title": MessageLookupByLibrary.simpleMessage("ゲームの目的"),
+    "Chess_King_Rule": MessageLookupByLibrary.simpleMessage(
+      "キング — 全方向に1マス動けますが、チェックされるマスには移動できません。",
+    ),
+    "Chess_Knight_Rule": MessageLookupByLibrary.simpleMessage(
+      "ナイト — 一方向に2マス、横に1マスのL字形に動きます。他の駒を飛び越えられます。",
+    ),
+    "Chess_Pawn_Rule": MessageLookupByLibrary.simpleMessage(
+      "ポーン — 前に1マス、初期位置からは2マス進めます。駒を取るときは斜め前に1マス動きます。",
+    ),
+    "Chess_Pieces_Title": MessageLookupByLibrary.simpleMessage("駒の動かし方"),
+    "Chess_Promotion_Rule": MessageLookupByLibrary.simpleMessage(
+      "プロモーション — ポーンが最終段に到達すると、クイーン、ルーク、ビショップ、ナイトのいずれかに昇格します。",
+    ),
+    "Chess_Queen_Rule": MessageLookupByLibrary.simpleMessage(
+      "クイーン — 縦、横、斜めに好きなだけ動けます。",
+    ),
+    "Chess_Rook_Rule": MessageLookupByLibrary.simpleMessage(
+      "ルーク — 縦または横に好きなだけ動けます。",
+    ),
     "Chess_Room_Result": MessageLookupByLibrary.simpleMessage(
       "Chess Room 対局結果",
     ),
+    "Chess_Setup_Body": MessageLookupByLibrary.simpleMessage(
+      "各プレイヤーの右手前が明るいマスになるように盤を置きます。奥の列はルーク、ナイト、ビショップ、クイーン、キング、ビショップ、ナイト、ルークの順で、クイーンは自分と同じ色のマスに置きます。手前の列にポーンを並べ、白から指します。",
+    ),
+    "Chess_Setup_Title": MessageLookupByLibrary.simpleMessage("盤の準備"),
+    "Chess_Special_Moves_Title": MessageLookupByLibrary.simpleMessage("特殊な動き"),
+    "Chess_Tips_Body": MessageLookupByLibrary.simpleMessage(
+      "中央を支配し、ナイトとビショップを早めに展開し、キャスリングでキングを守りましょう。毎手、相手の狙いを確認することも大切です。",
+    ),
+    "Chess_Tips_Title": MessageLookupByLibrary.simpleMessage("初心者向けのコツ"),
     "Classical_Music_Box": MessageLookupByLibrary.simpleMessage("クラシック音楽ボックス"),
     "Correct": MessageLookupByLibrary.simpleMessage("正解！チェックメイトです。"),
     "Daily_Puzzle": MessageLookupByLibrary.simpleMessage("デイリーパズル"),
@@ -81,6 +130,10 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "Hard": MessageLookupByLibrary.simpleMessage("むずかしい"),
     "Hints": MessageLookupByLibrary.simpleMessage("ヒント"),
+    "How_To_Play_Chess": MessageLookupByLibrary.simpleMessage("チェスの遊び方"),
+    "How_To_Play_Intro": MessageLookupByLibrary.simpleMessage(
+      "基本ルールを学んだら、トレーニングで戦術とオープニングを練習しましょう。",
+    ),
     "Image_Guru": MessageLookupByLibrary.simpleMessage("Image Guru"),
     "Import": MessageLookupByLibrary.simpleMessage("インポート"),
     "Import_PGN": MessageLookupByLibrary.simpleMessage("PGNをインポート"),

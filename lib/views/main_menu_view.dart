@@ -141,6 +141,34 @@ class _MainMenuViewState extends State<MainMenuView> {
                       ),
                       const SizedBox(height: 30),
                       MenuButton(
+                        key: const ValueKey('vs-ai-button'),
+                        label: S.of(context).Vs_AI_Player,
+                        onTap: () {
+                          appModel.setPlayerCount(1);
+                          Navigator.push(
+                            context,
+                            CupertinoPageRoute(
+                              builder: (context) => const SinglePlayerView(),
+                            ),
+                          );
+                        },
+                      ),
+                      const SizedBox(height: 20),
+                      MenuButton(
+                        key: const ValueKey('two-players-button'),
+                        label: S.of(context).Two_Players,
+                        onTap: () {
+                          appModel.setPlayerCount(2);
+                          Navigator.push(
+                            context,
+                            CupertinoPageRoute(
+                              builder: (context) => const SinglePlayerView(),
+                            ),
+                          );
+                        },
+                      ),
+                      const SizedBox(height: 20),
+                      MenuButton(
                         key: const ValueKey('daily-puzzle-button'),
                         label: S.of(context).Daily_Puzzle,
                         onTap: () {
@@ -165,34 +193,6 @@ class _MainMenuViewState extends State<MainMenuView> {
                               builder: (context) => TrainingHubPage(
                                 pieceTheme: appModel.pieceTheme,
                               ),
-                            ),
-                          );
-                        },
-                      ),
-                      const SizedBox(height: 20),
-                      MenuButton(
-                        key: const ValueKey('vs-ai-button'),
-                        label: S.of(context).Vs_AI_Player,
-                        onTap: () {
-                          appModel.setPlayerCount(1);
-                          Navigator.push(
-                            context,
-                            CupertinoPageRoute(
-                              builder: (context) => const SinglePlayerView(),
-                            ),
-                          );
-                        },
-                      ),
-                      const SizedBox(height: 20),
-                      MenuButton(
-                        key: const ValueKey('two-players-button'),
-                        label: S.of(context).Two_Players,
-                        onTap: () {
-                          appModel.setPlayerCount(2);
-                          Navigator.push(
-                            context,
-                            CupertinoPageRoute(
-                              builder: (context) => const SinglePlayerView(),
                             ),
                           );
                         },

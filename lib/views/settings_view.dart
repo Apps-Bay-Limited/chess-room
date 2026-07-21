@@ -1,3 +1,4 @@
+import 'package:chess_room/features/how_to_play/how_to_play_page.dart';
 import 'package:chess_room/model/app_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
@@ -45,6 +46,19 @@ class SettingsView extends StatelessWidget {
                   const SizedBox(height: 30),
                   RemoveAdsSection(appModel: appModel),
                   const SizedBox(height: 50),
+                  MenuButton(
+                    key: const ValueKey('settings-how-to-play-button'),
+                    label: S.of(context).How_To_Play_Chess,
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        CupertinoPageRoute(
+                          builder: (context) => const HowToPlayPage(),
+                        ),
+                      );
+                    },
+                  ),
+                  const SizedBox(height: 20),
                   MenuButton(
                     key: const ValueKey('settings-more-apps-button'),
                     label: S.of(context).More_Apps,

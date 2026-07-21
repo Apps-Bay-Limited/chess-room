@@ -57,9 +57,64 @@ class MessageLookup extends MessageLookupByLibrary {
       "This move loses significant material or allows a decisive attack.",
     ),
     "Cancel": MessageLookupByLibrary.simpleMessage("Cancel"),
+    "Chess_Bishop_Rule": MessageLookupByLibrary.simpleMessage(
+      "Bishop — moves any number of squares diagonally.",
+    ),
+    "Chess_Castling_Rule": MessageLookupByLibrary.simpleMessage(
+      "Castling — move the king two squares toward a rook, then place that rook beside the king. Neither piece may have moved, the path must be clear, and the king cannot be in, cross through, or land in check.",
+    ),
+    "Chess_Check_Body": MessageLookupByLibrary.simpleMessage(
+      "When your king is in check, you must move the king, capture the attacking piece, or block the attack. If no legal response exists, it is checkmate and the game ends.",
+    ),
+    "Chess_Check_Title": MessageLookupByLibrary.simpleMessage(
+      "Check and checkmate",
+    ),
+    "Chess_Draws_Body": MessageLookupByLibrary.simpleMessage(
+      "A game can be drawn by stalemate, agreement, insufficient mating material, threefold repetition, or fifty moves by each side without a pawn move or capture.",
+    ),
+    "Chess_Draws_Title": MessageLookupByLibrary.simpleMessage("Draws"),
+    "Chess_En_Passant_Rule": MessageLookupByLibrary.simpleMessage(
+      "En passant — a pawn may capture an adjacent enemy pawn that has just advanced two squares as though it moved only one. This is allowed only on the next move.",
+    ),
+    "Chess_Goal_Body": MessageLookupByLibrary.simpleMessage(
+      "Checkmate the opposing king. Checkmate means the king is under attack and has no legal way to escape.",
+    ),
+    "Chess_Goal_Title": MessageLookupByLibrary.simpleMessage("The goal"),
+    "Chess_King_Rule": MessageLookupByLibrary.simpleMessage(
+      "King — moves one square in any direction and may never move into check.",
+    ),
+    "Chess_Knight_Rule": MessageLookupByLibrary.simpleMessage(
+      "Knight — moves in an L shape: two squares in one direction and one to the side. It can jump over pieces.",
+    ),
+    "Chess_Pawn_Rule": MessageLookupByLibrary.simpleMessage(
+      "Pawn — moves one square forward, or two from its starting square, and captures one square diagonally forward.",
+    ),
+    "Chess_Pieces_Title": MessageLookupByLibrary.simpleMessage(
+      "How the pieces move",
+    ),
+    "Chess_Promotion_Rule": MessageLookupByLibrary.simpleMessage(
+      "Promotion — a pawn reaching the last rank becomes a queen, rook, bishop, or knight.",
+    ),
+    "Chess_Queen_Rule": MessageLookupByLibrary.simpleMessage(
+      "Queen — moves any number of squares along a rank, file, or diagonal.",
+    ),
+    "Chess_Rook_Rule": MessageLookupByLibrary.simpleMessage(
+      "Rook — moves any number of squares horizontally or vertically.",
+    ),
     "Chess_Room_Result": MessageLookupByLibrary.simpleMessage(
       "Chess Room Result",
     ),
+    "Chess_Setup_Body": MessageLookupByLibrary.simpleMessage(
+      "Place the board with a light square at each player’s right. The back row is rook, knight, bishop, queen, king, bishop, knight, rook; the queen starts on her own color. Pawns fill the row in front. White moves first.",
+    ),
+    "Chess_Setup_Title": MessageLookupByLibrary.simpleMessage("Board setup"),
+    "Chess_Special_Moves_Title": MessageLookupByLibrary.simpleMessage(
+      "Special moves",
+    ),
+    "Chess_Tips_Body": MessageLookupByLibrary.simpleMessage(
+      "Control the center, develop knights and bishops early, castle to protect your king, and check what your opponent threatens before every move.",
+    ),
+    "Chess_Tips_Title": MessageLookupByLibrary.simpleMessage("Beginner tips"),
     "Classical_Music_Box": MessageLookupByLibrary.simpleMessage(
       "Classical Music Box",
     ),
@@ -89,6 +144,12 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "Hard": MessageLookupByLibrary.simpleMessage("Hard"),
     "Hints": MessageLookupByLibrary.simpleMessage("Hints"),
+    "How_To_Play_Chess": MessageLookupByLibrary.simpleMessage(
+      "How to Play Chess",
+    ),
+    "How_To_Play_Intro": MessageLookupByLibrary.simpleMessage(
+      "Learn the essential rules, then use Training to practice your tactics and openings.",
+    ),
     "Image_Guru": MessageLookupByLibrary.simpleMessage("Image Guru"),
     "Import": MessageLookupByLibrary.simpleMessage("Import"),
     "Import_PGN": MessageLookupByLibrary.simpleMessage("Import PGN"),

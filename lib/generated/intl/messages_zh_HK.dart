@@ -57,9 +57,54 @@ class MessageLookup extends MessageLookupByLibrary {
       "這步棋會損失大量子力，或讓對手發動決定性進攻。",
     ),
     "Cancel": MessageLookupByLibrary.simpleMessage("取消"),
+    "Chess_Bishop_Rule": MessageLookupByLibrary.simpleMessage("象 — 可沿斜線走任意格。"),
+    "Chess_Castling_Rule": MessageLookupByLibrary.simpleMessage(
+      "王車易位 — 王向車的方向走兩格，再把該車放到王的旁邊。王和車都必須從未移動，中間沒有棋子，並且王不能處於被將軍、經過受攻擊格或落入受攻擊格。",
+    ),
+    "Chess_Check_Body": MessageLookupByLibrary.simpleMessage(
+      "王被將軍時，必須移動王、吃掉進攻棋子或阻擋攻擊。如果沒有合法應對，就是將死，對局結束。",
+    ),
+    "Chess_Check_Title": MessageLookupByLibrary.simpleMessage("將軍與將死"),
+    "Chess_Draws_Body": MessageLookupByLibrary.simpleMessage(
+      "逼和、雙方同意、子力不足、三次重複局面，或雙方各連續五十步沒有走兵和吃子時，對局為和棋。",
+    ),
+    "Chess_Draws_Title": MessageLookupByLibrary.simpleMessage("和棋"),
+    "Chess_En_Passant_Rule": MessageLookupByLibrary.simpleMessage(
+      "吃過路兵 — 相鄰的對方兵剛從初始位置走兩格時，可以把它當作只走了一格來吃掉，但只能立即執行。",
+    ),
+    "Chess_Goal_Body": MessageLookupByLibrary.simpleMessage(
+      "將死對方的王。將死是指王正受到攻擊，並且沒有任何合法走法可以脫險。",
+    ),
+    "Chess_Goal_Title": MessageLookupByLibrary.simpleMessage("遊戲目標"),
+    "Chess_King_Rule": MessageLookupByLibrary.simpleMessage(
+      "王 — 可向任意方向走一格，但不能走入被攻擊的格子。",
+    ),
+    "Chess_Knight_Rule": MessageLookupByLibrary.simpleMessage(
+      "馬 — 走「日」字，即一個方向兩格再向側面一格，並且可以越過其他棋子。",
+    ),
+    "Chess_Pawn_Rule": MessageLookupByLibrary.simpleMessage(
+      "兵 — 向前走一格，首次可走兩格；吃子時向斜前方走一格。",
+    ),
+    "Chess_Pieces_Title": MessageLookupByLibrary.simpleMessage("棋子的走法"),
+    "Chess_Promotion_Rule": MessageLookupByLibrary.simpleMessage(
+      "兵升變 — 兵到達最後一排時，可升變為后、車、象或馬。",
+    ),
+    "Chess_Queen_Rule": MessageLookupByLibrary.simpleMessage(
+      "后 — 可沿橫線、直線或斜線走任意格。",
+    ),
+    "Chess_Rook_Rule": MessageLookupByLibrary.simpleMessage("車 — 可沿橫線或直線走任意格。"),
     "Chess_Room_Result": MessageLookupByLibrary.simpleMessage(
       "Chess Room 對局結果",
     ),
+    "Chess_Setup_Body": MessageLookupByLibrary.simpleMessage(
+      "擺放棋盤時，每位玩家的右下角都應為淺色格。底線依次為車、馬、象、后、王、象、馬、車；后放在與自身顏色相同的格子。兵排在前一行，由白方先走。",
+    ),
+    "Chess_Setup_Title": MessageLookupByLibrary.simpleMessage("棋盤擺放"),
+    "Chess_Special_Moves_Title": MessageLookupByLibrary.simpleMessage("特殊走法"),
+    "Chess_Tips_Body": MessageLookupByLibrary.simpleMessage(
+      "控制中心，儘早出馬和象，透過王車易位保護王，並在每步棋前檢查對手的威脅。",
+    ),
+    "Chess_Tips_Title": MessageLookupByLibrary.simpleMessage("新手技巧"),
     "Classical_Music_Box": MessageLookupByLibrary.simpleMessage("古典音樂盒"),
     "Correct": MessageLookupByLibrary.simpleMessage("正確！將殺。"),
     "Daily_Puzzle": MessageLookupByLibrary.simpleMessage("每日棋題"),
@@ -81,6 +126,10 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "Hard": MessageLookupByLibrary.simpleMessage("困難"),
     "Hints": MessageLookupByLibrary.simpleMessage("提示"),
+    "How_To_Play_Chess": MessageLookupByLibrary.simpleMessage("國際象棋玩法"),
+    "How_To_Play_Intro": MessageLookupByLibrary.simpleMessage(
+      "先學習基本規則，再透過訓練練習戰術與開局。",
+    ),
     "Image_Guru": MessageLookupByLibrary.simpleMessage("咕嚕濾鏡"),
     "Import": MessageLookupByLibrary.simpleMessage("匯入"),
     "Import_PGN": MessageLookupByLibrary.simpleMessage("匯入 PGN"),

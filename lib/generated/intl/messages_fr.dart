@@ -59,8 +59,65 @@ class MessageLookup extends MessageLookupByLibrary {
       "Ce coup perd beaucoup de matériel ou permet une attaque décisive.",
     ),
     "Cancel": MessageLookupByLibrary.simpleMessage("Annuler"),
+    "Chess_Bishop_Rule": MessageLookupByLibrary.simpleMessage(
+      "Fou — se déplace d’autant de cases que souhaité en diagonale.",
+    ),
+    "Chess_Castling_Rule": MessageLookupByLibrary.simpleMessage(
+      "Roque — déplacez le roi de deux cases vers une tour, puis placez cette tour à côté du roi. Aucune des deux pièces ne doit avoir bougé, le passage doit être libre et le roi ne peut être en échec, traverser une case attaquée ou finir en échec.",
+    ),
+    "Chess_Check_Body": MessageLookupByLibrary.simpleMessage(
+      "Lorsque votre roi est en échec, vous devez déplacer le roi, capturer la pièce attaquante ou bloquer l’attaque. Si aucune réponse légale n’existe, c’est échec et mat et la partie est terminée.",
+    ),
+    "Chess_Check_Title": MessageLookupByLibrary.simpleMessage(
+      "Échec et échec et mat",
+    ),
+    "Chess_Draws_Body": MessageLookupByLibrary.simpleMessage(
+      "Une partie peut être nulle par pat, accord, matériel insuffisant, répétition triple ou après cinquante coups de chaque camp sans mouvement de pion ni prise.",
+    ),
+    "Chess_Draws_Title": MessageLookupByLibrary.simpleMessage("Parties nulles"),
+    "Chess_En_Passant_Rule": MessageLookupByLibrary.simpleMessage(
+      "Prise en passant — un pion peut capturer un pion adverse adjacent qui vient d’avancer de deux cases comme s’il n’en avait avancé qu’une. Ce coup n’est possible qu’immédiatement.",
+    ),
+    "Chess_Goal_Body": MessageLookupByLibrary.simpleMessage(
+      "Mettez le roi adverse échec et mat. Cela signifie que le roi est attaqué et ne dispose d’aucun moyen légal de s’échapper.",
+    ),
+    "Chess_Goal_Title": MessageLookupByLibrary.simpleMessage("Le but"),
+    "Chess_King_Rule": MessageLookupByLibrary.simpleMessage(
+      "Roi — se déplace d’une case dans toutes les directions et ne peut jamais aller sur une case en échec.",
+    ),
+    "Chess_Knight_Rule": MessageLookupByLibrary.simpleMessage(
+      "Cavalier — se déplace en L : deux cases dans une direction, puis une sur le côté. Il peut sauter par-dessus les pièces.",
+    ),
+    "Chess_Pawn_Rule": MessageLookupByLibrary.simpleMessage(
+      "Pion — avance d’une case, ou de deux depuis sa case initiale, et capture d’une case en diagonale vers l’avant.",
+    ),
+    "Chess_Pieces_Title": MessageLookupByLibrary.simpleMessage(
+      "Déplacement des pièces",
+    ),
+    "Chess_Promotion_Rule": MessageLookupByLibrary.simpleMessage(
+      "Promotion — un pion qui atteint la dernière rangée devient une dame, une tour, un fou ou un cavalier.",
+    ),
+    "Chess_Queen_Rule": MessageLookupByLibrary.simpleMessage(
+      "Dame — se déplace d’autant de cases que souhaité sur une rangée, une colonne ou une diagonale.",
+    ),
+    "Chess_Rook_Rule": MessageLookupByLibrary.simpleMessage(
+      "Tour — se déplace d’autant de cases que souhaité horizontalement ou verticalement.",
+    ),
     "Chess_Room_Result": MessageLookupByLibrary.simpleMessage(
       "Résultat Chess Room",
+    ),
+    "Chess_Setup_Body": MessageLookupByLibrary.simpleMessage(
+      "Placez l’échiquier avec une case claire à la droite de chaque joueur. La rangée du fond est : tour, cavalier, fou, dame, roi, fou, cavalier, tour ; la dame commence sur sa propre couleur. Les pions occupent la rangée devant. Les Blancs commencent.",
+    ),
+    "Chess_Setup_Title": MessageLookupByLibrary.simpleMessage("Mise en place"),
+    "Chess_Special_Moves_Title": MessageLookupByLibrary.simpleMessage(
+      "Coups spéciaux",
+    ),
+    "Chess_Tips_Body": MessageLookupByLibrary.simpleMessage(
+      "Contrôlez le centre, développez rapidement cavaliers et fous, roquez pour protéger votre roi et vérifiez les menaces adverses avant chaque coup.",
+    ),
+    "Chess_Tips_Title": MessageLookupByLibrary.simpleMessage(
+      "Conseils aux débutants",
     ),
     "Classical_Music_Box": MessageLookupByLibrary.simpleMessage(
       "Boîte à musique classique",
@@ -95,6 +152,12 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "Hard": MessageLookupByLibrary.simpleMessage("Difficile"),
     "Hints": MessageLookupByLibrary.simpleMessage("Indices"),
+    "How_To_Play_Chess": MessageLookupByLibrary.simpleMessage(
+      "Comment jouer aux échecs",
+    ),
+    "How_To_Play_Intro": MessageLookupByLibrary.simpleMessage(
+      "Apprenez les règles essentielles, puis utilisez l’entraînement pour travailler vos tactiques et vos ouvertures.",
+    ),
     "Image_Guru": MessageLookupByLibrary.simpleMessage("Image Guru"),
     "Import": MessageLookupByLibrary.simpleMessage("Importer"),
     "Import_PGN": MessageLookupByLibrary.simpleMessage("Importer un PGN"),

@@ -1162,6 +1162,231 @@ class S {
       args: [],
     );
   }
+
+  /// `How to Play Chess`
+  String get How_To_Play_Chess {
+    return Intl.message(
+      'How to Play Chess',
+      name: 'How_To_Play_Chess',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Learn the essential rules, then use Training to practice your tactics and openings.`
+  String get How_To_Play_Intro {
+    return Intl.message(
+      'Learn the essential rules, then use Training to practice your tactics and openings.',
+      name: 'How_To_Play_Intro',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `The goal`
+  String get Chess_Goal_Title {
+    return Intl.message(
+      'The goal',
+      name: 'Chess_Goal_Title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Checkmate the opposing king. Checkmate means the king is under attack and has no legal way to escape.`
+  String get Chess_Goal_Body {
+    return Intl.message(
+      'Checkmate the opposing king. Checkmate means the king is under attack and has no legal way to escape.',
+      name: 'Chess_Goal_Body',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Board setup`
+  String get Chess_Setup_Title {
+    return Intl.message(
+      'Board setup',
+      name: 'Chess_Setup_Title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Place the board with a light square at each player’s right. The back row is rook, knight, bishop, queen, king, bishop, knight, rook; the queen starts on her own color. Pawns fill the row in front. White moves first.`
+  String get Chess_Setup_Body {
+    return Intl.message(
+      'Place the board with a light square at each player’s right. The back row is rook, knight, bishop, queen, king, bishop, knight, rook; the queen starts on her own color. Pawns fill the row in front. White moves first.',
+      name: 'Chess_Setup_Body',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `How the pieces move`
+  String get Chess_Pieces_Title {
+    return Intl.message(
+      'How the pieces move',
+      name: 'Chess_Pieces_Title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `King — moves one square in any direction and may never move into check.`
+  String get Chess_King_Rule {
+    return Intl.message(
+      'King — moves one square in any direction and may never move into check.',
+      name: 'Chess_King_Rule',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Queen — moves any number of squares along a rank, file, or diagonal.`
+  String get Chess_Queen_Rule {
+    return Intl.message(
+      'Queen — moves any number of squares along a rank, file, or diagonal.',
+      name: 'Chess_Queen_Rule',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Rook — moves any number of squares horizontally or vertically.`
+  String get Chess_Rook_Rule {
+    return Intl.message(
+      'Rook — moves any number of squares horizontally or vertically.',
+      name: 'Chess_Rook_Rule',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Bishop — moves any number of squares diagonally.`
+  String get Chess_Bishop_Rule {
+    return Intl.message(
+      'Bishop — moves any number of squares diagonally.',
+      name: 'Chess_Bishop_Rule',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Knight — moves in an L shape: two squares in one direction and one to the side. It can jump over pieces.`
+  String get Chess_Knight_Rule {
+    return Intl.message(
+      'Knight — moves in an L shape: two squares in one direction and one to the side. It can jump over pieces.',
+      name: 'Chess_Knight_Rule',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Pawn — moves one square forward, or two from its starting square, and captures one square diagonally forward.`
+  String get Chess_Pawn_Rule {
+    return Intl.message(
+      'Pawn — moves one square forward, or two from its starting square, and captures one square diagonally forward.',
+      name: 'Chess_Pawn_Rule',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Special moves`
+  String get Chess_Special_Moves_Title {
+    return Intl.message(
+      'Special moves',
+      name: 'Chess_Special_Moves_Title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Castling — move the king two squares toward a rook, then place that rook beside the king. Neither piece may have moved, the path must be clear, and the king cannot be in, cross through, or land in check.`
+  String get Chess_Castling_Rule {
+    return Intl.message(
+      'Castling — move the king two squares toward a rook, then place that rook beside the king. Neither piece may have moved, the path must be clear, and the king cannot be in, cross through, or land in check.',
+      name: 'Chess_Castling_Rule',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `En passant — a pawn may capture an adjacent enemy pawn that has just advanced two squares as though it moved only one. This is allowed only on the next move.`
+  String get Chess_En_Passant_Rule {
+    return Intl.message(
+      'En passant — a pawn may capture an adjacent enemy pawn that has just advanced two squares as though it moved only one. This is allowed only on the next move.',
+      name: 'Chess_En_Passant_Rule',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Promotion — a pawn reaching the last rank becomes a queen, rook, bishop, or knight.`
+  String get Chess_Promotion_Rule {
+    return Intl.message(
+      'Promotion — a pawn reaching the last rank becomes a queen, rook, bishop, or knight.',
+      name: 'Chess_Promotion_Rule',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Check and checkmate`
+  String get Chess_Check_Title {
+    return Intl.message(
+      'Check and checkmate',
+      name: 'Chess_Check_Title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `When your king is in check, you must move the king, capture the attacking piece, or block the attack. If no legal response exists, it is checkmate and the game ends.`
+  String get Chess_Check_Body {
+    return Intl.message(
+      'When your king is in check, you must move the king, capture the attacking piece, or block the attack. If no legal response exists, it is checkmate and the game ends.',
+      name: 'Chess_Check_Body',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Draws`
+  String get Chess_Draws_Title {
+    return Intl.message('Draws', name: 'Chess_Draws_Title', desc: '', args: []);
+  }
+
+  /// `A game can be drawn by stalemate, agreement, insufficient mating material, threefold repetition, or fifty moves by each side without a pawn move or capture.`
+  String get Chess_Draws_Body {
+    return Intl.message(
+      'A game can be drawn by stalemate, agreement, insufficient mating material, threefold repetition, or fifty moves by each side without a pawn move or capture.',
+      name: 'Chess_Draws_Body',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Beginner tips`
+  String get Chess_Tips_Title {
+    return Intl.message(
+      'Beginner tips',
+      name: 'Chess_Tips_Title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Control the center, develop knights and bishops early, castle to protect your king, and check what your opponent threatens before every move.`
+  String get Chess_Tips_Body {
+    return Intl.message(
+      'Control the center, develop knights and bishops early, castle to protect your king, and check what your opponent threatens before every move.',
+      name: 'Chess_Tips_Body',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {
@@ -1170,6 +1395,7 @@ class AppLocalizationDelegate extends LocalizationsDelegate<S> {
   List<Locale> get supportedLocales {
     return const <Locale>[
       Locale.fromSubtags(languageCode: 'en'),
+      Locale.fromSubtags(languageCode: 'ar'),
       Locale.fromSubtags(languageCode: 'es'),
       Locale.fromSubtags(languageCode: 'fr'),
       Locale.fromSubtags(languageCode: 'ja'),

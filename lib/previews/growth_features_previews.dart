@@ -4,6 +4,7 @@ import 'package:chess_room/features/daily_puzzle/daily_puzzle_progress.dart';
 import 'package:chess_room/features/game_history/game_history_page.dart';
 import 'package:chess_room/features/game_history/saved_game.dart';
 import 'package:chess_room/features/game_review/game_review_page.dart';
+import 'package:chess_room/features/how_to_play/how_to_play_page.dart';
 import 'package:chess_room/features/opening_trainer/opening_trainer_page.dart';
 import 'package:chess_room/features/opening_trainer/opening_course.dart';
 import 'package:chess_room/features/puzzle_library/puzzle_library_page.dart';
@@ -163,6 +164,15 @@ Widget trainingHubPreview() {
       openingProgressStore: PreviewOpeningProgressStore(),
     ),
   );
+}
+
+@Preview(
+  name: 'How to play chess',
+  group: 'Learning features',
+  size: Size(390, 760),
+)
+Widget howToPlayPreview() {
+  return _localizedPreview(const HowToPlayPage());
 }
 
 @Preview(
