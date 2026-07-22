@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.3.0+12
+
+### Fixed
+- Removed the unnecessary app-level iOS privacy manifest; privacy declarations remain supplied by the SDKs that perform the corresponding API access and data collection.
+- Extended release validation to audit every privacy manifest embedded in the finished IPA.
+
 ## 1.3.0+11
 
 ### Fixed
