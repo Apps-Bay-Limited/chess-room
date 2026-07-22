@@ -206,6 +206,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Played_Move": MessageLookupByLibrary.simpleMessage("実戦の手"),
     "Practice_Again": MessageLookupByLibrary.simpleMessage("もう一度練習"),
     "Previous": MessageLookupByLibrary.simpleMessage("前へ"),
+    "Privacy_Choices": MessageLookupByLibrary.simpleMessage("プライバシー設定"),
     "Purchase_Cancelled": MessageLookupByLibrary.simpleMessage("購入をキャンセルしました。"),
     "Purchase_Failed": MessageLookupByLibrary.simpleMessage(
       "購入に失敗しました。もう一度お試しください。",

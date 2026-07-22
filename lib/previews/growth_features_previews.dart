@@ -19,6 +19,7 @@ import 'package:chess_room/views/components/chess_view/game_tip_button.dart';
 import 'package:chess_room/views/components/main_menu_view/game_options/time_limit_picker.dart';
 import 'package:chess_room/views/components/shared/menu_button.dart';
 import 'package:chess_room/views/components/shared/position_board.dart';
+import 'package:chess_room/views/components/settings_view/settings_navigation_buttons.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter/widget_previews.dart';
@@ -148,6 +149,24 @@ Widget styledGameActionsPreview() {
           ),
         ),
       ),
+    ),
+  );
+}
+
+@Preview(
+  name: 'Settings navigation',
+  group: 'Learning features',
+  size: Size(390, 420),
+)
+Widget settingsNavigationPreview() {
+  return _localizedPreview(
+    SettingsNavigationButtons(
+      showPrivacyChoices: true,
+      onHowToPlay: previewTap,
+      onGameHistory: previewTap,
+      onPrivacyChoices: previewTap,
+      onMoreApps: previewTap,
+      onBack: previewTap,
     ),
   );
 }

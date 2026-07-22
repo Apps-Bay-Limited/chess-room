@@ -248,6 +248,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "Played_Move": MessageLookupByLibrary.simpleMessage("Coup joué"),
     "Practice_Again": MessageLookupByLibrary.simpleMessage("Recommencer"),
     "Previous": MessageLookupByLibrary.simpleMessage("Précédent"),
+    "Privacy_Choices": MessageLookupByLibrary.simpleMessage(
+      "Options de confidentialité",
+    ),
     "Purchase_Cancelled": MessageLookupByLibrary.simpleMessage("Achat annulé."),
     "Purchase_Failed": MessageLookupByLibrary.simpleMessage(
       "Échec de l’achat. Veuillez réessayer.",

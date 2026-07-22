@@ -41,7 +41,35 @@ To run the project locally, follow these steps:
 
 1. Install Flutter by following the [official documentation](https://flutter.dev/docs/get-started/install).
 2. Set up an emulator or connect a physical device.
-3. Configure Firebase for authentication and analytics.
+
+## Release configuration and builds
+
+Release builds must be produced with `tool/release_build.sh`. The script validates signing and AdMob configuration, rejects Google test IDs, and injects the Dart ad-unit values with `--dart-define-from-file`. Do not use a bare `flutter build` for store artifacts.
+
+Required ignored files:
+
+- `lib/config/ads_release.json`: copy `lib/config/ads_release.json.example` and supply production values for `BANNER_ID_ANDROID`, `OPEN_AD_ID_ANDROID`, `REWARD_AD_ID_ANDROID`, `REWARD_INTERSTITIAL_AD_ID_ANDROID`, `BANNER_ID_IOS`, `OPEN_AD_ID_IOS`, `REWARD_AD_ID_IOS`, and `REWARD_INTERSTITIAL_AD_ID_IOS`.
+- `android/local.properties`: set the production `AdMobAppId` in addition to the Flutter SDK path.
+- `ios/Secret.xcconfig`: set the production `GADApplicationIdentifier`; `ios/Flutter/Release.xcconfig` includes this file.
+- `android/key.properties` and its referenced production keystore. Restore the keystore from `/Users/banghuazhao/Development/secret/keystore/` if the configured file is missing.
+
+Before releasing ads, publish a European regulations message for both app IDs in AdMob Privacy & messaging. The app uses Google's UMP flow and waits for consent before initializing ads. Keep the public privacy policy aligned with the data disclosed by the Google Mobile Ads SDK.
+
+Build one platform or both:
+
+```bash
+./tool/release_build.sh android
+./tool/release_build.sh ios
+./tool/release_build.sh all
+```
+
+For the mandatory profile launch smoke test, use the same configuration file:
+
+```bash
+flutter run --profile --dart-define-from-file=lib/config/ads_release.json -d DEVICE_ID
+```
+
+Do not run another Flutter command between the iOS release script and any follow-up Xcode archive/export action; doing so can regenerate `Generated.xcconfig` without the injected defines.
 
 ## Folder Structure
 

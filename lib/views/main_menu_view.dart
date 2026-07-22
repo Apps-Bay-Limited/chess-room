@@ -1,6 +1,5 @@
 import 'package:app_tracking_transparency/app_tracking_transparency.dart';
 import 'package:chess_room/features/daily_puzzle/daily_puzzle_page.dart';
-import 'package:chess_room/features/game_history/game_history_page.dart';
 import 'package:chess_room/features/training/training_hub_page.dart';
 import 'package:chess_room/model/app_model.dart';
 import 'package:chess_room/util/in_app_reviewer_helper.dart';
@@ -60,6 +59,15 @@ class _MainMenuViewState extends State<MainMenuView> {
       AdsManager.setAdsRemoved(_appModel!.isAdsRemoved);
       if (_appModel!.isAdsRemoved) {
         _stopAppOpenAds();
+        InAppReviewHelper.checkAndAskForReview();
+        return;
+      }
+
+      final consentAllowsAds = await AdsManager.gatherConsent();
+      if (!mounted) {
+        return;
+      }
+      if (!consentAllowsAds) {
         InAppReviewHelper.checkAndAskForReview();
         return;
       }
@@ -191,22 +199,6 @@ class _MainMenuViewState extends State<MainMenuView> {
                             context,
                             CupertinoPageRoute(
                               builder: (context) => TrainingHubPage(
-                                pieceTheme: appModel.pieceTheme,
-                              ),
-                            ),
-                          );
-                        },
-                      ),
-                      const SizedBox(height: 20),
-                      MenuButton(
-                        key: const ValueKey('game-history-button'),
-                        label: S.of(context).Game_History,
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            CupertinoPageRoute(
-                              builder: (context) => GameHistoryPage(
-                                store: appModel.gameHistoryStore,
                                 pieceTheme: appModel.pieceTheme,
                               ),
                             ),

@@ -228,6 +228,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Played_Move": MessageLookupByLibrary.simpleMessage("النقلة الملعوبة"),
     "Practice_Again": MessageLookupByLibrary.simpleMessage("تدرّب مجددًا"),
     "Previous": MessageLookupByLibrary.simpleMessage("السابق"),
+    "Privacy_Choices": MessageLookupByLibrary.simpleMessage("خيارات الخصوصية"),
     "Purchase_Cancelled": MessageLookupByLibrary.simpleMessage(
       "تم إلغاء عملية الشراء.",
     ),

@@ -9,6 +9,7 @@ import 'package:provider/provider.dart';
 import 'generated/l10n.dart';
 import 'logic/shared_functions.dart';
 import 'model/app_model.dart';
+import 'util/ads_manager.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -17,6 +18,8 @@ Future<void> main() async {
     DeviceOrientation.portraitDown,
     DeviceOrientation.portraitUp,
   ]);
+
+  AdsManager.logReleaseConfigurationStatus();
 
   runApp(
     ChangeNotifierProvider(

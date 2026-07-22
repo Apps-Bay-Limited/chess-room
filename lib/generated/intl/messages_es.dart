@@ -252,6 +252,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "Practicar de nuevo",
     ),
     "Previous": MessageLookupByLibrary.simpleMessage("Anterior"),
+    "Privacy_Choices": MessageLookupByLibrary.simpleMessage(
+      "Opciones de privacidad",
+    ),
     "Purchase_Cancelled": MessageLookupByLibrary.simpleMessage(
       "Compra cancelada.",
     ),

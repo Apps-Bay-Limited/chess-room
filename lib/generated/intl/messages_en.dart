@@ -230,6 +230,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Played_Move": MessageLookupByLibrary.simpleMessage("Played"),
     "Practice_Again": MessageLookupByLibrary.simpleMessage("Practice Again"),
     "Previous": MessageLookupByLibrary.simpleMessage("Previous"),
+    "Privacy_Choices": MessageLookupByLibrary.simpleMessage("Privacy Choices"),
     "Purchase_Cancelled": MessageLookupByLibrary.simpleMessage(
       "Purchase cancelled.",
     ),

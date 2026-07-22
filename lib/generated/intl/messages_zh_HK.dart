@@ -194,6 +194,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Played_Move": MessageLookupByLibrary.simpleMessage("實戰走法"),
     "Practice_Again": MessageLookupByLibrary.simpleMessage("再次練習"),
     "Previous": MessageLookupByLibrary.simpleMessage("上一步"),
+    "Privacy_Choices": MessageLookupByLibrary.simpleMessage("私隱選項"),
     "Purchase_Cancelled": MessageLookupByLibrary.simpleMessage("購買已取消。"),
     "Purchase_Failed": MessageLookupByLibrary.simpleMessage("購買失敗，請重試。"),
     "Purchase_In_Progress": MessageLookupByLibrary.simpleMessage("正在購買..."),

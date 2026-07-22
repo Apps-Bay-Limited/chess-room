@@ -1,5 +1,21 @@
 # Changelog
 
+## 1.3.0+10
+
+### Added
+- Full game history with PGN import, export, and move-by-move replay.
+- Expanded game review covering every recorded move.
+- A Training hub with themed chess puzzles and an opening trainer.
+- A localized How to Play Chess guide covering rules, special moves, draws, and beginner tips.
+- French, Spanish, Japanese, and Arabic localization, including right-to-left Arabic layout.
+- A permanent Remove Ads purchase with restore support on iOS.
+- Consent-first ad initialization with a privacy choices entry point.
+
+### Changed
+- Reorganized the main menu around play, daily puzzles, training, and settings.
+- Moved Game History and More Apps into Settings.
+- Restricted ads to general-audience content and tightened iOS privacy declarations.
+
 ## 1.2.0+9
 
 ### Added

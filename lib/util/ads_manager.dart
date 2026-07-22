@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
@@ -10,34 +11,57 @@ class AdsManager {
   static final ValueNotifier<bool> isAdsRemoved = ValueNotifier<bool>(false);
   static final ValueNotifier<bool> isPurchaseFlowActive =
       ValueNotifier<bool>(false);
+  static final ValueNotifier<bool> privacyOptionsRequired =
+      ValueNotifier<bool>(false);
 
   // Android Release IDs (Injected via --dart-define)
-  static const String _bannerAdUnitIdAndroidRelease = String.fromEnvironment(
-      'BANNER_ID_ANDROID',
-      defaultValue: 'ca-app-pub-3940256099942544/6300978111');
-  static const String _openAdUnitIDAndroidRelease = String.fromEnvironment(
-      'OPEN_AD_ID_ANDROID',
-      defaultValue: 'ca-app-pub-3940256099942544/3419835294');
-  static const String _rewardedAdIDAndroidRelease = String.fromEnvironment(
-      'REWARD_AD_ID_ANDROID',
-      defaultValue: 'ca-app-pub-3940256099942544/5224354917');
+  static const String _bannerAdUnitIdAndroidRelease =
+      String.fromEnvironment('BANNER_ID_ANDROID', defaultValue: '');
+  static const String _openAdUnitIDAndroidRelease =
+      String.fromEnvironment('OPEN_AD_ID_ANDROID', defaultValue: '');
+  static const String _rewardedAdIDAndroidRelease =
+      String.fromEnvironment('REWARD_AD_ID_ANDROID', defaultValue: '');
   static const String _rewardedInterstitialAdIDAndroidRelease =
       String.fromEnvironment('REWARD_INTERSTITIAL_AD_ID_ANDROID',
-          defaultValue: 'ca-app-pub-3940256099942544/5354046379');
+          defaultValue: '');
 
   // iOS Release IDs (Injected via --dart-define)
-  static const String _bannerAdUnitIdIOSRelease = String.fromEnvironment(
-      'BANNER_ID_IOS',
-      defaultValue: 'ca-app-pub-3940256099942544/2934735716');
-  static const String _openAdUnitIDIOSRelease = String.fromEnvironment(
-      'OPEN_AD_ID_IOS',
-      defaultValue: 'ca-app-pub-3940256099942544/5575463023');
-  static const String _rewardedAdIDIOSRelease = String.fromEnvironment(
-      'REWARD_AD_ID_IOS',
-      defaultValue: 'ca-app-pub-3940256099942544/1712485313');
+  static const String _bannerAdUnitIdIOSRelease =
+      String.fromEnvironment('BANNER_ID_IOS', defaultValue: '');
+  static const String _openAdUnitIDIOSRelease =
+      String.fromEnvironment('OPEN_AD_ID_IOS', defaultValue: '');
+  static const String _rewardedAdIDIOSRelease =
+      String.fromEnvironment('REWARD_AD_ID_IOS', defaultValue: '');
   static const String _rewardedInterstitialAdIDIOSRelease =
-      String.fromEnvironment('REWARD_INTERSTITIAL_AD_ID_IOS',
-          defaultValue: 'ca-app-pub-3940256099942544/6978759866');
+      String.fromEnvironment('REWARD_INTERSTITIAL_AD_ID_IOS', defaultValue: '');
+
+  static const List<String> _releaseAdUnitIds = [
+    _bannerAdUnitIdAndroidRelease,
+    _openAdUnitIDAndroidRelease,
+    _rewardedAdIDAndroidRelease,
+    _rewardedInterstitialAdIDAndroidRelease,
+    _bannerAdUnitIdIOSRelease,
+    _openAdUnitIDIOSRelease,
+    _rewardedAdIDIOSRelease,
+    _rewardedInterstitialAdIDIOSRelease,
+  ];
+
+  static bool get releaseConfigurationIsValid => _releaseAdUnitIds.every(
+        (id) => id.isNotEmpty && !id.contains('ca-app-pub-3940256099942544/'),
+      );
+
+  static void logReleaseConfigurationStatus() {
+    if (kDebugMode) return;
+    if (releaseConfigurationIsValid) {
+      debugPrint(
+        'Release configuration check passed: all 8 production ad-unit IDs resolved.',
+      );
+    } else {
+      debugPrint(
+        'Release configuration check failed: ads are disabled because a production ad-unit ID is missing or invalid.',
+      );
+    }
+  }
 
   static String get bannerAdUnitId {
     if (disableAllAdsForScreenshot) return "";
@@ -107,17 +131,67 @@ class AdsManager {
 
   static bool get canRequestAds {
     return isInitialized.value &&
+        (kDebugMode || releaseConfigurationIsValid) &&
         !isAdsRemoved.value &&
         !isPurchaseFlowActive.value &&
         !disableAllAdsForScreenshot;
   }
 
+  static Future<bool> gatherConsent() async {
+    if (!Platform.isAndroid && !Platform.isIOS) return false;
+
+    final result = Completer<bool>();
+
+    Future<void> finish() async {
+      await _refreshPrivacyOptionsRequirement();
+      final canRequest = await ConsentInformation.instance.canRequestAds();
+      if (!result.isCompleted) result.complete(canRequest);
+    }
+
+    try {
+      ConsentInformation.instance.requestConsentInfoUpdate(
+        ConsentRequestParameters(),
+        () async {
+          await ConsentForm.loadAndShowConsentFormIfRequired((_) {});
+          await finish();
+        },
+        (_) async => finish(),
+      );
+    } catch (_) {
+      await finish();
+    }
+
+    return result.future;
+  }
+
+  static Future<void> showPrivacyOptionsForm() async {
+    await ConsentForm.showPrivacyOptionsForm((_) {});
+    await _refreshPrivacyOptionsRequirement();
+  }
+
+  static Future<void> _refreshPrivacyOptionsRequirement() async {
+    final status =
+        await ConsentInformation.instance.getPrivacyOptionsRequirementStatus();
+    privacyOptionsRequired.value =
+        status == PrivacyOptionsRequirementStatus.required;
+  }
+
   static Future<void> initialize({required bool adsRemoved}) async {
     isAdsRemoved.value = adsRemoved;
-    if (adsRemoved || isInitialized.value || disableAllAdsForScreenshot) {
+    if (adsRemoved ||
+        isInitialized.value ||
+        disableAllAdsForScreenshot ||
+        (!kDebugMode && !releaseConfigurationIsValid)) {
       return;
     }
 
+    await MobileAds.instance.updateRequestConfiguration(
+      RequestConfiguration(
+        maxAdContentRating: MaxAdContentRating.g,
+        tagForChildDirectedTreatment: TagForChildDirectedTreatment.no,
+        tagForUnderAgeOfConsent: TagForUnderAgeOfConsent.unspecified,
+      ),
+    );
     await MobileAds.instance.initialize();
     debugPrintID();
     isInitialized.value = true;

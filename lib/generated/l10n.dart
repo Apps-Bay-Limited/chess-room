@@ -74,6 +74,16 @@ class S {
     return Intl.message('Settings', name: 'Settings', desc: '', args: []);
   }
 
+  /// `Privacy Choices`
+  String get Privacy_Choices {
+    return Intl.message(
+      'Privacy Choices',
+      name: 'Privacy_Choices',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `AI Difficulty`
   String get AI_Difficulty {
     return Intl.message(
