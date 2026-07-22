@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.3.0+11
+
+### Fixed
+- Removed an empty tracking-domains declaration from the iOS privacy manifest to satisfy App Store validation.
+- Added release validation for the relationship between `NSPrivacyTracking` and `NSPrivacyTrackingDomains`.
+
 ## 1.3.0+10
 
 ### Added

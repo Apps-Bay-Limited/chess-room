@@ -9,6 +9,7 @@ ads_config_file="lib/config/ads_release.json"
 android_properties_file="android/local.properties"
 android_signing_file="android/key.properties"
 ios_secret_file="ios/Secret.xcconfig"
+ios_privacy_manifest="ios/Runner/PrivacyInfo.xcprivacy"
 test_admob_publisher="3940256099942544"
 
 fail() {
@@ -62,6 +63,18 @@ validate_ios() {
     fail "GADApplicationIdentifier is missing or invalid in $ios_secret_file"
   grep -Eq "^GADApplicationIdentifier[[:space:]]*=[[:space:]]*ca-app-pub-$test_admob_publisher~" "$ios_secret_file" &&
     fail "GADApplicationIdentifier in $ios_secret_file is still a Google test ID"
+
+  test -f "$ios_privacy_manifest" || fail "$ios_privacy_manifest is missing"
+  plutil -lint "$ios_privacy_manifest" >/dev/null || fail "$ios_privacy_manifest is not a valid plist"
+  privacy_tracking="$(plutil -extract NSPrivacyTracking raw -o - "$ios_privacy_manifest" 2>/dev/null || true)"
+  privacy_domains="$(plutil -extract NSPrivacyTrackingDomains json -o - "$ios_privacy_manifest" 2>/dev/null || true)"
+  if test -n "$privacy_domains"; then
+    privacy_domain_count="$(printf '%s' "$privacy_domains" | jq 'length')"
+    test "$privacy_domain_count" -gt 0 ||
+      fail "NSPrivacyTrackingDomains must be omitted instead of declared as an empty array"
+    test "$privacy_tracking" = "true" ||
+      fail "NSPrivacyTracking must be true when NSPrivacyTrackingDomains is present"
+  fi
   return 0
 }
 
