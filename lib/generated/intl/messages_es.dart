@@ -126,7 +126,17 @@ class MessageLookup extends MessageLookupByLibrary {
     "Classical_Music_Box": MessageLookupByLibrary.simpleMessage(
       "Caja de música clásica",
     ),
+    "Continue_Game": MessageLookupByLibrary.simpleMessage("Continuar partida"),
+    "Continue_Game_Description": MessageLookupByLibrary.simpleMessage(
+      "Retoma donde lo dejaste",
+    ),
     "Correct": MessageLookupByLibrary.simpleMessage("¡Correcto! Jaque mate."),
+    "Daily_Practice_Complete": MessageLookupByLibrary.simpleMessage(
+      "Reto de hoy completado · sigue practicando",
+    ),
+    "Daily_Practice_Ready": MessageLookupByLibrary.simpleMessage(
+      "Un nuevo reto para hoy",
+    ),
     "Daily_Puzzle": MessageLookupByLibrary.simpleMessage("Problema diario"),
     "Done": MessageLookupByLibrary.simpleMessage("Hecho"),
     "Draw": MessageLookupByLibrary.simpleMessage("Tablas"),
@@ -173,6 +183,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "Instant_Face": MessageLookupByLibrary.simpleMessage("Instant Face"),
     "Mate_In_One": MessageLookupByLibrary.simpleMessage("Mate en uno"),
+    "Mate_In_Two": MessageLookupByLibrary.simpleMessage("Mate en dos"),
     "Medium": MessageLookupByLibrary.simpleMessage("Media"),
     "Metronome_Go": MessageLookupByLibrary.simpleMessage("Metronome Go"),
     "Minesweeper_Go": MessageLookupByLibrary.simpleMessage("Minesweeper Go"),
@@ -276,6 +287,32 @@ class MessageLookup extends MessageLookupByLibrary {
     "Puzzle_Complete": MessageLookupByLibrary.simpleMessage(
       "¡Problema completado!",
     ),
+    "Puzzle_Easy": MessageLookupByLibrary.simpleMessage("Fácil"),
+    "Puzzle_Explain_Back_Rank": MessageLookupByLibrary.simpleMessage(
+      "Los peones bloquean la salida del rey. Da jaque en la última fila para terminar la partida.",
+    ),
+    "Puzzle_Explain_Bishop_Mate": MessageLookupByLibrary.simpleMessage(
+      "Coordina el alfil con tus otras piezas para cubrir las casillas de escape del rey.",
+    ),
+    "Puzzle_Explain_Combination": MessageLookupByLibrary.simpleMessage(
+      "Usa jaques forzados para limitar las respuestas y termina con jaque mate.",
+    ),
+    "Puzzle_Explain_Fork": MessageLookupByLibrary.simpleMessage(
+      "Da jaque al rey y ataca otra pieza valiosa al mismo tiempo.",
+    ),
+    "Puzzle_Explain_Knight_Mate": MessageLookupByLibrary.simpleMessage(
+      "El caballo da jaque al rey mientras tus otras piezas cubren sus casillas de escape.",
+    ),
+    "Puzzle_Explain_Promotion": MessageLookupByLibrary.simpleMessage(
+      "Corona el peón de forma segura para conseguir una dama.",
+    ),
+    "Puzzle_Explain_Queen_Net": MessageLookupByLibrary.simpleMessage(
+      "Coordina la dama con las piezas de apoyo para cubrir todas las casillas de escape.",
+    ),
+    "Puzzle_Explain_Rook_Mate": MessageLookupByLibrary.simpleMessage(
+      "Corta las vías de escape del rey y después da jaque por el borde del tablero.",
+    ),
+    "Puzzle_Hard": MessageLookupByLibrary.simpleMessage("Difícil"),
     "Puzzle_Instruction": MessageLookupByLibrary.simpleMessage(
       "Juegan blancas o negras. Encuentra el mate en una jugada.",
     ),
@@ -285,12 +322,26 @@ class MessageLookup extends MessageLookupByLibrary {
     "Puzzle_Library_Description": MessageLookupByLibrary.simpleMessage(
       "Practica temas específicos a tu ritmo. El progreso se guarda en este dispositivo.",
     ),
+    "Puzzle_Line_Progress": MessageLookupByLibrary.simpleMessage(
+      "Continúa la combinación",
+    ),
+    "Puzzle_Medium": MessageLookupByLibrary.simpleMessage("Media"),
     "Puzzle_Number": m5,
+    "Puzzle_Practice_Next": MessageLookupByLibrary.simpleMessage(
+      "Seguir practicando",
+    ),
     "Puzzle_Solved": MessageLookupByLibrary.simpleMessage(
       "El problema de hoy está completado.",
     ),
     "Puzzle_Streak": m6,
+    "Puzzle_Why_This_Works": MessageLookupByLibrary.simpleMessage(
+      "Por qué funciona",
+    ),
     "Puzzles_Solved": m7,
+    "Quick_Play": MessageLookupByLibrary.simpleMessage("Partida rápida"),
+    "Quick_Play_Description": MessageLookupByLibrary.simpleMessage(
+      "Juega contra la IA con tus últimos ajustes",
+    ),
     "Remove_Ads": MessageLookupByLibrary.simpleMessage("Eliminar anuncios"),
     "Remove_Ads_Description": MessageLookupByLibrary.simpleMessage(
       "Elimina los anuncios de esta aplicación para siempre.",
@@ -305,12 +356,21 @@ class MessageLookup extends MessageLookupByLibrary {
       "La eliminación de anuncios no está disponible en este momento.",
     ),
     "Remove_Ads_With_Price": m8,
+    "Replace_Unfinished_Game": MessageLookupByLibrary.simpleMessage(
+      "¿Empezar una nueva partida?",
+    ),
+    "Replace_Unfinished_Game_Description": MessageLookupByLibrary.simpleMessage(
+      "Se reemplazará tu partida sin terminar.",
+    ),
     "Replay": MessageLookupByLibrary.simpleMessage("Reproducir"),
     "Restore_Not_Found": MessageLookupByLibrary.simpleMessage(
       "No se encontró ninguna compra anterior para eliminar anuncios.",
     ),
     "Restore_Purchases": MessageLookupByLibrary.simpleMessage(
       "Restaurar compras",
+    ),
+    "Resume_Game_Unavailable": MessageLookupByLibrary.simpleMessage(
+      "No se pudo restaurar esta partida. Puedes empezar una nueva.",
     ),
     "Review_Game": MessageLookupByLibrary.simpleMessage(
       "Revisar el mayor error",
@@ -331,13 +391,22 @@ class MessageLookup extends MessageLookupByLibrary {
     "Stalemate": MessageLookupByLibrary.simpleMessage("Ahogado"),
     "Start": MessageLookupByLibrary.simpleMessage("Empezar"),
     "Sudoku_Lover": MessageLookupByLibrary.simpleMessage("Sudoku Lover"),
+    "Theme_Back_Rank": MessageLookupByLibrary.simpleMessage("Mate del pasillo"),
+    "Theme_Bishop_Mate": MessageLookupByLibrary.simpleMessage("Mate con alfil"),
     "Theme_Checkmate": MessageLookupByLibrary.simpleMessage("Jaque mate"),
+    "Theme_Combination": MessageLookupByLibrary.simpleMessage("Combinaciones"),
+    "Theme_Double_Attack": MessageLookupByLibrary.simpleMessage("Ataque doble"),
     "Theme_Forks": MessageLookupByLibrary.simpleMessage(
       "Horquillas de caballo",
+    ),
+    "Theme_Knight_Mate": MessageLookupByLibrary.simpleMessage(
+      "Mate con caballo",
     ),
     "Theme_Promotion": MessageLookupByLibrary.simpleMessage(
       "Promoción de peón",
     ),
+    "Theme_Queen_Net": MessageLookupByLibrary.simpleMessage("Mate con dama"),
+    "Theme_Rook_Mate": MessageLookupByLibrary.simpleMessage("Mate con torre"),
     "Time_Limit": MessageLookupByLibrary.simpleMessage("Límite de tiempo"),
     "Tip": MessageLookupByLibrary.simpleMessage("Consejo"),
     "Tip_Button": MessageLookupByLibrary.simpleMessage(

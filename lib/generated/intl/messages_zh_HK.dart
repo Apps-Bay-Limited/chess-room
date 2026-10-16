@@ -106,7 +106,15 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "Chess_Tips_Title": MessageLookupByLibrary.simpleMessage("新手技巧"),
     "Classical_Music_Box": MessageLookupByLibrary.simpleMessage("古典音樂盒"),
+    "Continue_Game": MessageLookupByLibrary.simpleMessage("繼續對局"),
+    "Continue_Game_Description": MessageLookupByLibrary.simpleMessage(
+      "從上次停下的地方繼續",
+    ),
     "Correct": MessageLookupByLibrary.simpleMessage("正確！將殺。"),
+    "Daily_Practice_Complete": MessageLookupByLibrary.simpleMessage(
+      "今日已完成 · 繼續練習",
+    ),
+    "Daily_Practice_Ready": MessageLookupByLibrary.simpleMessage("今天的新挑戰"),
     "Daily_Puzzle": MessageLookupByLibrary.simpleMessage("每日棋題"),
     "Done": MessageLookupByLibrary.simpleMessage("完成"),
     "Draw": MessageLookupByLibrary.simpleMessage("和棋"),
@@ -139,6 +147,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "Instant_Face": MessageLookupByLibrary.simpleMessage("Instant_Face"),
     "Mate_In_One": MessageLookupByLibrary.simpleMessage("一步將殺"),
+    "Mate_In_Two": MessageLookupByLibrary.simpleMessage("兩步將殺"),
     "Medium": MessageLookupByLibrary.simpleMessage("中等"),
     "Metronome_Go": MessageLookupByLibrary.simpleMessage("打拍節拍器"),
     "Minesweeper_Go": MessageLookupByLibrary.simpleMessage("經典掃雷"),
@@ -202,6 +211,32 @@ class MessageLookup extends MessageLookupByLibrary {
     "Purchase_Restored": MessageLookupByLibrary.simpleMessage("購買已恢復，廣告已移除。"),
     "Purchase_Success": MessageLookupByLibrary.simpleMessage("購買完成，廣告已移除。"),
     "Puzzle_Complete": MessageLookupByLibrary.simpleMessage("棋題完成！"),
+    "Puzzle_Easy": MessageLookupByLibrary.simpleMessage("簡單"),
+    "Puzzle_Explain_Back_Rank": MessageLookupByLibrary.simpleMessage(
+      "兵擋住了王的退路。沿底線將軍，結束對局。",
+    ),
+    "Puzzle_Explain_Bishop_Mate": MessageLookupByLibrary.simpleMessage(
+      "讓象與其他棋子配合，控制王的逃脫格。",
+    ),
+    "Puzzle_Explain_Combination": MessageLookupByLibrary.simpleMessage(
+      "連續將軍，限制對方的應對，最後完成將殺。",
+    ),
+    "Puzzle_Explain_Fork": MessageLookupByLibrary.simpleMessage(
+      "將軍的同時，攻擊另一枚價值較高的棋子。",
+    ),
+    "Puzzle_Explain_Knight_Mate": MessageLookupByLibrary.simpleMessage(
+      "用馬將軍，同時讓其他棋子控制王的逃脫格。",
+    ),
+    "Puzzle_Explain_Promotion": MessageLookupByLibrary.simpleMessage(
+      "讓兵安全升變，獲得一個后。",
+    ),
+    "Puzzle_Explain_Queen_Net": MessageLookupByLibrary.simpleMessage(
+      "讓后與支援棋子配合，控制所有逃脫格。",
+    ),
+    "Puzzle_Explain_Rook_Mate": MessageLookupByLibrary.simpleMessage(
+      "封鎖王的逃脫格，再沿棋盤邊緣將軍。",
+    ),
+    "Puzzle_Hard": MessageLookupByLibrary.simpleMessage("困難"),
     "Puzzle_Instruction": MessageLookupByLibrary.simpleMessage(
       "輪到白方或黑方。找出一步將殺。",
     ),
@@ -209,10 +244,18 @@ class MessageLookup extends MessageLookupByLibrary {
     "Puzzle_Library_Description": MessageLookupByLibrary.simpleMessage(
       "按主題自由練習，進度會儲存在此裝置上。",
     ),
+    "Puzzle_Line_Progress": MessageLookupByLibrary.simpleMessage("繼續組合戰術"),
+    "Puzzle_Medium": MessageLookupByLibrary.simpleMessage("中等"),
     "Puzzle_Number": m5,
+    "Puzzle_Practice_Next": MessageLookupByLibrary.simpleMessage("繼續練習"),
     "Puzzle_Solved": MessageLookupByLibrary.simpleMessage("今日棋題已完成。"),
     "Puzzle_Streak": m6,
+    "Puzzle_Why_This_Works": MessageLookupByLibrary.simpleMessage("為何這步有效"),
     "Puzzles_Solved": m7,
+    "Quick_Play": MessageLookupByLibrary.simpleMessage("快速對局"),
+    "Quick_Play_Description": MessageLookupByLibrary.simpleMessage(
+      "使用上次的設定與 AI 對戰",
+    ),
     "Remove_Ads": MessageLookupByLibrary.simpleMessage("移除廣告"),
     "Remove_Ads_Description": MessageLookupByLibrary.simpleMessage(
       "永久移除此 App 中的廣告。",
@@ -223,11 +266,18 @@ class MessageLookup extends MessageLookupByLibrary {
       "移除廣告暫時無法使用。",
     ),
     "Remove_Ads_With_Price": m8,
+    "Replace_Unfinished_Game": MessageLookupByLibrary.simpleMessage("開始新對局？"),
+    "Replace_Unfinished_Game_Description": MessageLookupByLibrary.simpleMessage(
+      "未完成的對局將被取代。",
+    ),
     "Replay": MessageLookupByLibrary.simpleMessage("重播"),
     "Restore_Not_Found": MessageLookupByLibrary.simpleMessage(
       "未找到之前的移除廣告購買記錄。",
     ),
     "Restore_Purchases": MessageLookupByLibrary.simpleMessage("恢復購買"),
+    "Resume_Game_Unavailable": MessageLookupByLibrary.simpleMessage(
+      "無法恢復此對局。你可以開始新對局。",
+    ),
     "Review_Game": MessageLookupByLibrary.simpleMessage("復盤最大失誤"),
     "Review_Move_Title": m9,
     "Saving_Ambulance": MessageLookupByLibrary.simpleMessage("拯救救護車!"),
@@ -239,9 +289,16 @@ class MessageLookup extends MessageLookupByLibrary {
     "Stalemate": MessageLookupByLibrary.simpleMessage("和棋"),
     "Start": MessageLookupByLibrary.simpleMessage("開始"),
     "Sudoku_Lover": MessageLookupByLibrary.simpleMessage("數獨迷"),
+    "Theme_Back_Rank": MessageLookupByLibrary.simpleMessage("底線將殺"),
+    "Theme_Bishop_Mate": MessageLookupByLibrary.simpleMessage("象將殺"),
     "Theme_Checkmate": MessageLookupByLibrary.simpleMessage("將殺"),
+    "Theme_Combination": MessageLookupByLibrary.simpleMessage("組合戰術"),
+    "Theme_Double_Attack": MessageLookupByLibrary.simpleMessage("雙重攻擊"),
     "Theme_Forks": MessageLookupByLibrary.simpleMessage("馬的雙攻"),
+    "Theme_Knight_Mate": MessageLookupByLibrary.simpleMessage("馬將殺"),
     "Theme_Promotion": MessageLookupByLibrary.simpleMessage("兵升變"),
+    "Theme_Queen_Net": MessageLookupByLibrary.simpleMessage("后將殺"),
+    "Theme_Rook_Mate": MessageLookupByLibrary.simpleMessage("車將殺"),
     "Time_Limit": MessageLookupByLibrary.simpleMessage("時間限制"),
     "Tip": MessageLookupByLibrary.simpleMessage("最佳走法提示"),
     "Tip_Button": MessageLookupByLibrary.simpleMessage("顯示提示按鈕"),

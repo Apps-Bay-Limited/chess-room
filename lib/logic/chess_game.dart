@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:async/async.dart';
 import 'package:chess_room/logic/chess_piece_sprite.dart';
 import 'package:chess_room/logic/chess_tip.dart';
@@ -35,23 +37,38 @@ class ChessGame extends Game with TapDetector {
   int? checkHintTile;
   Move? latestMove;
   Move? tipMove;
+  int _aiRequestGeneration = 0;
 
-  ChessGame(this.appModel, this.context) {
+  ChessGame(this.appModel, this.context,
+      {ChessBoard? restoredBoard, bool startAI = true}) {
+    if (restoredBoard != null) board = restoredBoard;
     width = MediaQuery.of(context).size.width - 68;
     tileSize = width / 8;
     aiOperation = CancelableOperation.fromValue(null);
-    for (var piece in board.player1Pieces + board.player2Pieces) {
+    // Undo can restore captured pieces, which also need a sprite after resume.
+    final pieces = <ChessPiece>{
+      ...board.player1Pieces,
+      ...board.player2Pieces,
+      for (final entry in [...board.moveStack, ...board.redoStack]) ...[
+        entry.movedPiece,
+        if (entry.takenPiece != null) entry.takenPiece!,
+        if (entry.enPassantPiece != null) entry.enPassantPiece!,
+      ],
+    };
+    for (var piece in pieces) {
       spriteMap[piece] = ChessPieceSprite(piece, appModel.pieceTheme);
     }
     _initSpritePositions();
-    if (appModel.isAIsTurn) {
-      _aiMove();
+    latestMove = board.moveStack.isEmpty ? null : board.moveStack.last.move;
+    if (kingInCheck(appModel.turn, board)) {
+      checkHintTile = kingForPlayer(appModel.turn, board)?.tile;
     }
+    if (startAI) startAIIfNeeded();
   }
 
   @override
   void onTapDown(TapDownInfo info) {
-    if (appModel.gameOver || !appModel.isAIsTurn) {
+    if (!appModel.isGamePaused && !appModel.gameOver && !appModel.isAIsTurn) {
       _cancelTip();
       tipMove = null;
       var tile = _vector2ToTile(info.eventPosition.widget);
@@ -102,7 +119,7 @@ class ChessGame extends Game with TapDetector {
   }
 
   void _initSpritePositions() {
-    for (var piece in board.player1Pieces + board.player2Pieces) {
+    for (var piece in spriteMap.keys) {
       spriteMap[piece]?.initSpritePosition(tileSize, appModel);
     }
   }
@@ -135,8 +152,26 @@ class ChessGame extends Game with TapDetector {
     }
   }
 
+  void startAIIfNeeded() {
+    if (appModel.isAIsTurn &&
+        !appModel.gameOver &&
+        !appModel.isGamePaused &&
+        !board.tiles.any((piece) => piece?.type == ChessPieceType.promotion)) {
+      _aiMove();
+    }
+  }
+
+  bool _aiRequestIsCurrent(int generation) =>
+      generation == _aiRequestGeneration &&
+      identical(appModel.game, this) &&
+      !appModel.gameOver &&
+      !appModel.isGamePaused &&
+      appModel.isAIsTurn;
+
   void _aiMove() async {
-    await Future.delayed(Duration(milliseconds: 500));
+    final generation = ++_aiRequestGeneration;
+    await Future<void>.delayed(const Duration(milliseconds: 500));
+    if (!_aiRequestIsCurrent(generation)) return;
     var args = Map();
     args['aiPlayer'] = appModel.aiTurn;
     args['aiDifficulty'] = appModel.aiDifficulty;
@@ -145,7 +180,8 @@ class ChessGame extends Game with TapDetector {
       compute(calculateAIMove, args),
     );
     aiOperation.value.then((move) {
-      if (move == null || appModel.gameOver) {
+      if (!_aiRequestIsCurrent(generation)) return;
+      if (move == null) {
         appModel.endGame();
       } else {
         validMoves = [];
@@ -159,12 +195,14 @@ class ChessGame extends Game with TapDetector {
         }
       }
     }).onError((error, stackTrace) {
+      if (!_aiRequestIsCurrent(generation)) return;
       debugPrint('AI move calculation failed: $error');
       appModel.endGame();
     });
   }
 
   void cancelAIMove() {
+    _aiRequestGeneration++;
     aiOperation.cancel();
     _cancelTip();
   }
@@ -179,6 +217,7 @@ class ChessGame extends Game with TapDetector {
       _undoOpeningMove();
       appModel.changeTurn();
     }
+    unawaited(appModel.saveInProgressGame());
   }
 
   void undoTwoMoves() {
@@ -193,6 +232,7 @@ class ChessGame extends Game with TapDetector {
     } else {
       _undoOpeningMove();
     }
+    unawaited(appModel.saveInProgressGame());
   }
 
   void _undoOpeningMove() {
@@ -201,6 +241,7 @@ class ChessGame extends Game with TapDetector {
     latestMove = null;
     checkHintTile = null;
     appModel.popMoveMeta();
+    appModel.undoEndGame();
   }
 
   void redoMove() {
@@ -306,8 +347,9 @@ class ChessGame extends Game with TapDetector {
     }
     selectedPiece = null;
     if (appModel.isAIsTurn && clearRedo && changeTurn) {
-      _aiMove();
+      startAIIfNeeded();
     }
+    unawaited(appModel.saveInProgressGame());
   }
 
   int _vector2ToTile(Vector2 vector2) {
@@ -323,7 +365,10 @@ class ChessGame extends Game with TapDetector {
   }
 
   Future<void> showTip() async {
-    if (appModel.gameOver || appModel.isAIsTurn || appModel.tipInProgress) {
+    if (appModel.gameOver ||
+        appModel.isGamePaused ||
+        appModel.isAIsTurn ||
+        appModel.tipInProgress) {
       return;
     }
     final moveCount = board.moveCount;

@@ -19,10 +19,39 @@ import 'package:chess_room/views/components/chess_view/game_tip_button.dart';
 import 'package:chess_room/views/components/main_menu_view/game_options/time_limit_picker.dart';
 import 'package:chess_room/views/components/shared/menu_button.dart';
 import 'package:chess_room/views/components/shared/position_board.dart';
+import 'package:chess_room/views/components/main_menu_view/home_play_actions.dart';
 import 'package:chess_room/views/components/settings_view/settings_navigation_buttons.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter/widget_previews.dart';
+
+@Preview(
+  name: 'Home: continue and daily progress',
+  group: 'Retention',
+  size: Size(375, 640),
+)
+@Preview(
+  name: 'Home actions: landscape',
+  group: 'Retention',
+  size: Size(700, 390),
+)
+Widget homePlayActionsPreview() {
+  return _localizedPreview(
+    SingleChildScrollView(
+      padding: const EdgeInsets.all(24),
+      child: Center(
+        child: HomePlayActions(
+          hasSavedGame: true,
+          solvedToday: false,
+          streak: 4,
+          onContinue: previewTap,
+          onQuickPlay: previewTap,
+          onDailyPuzzle: previewTap,
+        ),
+      ),
+    ),
+  );
+}
 
 @Preview(
   name: 'Daily puzzle board',

@@ -118,7 +118,17 @@ class MessageLookup extends MessageLookupByLibrary {
     "Classical_Music_Box": MessageLookupByLibrary.simpleMessage(
       "صندوق الموسيقى الكلاسيكية",
     ),
+    "Continue_Game": MessageLookupByLibrary.simpleMessage("متابعة المباراة"),
+    "Continue_Game_Description": MessageLookupByLibrary.simpleMessage(
+      "تابع من حيث توقفت",
+    ),
     "Correct": MessageLookupByLibrary.simpleMessage("صحيح! كش مات."),
+    "Daily_Practice_Complete": MessageLookupByLibrary.simpleMessage(
+      "اكتمل تدريب اليوم · واصل التمرين",
+    ),
+    "Daily_Practice_Ready": MessageLookupByLibrary.simpleMessage(
+      "تحدٍّ جديد لهذا اليوم",
+    ),
     "Daily_Puzzle": MessageLookupByLibrary.simpleMessage("لغز اليوم"),
     "Done": MessageLookupByLibrary.simpleMessage("تم"),
     "Draw": MessageLookupByLibrary.simpleMessage("تعادل"),
@@ -157,6 +167,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "Instant_Face": MessageLookupByLibrary.simpleMessage("الوجه الفوري"),
     "Mate_In_One": MessageLookupByLibrary.simpleMessage("كش مات في نقلة واحدة"),
+    "Mate_In_Two": MessageLookupByLibrary.simpleMessage("مات في نقلتين"),
     "Medium": MessageLookupByLibrary.simpleMessage("متوسط"),
     "Metronome_Go": MessageLookupByLibrary.simpleMessage("بندول الإيقاع Go"),
     "Minesweeper_Go": MessageLookupByLibrary.simpleMessage("كاسحة الألغام Go"),
@@ -248,6 +259,32 @@ class MessageLookup extends MessageLookupByLibrary {
       "اكتملت عملية الشراء. تمت إزالة الإعلانات.",
     ),
     "Puzzle_Complete": MessageLookupByLibrary.simpleMessage("اكتمل اللغز!"),
+    "Puzzle_Easy": MessageLookupByLibrary.simpleMessage("سهل"),
+    "Puzzle_Explain_Back_Rank": MessageLookupByLibrary.simpleMessage(
+      "تمنع البيادق الملك من الهروب. وجّه كش على الصف الخلفي لإنهاء المباراة.",
+    ),
+    "Puzzle_Explain_Bishop_Mate": MessageLookupByLibrary.simpleMessage(
+      "نسّق بين الفيل وقطعك الأخرى لتغطية مربعات هروب الملك.",
+    ),
+    "Puzzle_Explain_Combination": MessageLookupByLibrary.simpleMessage(
+      "استخدم نقلات الكش الإجبارية لتقليل الردود، ثم أنهِ الهجوم بكش مات.",
+    ),
+    "Puzzle_Explain_Fork": MessageLookupByLibrary.simpleMessage(
+      "وجّه كش للملك وهاجم قطعة قيّمة أخرى في الوقت نفسه.",
+    ),
+    "Puzzle_Explain_Knight_Mate": MessageLookupByLibrary.simpleMessage(
+      "يوجّه الحصان كش للملك بينما تغطي قطعك الأخرى مربعات هروبه.",
+    ),
+    "Puzzle_Explain_Promotion": MessageLookupByLibrary.simpleMessage(
+      "رقِّ البيدق بأمان للحصول على ملكة.",
+    ),
+    "Puzzle_Explain_Queen_Net": MessageLookupByLibrary.simpleMessage(
+      "نسّق بين الملكة والقطع المساندة لتغطية جميع مربعات الهروب.",
+    ),
+    "Puzzle_Explain_Rook_Mate": MessageLookupByLibrary.simpleMessage(
+      "اغلق مربعات هروب الملك، ثم وجّه كش بمحاذاة حافة الرقعة.",
+    ),
+    "Puzzle_Hard": MessageLookupByLibrary.simpleMessage("صعب"),
     "Puzzle_Instruction": MessageLookupByLibrary.simpleMessage(
       "دور الأبيض أو الأسود. أوجد كش مات في نقلة واحدة.",
     ),
@@ -255,10 +292,24 @@ class MessageLookup extends MessageLookupByLibrary {
     "Puzzle_Library_Description": MessageLookupByLibrary.simpleMessage(
       "تدرّب على موضوعات محددة بالسرعة التي تناسبك. يُحفظ تقدمك على هذا الجهاز.",
     ),
+    "Puzzle_Line_Progress": MessageLookupByLibrary.simpleMessage(
+      "أكمل التسلسل التكتيكي",
+    ),
+    "Puzzle_Medium": MessageLookupByLibrary.simpleMessage("متوسط"),
     "Puzzle_Number": m5,
+    "Puzzle_Practice_Next": MessageLookupByLibrary.simpleMessage(
+      "واصل التمرين",
+    ),
     "Puzzle_Solved": MessageLookupByLibrary.simpleMessage("اكتمل لغز اليوم."),
     "Puzzle_Streak": m6,
+    "Puzzle_Why_This_Works": MessageLookupByLibrary.simpleMessage(
+      "لماذا تنجح هذه الخطة",
+    ),
     "Puzzles_Solved": m7,
+    "Quick_Play": MessageLookupByLibrary.simpleMessage("لعب سريع"),
+    "Quick_Play_Description": MessageLookupByLibrary.simpleMessage(
+      "واجه الذكاء الاصطناعي بآخر إعداداتك",
+    ),
     "Remove_Ads": MessageLookupByLibrary.simpleMessage("إزالة الإعلانات"),
     "Remove_Ads_Description": MessageLookupByLibrary.simpleMessage(
       "إزالة الإعلانات نهائيًا من هذا التطبيق.",
@@ -273,12 +324,21 @@ class MessageLookup extends MessageLookupByLibrary {
       "إزالة الإعلانات غير متاحة حاليًا.",
     ),
     "Remove_Ads_With_Price": m8,
+    "Replace_Unfinished_Game": MessageLookupByLibrary.simpleMessage(
+      "بدء مباراة جديدة؟",
+    ),
+    "Replace_Unfinished_Game_Description": MessageLookupByLibrary.simpleMessage(
+      "ستُستبدل مباراتك غير المكتملة.",
+    ),
     "Replay": MessageLookupByLibrary.simpleMessage("إعادة اللعب"),
     "Restore_Not_Found": MessageLookupByLibrary.simpleMessage(
       "لم يتم العثور على عملية شراء سابقة لإزالة الإعلانات.",
     ),
     "Restore_Purchases": MessageLookupByLibrary.simpleMessage(
       "استعادة المشتريات",
+    ),
+    "Resume_Game_Unavailable": MessageLookupByLibrary.simpleMessage(
+      "تعذرت استعادة هذه المباراة. يمكنك بدء مباراة جديدة.",
     ),
     "Review_Game": MessageLookupByLibrary.simpleMessage("مراجعة أكبر خطأ"),
     "Review_Move_Title": m9,
@@ -297,9 +357,18 @@ class MessageLookup extends MessageLookupByLibrary {
     "Stalemate": MessageLookupByLibrary.simpleMessage("تعادل بالخنق"),
     "Start": MessageLookupByLibrary.simpleMessage("ابدأ"),
     "Sudoku_Lover": MessageLookupByLibrary.simpleMessage("عاشق السودوكو"),
+    "Theme_Back_Rank": MessageLookupByLibrary.simpleMessage("مات الصف الخلفي"),
+    "Theme_Bishop_Mate": MessageLookupByLibrary.simpleMessage("مات بالفيل"),
     "Theme_Checkmate": MessageLookupByLibrary.simpleMessage("كش مات"),
+    "Theme_Combination": MessageLookupByLibrary.simpleMessage(
+      "التكتيكات المركبة",
+    ),
+    "Theme_Double_Attack": MessageLookupByLibrary.simpleMessage("هجوم مزدوج"),
     "Theme_Forks": MessageLookupByLibrary.simpleMessage("شوكات الحصان"),
+    "Theme_Knight_Mate": MessageLookupByLibrary.simpleMessage("مات بالحصان"),
     "Theme_Promotion": MessageLookupByLibrary.simpleMessage("ترقية البيدق"),
+    "Theme_Queen_Net": MessageLookupByLibrary.simpleMessage("مات بالملكة"),
+    "Theme_Rook_Mate": MessageLookupByLibrary.simpleMessage("مات بالرخ"),
     "Time_Limit": MessageLookupByLibrary.simpleMessage("الحد الزمني"),
     "Tip": MessageLookupByLibrary.simpleMessage("تلميح"),
     "Tip_Button": MessageLookupByLibrary.simpleMessage("إظهار زر التلميح"),

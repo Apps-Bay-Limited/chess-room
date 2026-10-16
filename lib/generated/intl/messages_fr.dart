@@ -122,7 +122,19 @@ class MessageLookup extends MessageLookupByLibrary {
     "Classical_Music_Box": MessageLookupByLibrary.simpleMessage(
       "Boîte à musique classique",
     ),
+    "Continue_Game": MessageLookupByLibrary.simpleMessage(
+      "Reprendre la partie",
+    ),
+    "Continue_Game_Description": MessageLookupByLibrary.simpleMessage(
+      "Reprenez là où vous en étiez",
+    ),
     "Correct": MessageLookupByLibrary.simpleMessage("Correct ! Échec et mat."),
+    "Daily_Practice_Complete": MessageLookupByLibrary.simpleMessage(
+      "Défi du jour terminé · continuez à vous entraîner",
+    ),
+    "Daily_Practice_Ready": MessageLookupByLibrary.simpleMessage(
+      "Un nouveau défi pour aujourd’hui",
+    ),
     "Daily_Puzzle": MessageLookupByLibrary.simpleMessage("Problème du jour"),
     "Done": MessageLookupByLibrary.simpleMessage("Terminé"),
     "Draw": MessageLookupByLibrary.simpleMessage("Partie nulle"),
@@ -167,6 +179,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "Instant_Face": MessageLookupByLibrary.simpleMessage("Instant Face"),
     "Mate_In_One": MessageLookupByLibrary.simpleMessage("Mat en un"),
+    "Mate_In_Two": MessageLookupByLibrary.simpleMessage("Mat en deux coups"),
     "Medium": MessageLookupByLibrary.simpleMessage("Moyen"),
     "Metronome_Go": MessageLookupByLibrary.simpleMessage("Metronome Go"),
     "Minesweeper_Go": MessageLookupByLibrary.simpleMessage("Minesweeper Go"),
@@ -270,6 +283,32 @@ class MessageLookup extends MessageLookupByLibrary {
     "Puzzle_Complete": MessageLookupByLibrary.simpleMessage(
       "Problème terminé !",
     ),
+    "Puzzle_Easy": MessageLookupByLibrary.simpleMessage("Facile"),
+    "Puzzle_Explain_Back_Rank": MessageLookupByLibrary.simpleMessage(
+      "Les pions empêchent le roi de fuir. Faites échec sur la dernière rangée pour terminer la partie.",
+    ),
+    "Puzzle_Explain_Bishop_Mate": MessageLookupByLibrary.simpleMessage(
+      "Coordonnez le fou avec vos autres pièces pour contrôler les cases de fuite du roi.",
+    ),
+    "Puzzle_Explain_Combination": MessageLookupByLibrary.simpleMessage(
+      "Utilisez des échecs forcés pour limiter les réponses, puis terminez par un mat.",
+    ),
+    "Puzzle_Explain_Fork": MessageLookupByLibrary.simpleMessage(
+      "Faites échec au roi tout en attaquant une autre pièce de valeur.",
+    ),
+    "Puzzle_Explain_Knight_Mate": MessageLookupByLibrary.simpleMessage(
+      "Le cavalier fait échec au roi tandis que vos autres pièces contrôlent ses cases de fuite.",
+    ),
+    "Puzzle_Explain_Promotion": MessageLookupByLibrary.simpleMessage(
+      "Promouvez le pion en toute sécurité pour obtenir une dame.",
+    ),
+    "Puzzle_Explain_Queen_Net": MessageLookupByLibrary.simpleMessage(
+      "Coordonnez votre dame avec les pièces qui la soutiennent pour contrôler toutes les cases de fuite.",
+    ),
+    "Puzzle_Explain_Rook_Mate": MessageLookupByLibrary.simpleMessage(
+      "Coupez les voies de fuite du roi, puis faites échec le long du bord de l’échiquier.",
+    ),
+    "Puzzle_Hard": MessageLookupByLibrary.simpleMessage("Difficile"),
     "Puzzle_Instruction": MessageLookupByLibrary.simpleMessage(
       "Aux Blancs ou aux Noirs de jouer. Trouvez le mat en un coup.",
     ),
@@ -279,12 +318,26 @@ class MessageLookup extends MessageLookupByLibrary {
     "Puzzle_Library_Description": MessageLookupByLibrary.simpleMessage(
       "Entraînez-vous par thème à votre rythme. Votre progression est enregistrée sur cet appareil.",
     ),
+    "Puzzle_Line_Progress": MessageLookupByLibrary.simpleMessage(
+      "Poursuivez la combinaison",
+    ),
+    "Puzzle_Medium": MessageLookupByLibrary.simpleMessage("Moyen"),
     "Puzzle_Number": m5,
+    "Puzzle_Practice_Next": MessageLookupByLibrary.simpleMessage(
+      "Continuer à s’entraîner",
+    ),
     "Puzzle_Solved": MessageLookupByLibrary.simpleMessage(
       "Le problème du jour est terminé.",
     ),
     "Puzzle_Streak": m6,
+    "Puzzle_Why_This_Works": MessageLookupByLibrary.simpleMessage(
+      "Pourquoi cela fonctionne",
+    ),
     "Puzzles_Solved": m7,
+    "Quick_Play": MessageLookupByLibrary.simpleMessage("Partie rapide"),
+    "Quick_Play_Description": MessageLookupByLibrary.simpleMessage(
+      "Affrontez l’IA avec vos derniers réglages",
+    ),
     "Remove_Ads": MessageLookupByLibrary.simpleMessage(
       "Supprimer les publicités",
     ),
@@ -301,12 +354,21 @@ class MessageLookup extends MessageLookupByLibrary {
       "La suppression des publicités est actuellement indisponible.",
     ),
     "Remove_Ads_With_Price": m8,
+    "Replace_Unfinished_Game": MessageLookupByLibrary.simpleMessage(
+      "Commencer une nouvelle partie ?",
+    ),
+    "Replace_Unfinished_Game_Description": MessageLookupByLibrary.simpleMessage(
+      "Votre partie inachevée sera remplacée.",
+    ),
     "Replay": MessageLookupByLibrary.simpleMessage("Rejouer"),
     "Restore_Not_Found": MessageLookupByLibrary.simpleMessage(
       "Aucun achat antérieur de suppression des publicités n’a été trouvé.",
     ),
     "Restore_Purchases": MessageLookupByLibrary.simpleMessage(
       "Restaurer les achats",
+    ),
+    "Resume_Game_Unavailable": MessageLookupByLibrary.simpleMessage(
+      "Cette partie n’a pas pu être restaurée. Vous pouvez en commencer une nouvelle.",
     ),
     "Review_Game": MessageLookupByLibrary.simpleMessage(
       "Analyser la plus grosse erreur",
@@ -329,13 +391,24 @@ class MessageLookup extends MessageLookupByLibrary {
     "Stalemate": MessageLookupByLibrary.simpleMessage("Pat"),
     "Start": MessageLookupByLibrary.simpleMessage("Commencer"),
     "Sudoku_Lover": MessageLookupByLibrary.simpleMessage("Sudoku Lover"),
+    "Theme_Back_Rank": MessageLookupByLibrary.simpleMessage("Mat du couloir"),
+    "Theme_Bishop_Mate": MessageLookupByLibrary.simpleMessage("Mat au fou"),
     "Theme_Checkmate": MessageLookupByLibrary.simpleMessage("Échec et mat"),
+    "Theme_Combination": MessageLookupByLibrary.simpleMessage("Combinaisons"),
+    "Theme_Double_Attack": MessageLookupByLibrary.simpleMessage(
+      "Attaque double",
+    ),
     "Theme_Forks": MessageLookupByLibrary.simpleMessage(
       "Fourchettes de cavalier",
+    ),
+    "Theme_Knight_Mate": MessageLookupByLibrary.simpleMessage(
+      "Mat au cavalier",
     ),
     "Theme_Promotion": MessageLookupByLibrary.simpleMessage(
       "Promotion du pion",
     ),
+    "Theme_Queen_Net": MessageLookupByLibrary.simpleMessage("Mat à la dame"),
+    "Theme_Rook_Mate": MessageLookupByLibrary.simpleMessage("Mat à la tour"),
     "Time_Limit": MessageLookupByLibrary.simpleMessage("Limite de temps"),
     "Tip": MessageLookupByLibrary.simpleMessage("Conseil"),
     "Tip_Button": MessageLookupByLibrary.simpleMessage(

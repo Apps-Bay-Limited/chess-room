@@ -9,6 +9,8 @@ Welcome to the **Chess Room**! This repository contains the source code for the 
 - **Learn Chess Tactics**: Improve your skills with curated lessons and tutorials.
 - **Customizable Chess Boards**: Personalize the look and feel of your chessboard and pieces.
 - **Performance Analysis**: Track your progress and identify areas for improvement.
+- **Quick Play & Continue**: Start an AI match with your remembered settings or resume an automatically saved unfinished game. Local clocks pause while you are away.
+- **Daily Practice**: 71 offline daily puzzles and a 77-position training library, including mate-in-two combinations, hints, and explanations. Daily completion and streaks appear on the home screen.
 
 ## Installation
 

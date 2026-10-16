@@ -1,10 +1,14 @@
 import 'package:app_tracking_transparency/app_tracking_transparency.dart';
 import 'package:chess_room/features/daily_puzzle/daily_puzzle_page.dart';
+import 'package:chess_room/features/daily_puzzle/daily_puzzle_progress.dart';
 import 'package:chess_room/features/training/training_hub_page.dart';
 import 'package:chess_room/model/app_model.dart';
 import 'package:chess_room/util/in_app_reviewer_helper.dart';
 import 'package:chess_room/views/settings_view.dart';
 import 'package:chess_room/views/single_player_page.dart';
+import 'package:chess_room/views/chess_view.dart';
+import 'package:chess_room/views/components/main_menu_view/confirm_new_game.dart';
+import 'package:chess_room/views/components/main_menu_view/home_play_actions.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:provider/provider.dart';
@@ -21,13 +25,19 @@ class MainMenuView extends StatefulWidget {
   State<MainMenuView> createState() => _MainMenuViewState();
 }
 
-class _MainMenuViewState extends State<MainMenuView> {
+class _MainMenuViewState extends State<MainMenuView>
+    with WidgetsBindingObserver {
   AppLifecycleReactor? _appLifecycleReactor;
   AppOpenAdManager? _appOpenAdManager;
   AppModel? _appModel;
+  PuzzleProgress _dailyProgress =
+      const PuzzleProgress(streak: 0, solvedToday: false);
+  bool _openingGame = false;
+  bool _ready = false;
 
   @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
     _appModel?.purchaseService.removeListener(_handleRemoveAdsChanged);
     _stopAppOpenAds();
     super.dispose();
@@ -36,10 +46,79 @@ class _MainMenuViewState extends State<MainMenuView> {
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
+    _refreshDailyProgress();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      if (!mounted) return;
+      final appModel = context.read<AppModel>();
+      await appModel.initialization;
+      if (mounted) setState(() => _ready = true);
+    });
 
     if (!kIsWeb) {
       _initAppServices();
     }
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) _refreshDailyProgress();
+  }
+
+  Future<void> _refreshDailyProgress() async {
+    final progress =
+        await SharedPreferencesPuzzleProgressStore().load(DateTime.now());
+    if (mounted) setState(() => _dailyProgress = progress);
+  }
+
+  Future<void> _openGame(AppModel appModel, {bool resume = false}) async {
+    if (_openingGame) return;
+    setState(() => _openingGame = true);
+    try {
+      await appModel.initialization;
+      if (!mounted) return;
+      if (resume) {
+        final restored = await appModel.resumeGame(context);
+        if (!mounted) return;
+        if (!restored) {
+          await showCupertinoDialog<void>(
+            context: context,
+            builder: (dialogContext) => CupertinoAlertDialog(
+              content: Text(S.of(context).Resume_Game_Unavailable),
+              actions: [
+                CupertinoDialogAction(
+                  onPressed: () => Navigator.pop(dialogContext),
+                  child: Text(S.of(context).Done),
+                ),
+              ],
+            ),
+          );
+          return;
+        }
+      } else {
+        if (!await confirmNewGame(context, appModel) || !mounted) return;
+        await appModel.prepareQuickPlay();
+        if (!mounted) return;
+        appModel.newGame(context, notify: false);
+      }
+      if (!mounted) return;
+      await Navigator.push<void>(
+        context,
+        CupertinoPageRoute(builder: (_) => ChessView(appModel: appModel)),
+      );
+    } finally {
+      if (mounted) setState(() => _openingGame = false);
+    }
+  }
+
+  Future<void> _openDailyPuzzle(AppModel appModel) async {
+    await Navigator.push<void>(
+      context,
+      CupertinoPageRoute(
+        builder: (_) => DailyPuzzlePage(pieceTheme: appModel.pieceTheme),
+      ),
+    );
+    if (mounted) await _refreshDailyProgress();
   }
 
   Future<void> _initAppServices() async {
@@ -124,7 +203,7 @@ class _MainMenuViewState extends State<MainMenuView> {
 
   @override
   Widget build(BuildContext context) {
-    double width = MediaQuery.of(context).size.height < 800 ? 110 : 140;
+    double width = MediaQuery.of(context).size.height < 800 ? 72 : 100;
 
     return Consumer<AppModel>(
       builder: (context, appModel, child) {
@@ -134,20 +213,32 @@ class _MainMenuViewState extends State<MainMenuView> {
             children: [
               Expanded(
                 child: SingleChildScrollView(
-                  padding: const EdgeInsets.symmetric(vertical: 20),
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 20,
+                    horizontal: 24,
+                  ),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      const SizedBox(height: 20),
                       Container(
                         padding: EdgeInsets.fromLTRB(
-                            10, MediaQuery.of(context).padding.top + 30, 10, 0),
+                            10, MediaQuery.of(context).padding.top + 12, 10, 0),
                         child: Image.asset(
                           'assets/images/chess-piece.png',
                           width: width,
                         ),
                       ),
                       const SizedBox(height: 30),
+                      HomePlayActions(
+                        hasSavedGame: appModel.hasResumableGame,
+                        solvedToday: _dailyProgress.solvedToday,
+                        streak: _dailyProgress.streak,
+                        isLoading: !_ready || _openingGame,
+                        onContinue: () => _openGame(appModel, resume: true),
+                        onQuickPlay: () => _openGame(appModel),
+                        onDailyPuzzle: () => _openDailyPuzzle(appModel),
+                      ),
+                      const SizedBox(height: 20),
                       MenuButton(
                         key: const ValueKey('vs-ai-button'),
                         label: S.of(context).Vs_AI_Player,
@@ -171,21 +262,6 @@ class _MainMenuViewState extends State<MainMenuView> {
                             context,
                             CupertinoPageRoute(
                               builder: (context) => const SinglePlayerView(),
-                            ),
-                          );
-                        },
-                      ),
-                      const SizedBox(height: 20),
-                      MenuButton(
-                        key: const ValueKey('daily-puzzle-button'),
-                        label: S.of(context).Daily_Puzzle,
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            CupertinoPageRoute(
-                              builder: (context) => DailyPuzzlePage(
-                                pieceTheme: appModel.pieceTheme,
-                              ),
                             ),
                           );
                         },

@@ -13,19 +13,19 @@ void main() {
     for (final puzzle in dailyPuzzles) {
       test('${puzzle.id} has a legal checkmating solution', () {
         final position = chessPositionFromFen(puzzle.fen);
-        final move = moveFromUci(puzzle.solution);
-        final piece = position.board.tiles[move.from];
-
-        expect(piece, isNotNull);
-        expect(piece!.player, position.activePlayer);
-        expect(movesForPiece(piece, position.board), contains(move.to));
-
-        push(move, position.board);
-        final opponent = position.activePlayer == Player.player1
-            ? Player.player2
-            : Player.player1;
-        expect(kingInCheck(opponent, position.board), isTrue);
-        expect(hasNoLegalMoves(opponent, position.board), isTrue);
+        var player = position.activePlayer;
+        for (final uci in puzzle.solutionLine) {
+          final move = moveFromUci(uci);
+          final piece = position.board.tiles[move.from];
+          expect(piece, isNotNull, reason: '${puzzle.id}: $uci');
+          expect(piece!.player, player, reason: '${puzzle.id}: $uci');
+          expect(movesForPiece(piece, position.board), contains(move.to),
+              reason: '${puzzle.id}: $uci');
+          push(move, position.board, promotionType: move.promotionType);
+          player = player == Player.player1 ? Player.player2 : Player.player1;
+        }
+        expect(kingInCheck(player, position.board), isTrue);
+        expect(hasNoLegalMoves(player, position.board), isTrue);
       });
     }
 

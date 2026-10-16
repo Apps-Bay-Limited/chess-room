@@ -28,6 +28,7 @@ class AppDurations {
 class AppColors {
   static const Color accent = Color(0xffCC996F);
   static const Color onAccent = Color(0xff473D3D);
+  static const Color onAccentDetail = Color(0xff332C26);
   static const Color error = Color(0xffE0654F);
   static const Color disabled = Color(0x66FFFFFF);
 }

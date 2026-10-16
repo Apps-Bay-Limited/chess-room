@@ -1,8 +1,9 @@
 import 'package:chess_room/features/daily_puzzle/daily_puzzle.dart';
 import 'package:chess_room/features/daily_puzzle/daily_puzzle_progress.dart';
+import 'package:chess_room/features/daily_puzzle/puzzle_labels.dart';
+import 'package:chess_room/features/daily_puzzle/puzzle_session.dart';
+import 'package:chess_room/features/puzzle_library/puzzle_library_page.dart';
 import 'package:chess_room/generated/l10n.dart';
-import 'package:chess_room/logic/chess_board.dart';
-import 'package:chess_room/logic/move_calculation/move_classes/move.dart';
 import 'package:chess_room/util/app_design.dart';
 import 'package:chess_room/views/components/shared/position_board.dart';
 import 'package:chess_room/views/components/main_menu_view/game_options/side_picker.dart';
@@ -11,6 +12,7 @@ import 'package:flutter/cupertino.dart';
 class DailyPuzzlePage extends StatefulWidget {
   final DailyPuzzle? puzzle;
   final DateTime? today;
+  final DateTime Function()? now;
   final PuzzleProgressStore? progressStore;
   final String pieceTheme;
 
@@ -18,6 +20,7 @@ class DailyPuzzlePage extends StatefulWidget {
     super.key,
     this.puzzle,
     this.today,
+    this.now,
     this.progressStore,
     this.pieceTheme = 'Classic',
   });
@@ -26,93 +29,118 @@ class DailyPuzzlePage extends StatefulWidget {
   State<DailyPuzzlePage> createState() => _DailyPuzzlePageState();
 }
 
-class _DailyPuzzlePageState extends State<DailyPuzzlePage> {
-  late final DateTime _today;
-  late final DailyPuzzle _puzzle;
+class _DailyPuzzlePageState extends State<DailyPuzzlePage>
+    with WidgetsBindingObserver {
+  late DateTime _today;
+  late DailyPuzzle _puzzle;
   late final PuzzleProgressStore _progressStore;
-  late ChessPosition _position;
+  late PuzzleSession _session;
   int? _selectedTile;
   int _streak = 0;
-  bool _solved = false;
   bool _wrongMove = false;
   bool _loading = true;
+  bool _showHint = false;
 
   @override
   void initState() {
     super.initState();
-    _today = widget.today ?? DateTime.now();
-    _puzzle = widget.puzzle ?? puzzleForDate(_today);
+    WidgetsBinding.instance.addObserver(this);
     _progressStore =
         widget.progressStore ?? SharedPreferencesPuzzleProgressStore();
-    _position = chessPositionFromFen(_puzzle.fen);
+    _resetForDate(widget.today ?? _now);
     _loadProgress();
   }
 
+  DateTime get _now => widget.now?.call() ?? DateTime.now();
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) _refreshDate();
+  }
+
+  bool _refreshDate() {
+    if (widget.today != null) return false;
+    final current = _now;
+    if (current.year == _today.year &&
+        current.month == _today.month &&
+        current.day == _today.day) {
+      return false;
+    }
+    setState(() => _resetForDate(current));
+    _loadProgress();
+    return true;
+  }
+
+  void _resetForDate(DateTime date) {
+    _today = DateTime(date.year, date.month, date.day);
+    _puzzle = widget.puzzle ?? puzzleForDate(_today);
+    _session =
+        PuzzleSession(fen: _puzzle.fen, solutionLine: _puzzle.solutionLine);
+    _selectedTile = null;
+    _streak = 0;
+    _wrongMove = false;
+    _loading = true;
+    _showHint = false;
+  }
+
   Future<void> _loadProgress() async {
+    final session = _session;
     final progress = await _progressStore.load(_today);
-    if (!mounted) return;
+    if (!mounted || !identical(_session, session)) return;
     setState(() {
       _streak = progress.streak;
-      _solved = progress.solvedToday;
       _loading = false;
-      if (_solved) {
-        _applySolution();
-      }
+      if (progress.solvedToday) session.showCompletedLine();
     });
   }
 
-  void _onTileTap(int tile) {
-    if (_loading || _solved) return;
-    final selectedPiece = _position.board.tiles[tile];
-    if (_selectedTile == null) {
-      if (selectedPiece?.player == _position.activePlayer) {
-        setState(() {
-          _selectedTile = tile;
-          _wrongMove = false;
-        });
-      }
-      return;
-    }
-
-    if (_selectedTile == tile) {
-      setState(() => _selectedTile = null);
-      return;
-    }
-
-    final expectedMove = moveFromUci(_puzzle.solution);
-    final attemptedMove = Move(_selectedTile!, tile);
-    if (attemptedMove == expectedMove) {
-      _solve(expectedMove);
-    } else {
+  Future<void> _onTileTap(int tile) async {
+    if (_refreshDate()) return;
+    final session = _session;
+    final today = _today;
+    if (_loading || session.isComplete || session.awaitingReply) return;
+    final piece = session.position.board.tiles[tile];
+    if (piece?.player == session.player) {
       setState(() {
-        _selectedTile = null;
-        _wrongMove = true;
+        _selectedTile = _selectedTile == tile ? null : tile;
+        _wrongMove = false;
       });
+      return;
     }
-  }
-
-  Future<void> _solve(Move move) async {
-    push(move, _position.board);
+    final selected = _selectedTile;
+    if (selected == null) return;
+    final correct = session.tryMove(selected, tile);
     setState(() {
       _selectedTile = null;
-      _solved = true;
-      _wrongMove = false;
+      _wrongMove = !correct;
+      _showHint = false;
     });
-    final progress = await _progressStore.markSolved(_today);
-    if (!mounted) return;
-    setState(() => _streak = progress.streak);
-  }
-
-  void _applySolution() {
-    final move = moveFromUci(_puzzle.solution);
-    if (_position.board.tiles[move.from] != null) {
-      push(move, _position.board);
+    if (!correct) return;
+    if (session.awaitingReply) {
+      // Keep the player's checking move visible before showing the defense.
+      await Future<void>.delayed(const Duration(milliseconds: 450));
+      if (!mounted || !identical(_session, session)) return;
+      setState(session.playReply);
+    }
+    if (session.isComplete) {
+      final progress = await _progressStore.markSolved(today);
+      if (mounted && identical(_session, session)) {
+        setState(() => _streak = progress.streak);
+      }
     }
   }
 
   @override
   Widget build(BuildContext context) {
     final strings = S.of(context);
+    final solved = _session.isComplete;
+    final lastMove = _session.lastMove;
     return CupertinoPageScaffold(
       backgroundColor: const Color(0xff493B24),
       navigationBar: CupertinoNavigationBar(
@@ -130,26 +158,36 @@ class _DailyPuzzlePageState extends State<DailyPuzzlePage> {
           child: Column(
             children: [
               const SizedBox(height: 16),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              Wrap(
+                spacing: 12,
+                runSpacing: 10,
+                alignment: WrapAlignment.spaceBetween,
+                crossAxisAlignment: WrapCrossAlignment.center,
                 children: [
                   Text(
-                    strings.Mate_In_One,
+                    _puzzle.mateIn == 1
+                        ? strings.Mate_In_One
+                        : strings.Mate_In_Two,
                     style: const TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                   Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 12,
-                      vertical: 8,
-                    ),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                     decoration: BoxDecoration(
                       color: const Color(0x33000000),
                       borderRadius: BorderRadius.circular(20),
                     ),
-                    child: Text('🔥 ${strings.Puzzle_Streak(_streak)}'),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const Icon(CupertinoIcons.flame, size: 18),
+                        const SizedBox(width: 6),
+                        Flexible(child: Text(strings.Puzzle_Streak(_streak))),
+                      ],
+                    ),
                   ),
                 ],
               ),
@@ -157,22 +195,37 @@ class _DailyPuzzlePageState extends State<DailyPuzzlePage> {
               Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
-                  _solved ? strings.Puzzle_Solved : strings.Puzzle_Instruction,
+                  '${puzzleDifficultyLabel(strings, _puzzle.difficulty)} · '
+                  '${puzzleMotifLabel(strings, _puzzle.motif)}',
+                  style: const TextStyle(color: CupertinoColors.systemGrey2),
+                ),
+              ),
+              const SizedBox(height: 10),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  solved
+                      ? strings.Puzzle_Solved
+                      : _session.movesPlayed > 0
+                          ? strings.Puzzle_Line_Progress
+                          : _puzzle.mateIn == 1
+                              ? strings.Puzzle_Instruction
+                              : strings.Find_Best_Move,
                   style: const TextStyle(fontSize: 16),
                 ),
               ),
               const SizedBox(height: 20),
               PositionBoard(
-                board: _position.board,
+                key: ValueKey('daily-puzzle-${_puzzle.id}'),
+                board: _session.position.board,
                 pieceTheme: widget.pieceTheme,
-                flipped: _position.activePlayer == Player.player2,
+                flipped: _session.player == Player.player2,
                 selectedTile: _selectedTile,
-                highlightedTiles: _solved
-                    ? {
-                        moveFromUci(_puzzle.solution).from,
-                        moveFromUci(_puzzle.solution).to,
-                      }
-                    : const {},
+                highlightedTiles: _showHint && !solved
+                    ? {_session.expectedMove.from}
+                    : lastMove == null
+                        ? const {}
+                        : {lastMove.from, lastMove.to},
                 onTileTap: _onTileTap,
               ),
               const SizedBox(height: 18),
@@ -187,7 +240,7 @@ class _DailyPuzzlePageState extends State<DailyPuzzlePage> {
                           fontWeight: FontWeight.bold,
                         ),
                       )
-                    : _solved
+                    : solved
                         ? Text(
                             strings.Correct,
                             key: const ValueKey('correct-move'),
@@ -199,6 +252,39 @@ class _DailyPuzzlePageState extends State<DailyPuzzlePage> {
                           )
                         : const SizedBox.shrink(),
               ),
+              if (!solved && !_session.awaitingReply)
+                CupertinoButton(
+                  key: const ValueKey('daily-puzzle-hint'),
+                  onPressed: _loading
+                      ? null
+                      : () => setState(() => _showHint = !_showHint),
+                  child: Text(strings.Tip),
+                ),
+              if (solved) ...[
+                const SizedBox(height: 16),
+                Text(
+                  strings.Puzzle_Why_This_Works,
+                  style: const TextStyle(fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  puzzleExplanation(strings, _puzzle.motif),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 20),
+                CupertinoButton.filled(
+                  key: const ValueKey('daily-puzzle-practice'),
+                  onPressed: () => Navigator.push(
+                    context,
+                    CupertinoPageRoute(
+                      builder: (_) => PuzzleLibraryPage(
+                        pieceTheme: widget.pieceTheme,
+                      ),
+                    ),
+                  ),
+                  child: Text(strings.Puzzle_Practice_Next),
+                ),
+              ],
             ],
           ),
         ),

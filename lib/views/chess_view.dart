@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:chess_room/logic/chess_game.dart';
 import 'package:chess_room/model/app_model.dart';
 import 'package:chess_room/views/components/chess_view/chess_board_widget.dart';
 import 'package:chess_room/views/components/chess_view/game_info_and_controls.dart';
@@ -22,26 +25,69 @@ class ChessView extends StatefulWidget {
   _ChessViewState createState() => _ChessViewState(appModel);
 }
 
-class _ChessViewState extends State<ChessView> {
+class _ChessViewState extends State<ChessView> with WidgetsBindingObserver {
   AppModel appModel;
+  ChessGame? _routeGame;
+  bool _didLeave = false;
+  Widget? _lastRenderedView;
 
   _ChessViewState(this.appModel);
+
+  @override
+  void initState() {
+    super.initState();
+    _routeGame = appModel.game;
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (_didLeave || !identical(appModel.game, _routeGame)) return;
+    if (state == AppLifecycleState.resumed) {
+      appModel.resumeGameSession();
+    } else {
+      unawaited(appModel.pauseGame());
+    }
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    _leaveGame();
+    super.dispose();
+  }
+
+  void _leaveGame() {
+    if (_didLeave) return;
+    _didLeave = true;
+    if (identical(appModel.game, _routeGame)) {
+      appModel.exitChessView(notify: false);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Consumer<AppModel>(
       builder: (context, appModel, child) {
+        // Keep the outgoing route bound to its original GameWidget while its
+        // pop animation finishes. A new match may already be opening on Home.
+        if (_didLeave) return _lastRenderedView ?? const SizedBox.shrink();
+        // Reset creates a new game in this route. An outgoing route must never
+        // take ownership of a match started after it was popped.
+        if (!_didLeave && (ModalRoute.of(context)?.isCurrent ?? true)) {
+          _routeGame = appModel.game;
+        }
         if (appModel.promotionRequested) {
           appModel.promotionRequested = false;
-          WidgetsBinding.instance
-              .addPostFrameCallback((_) => _showPromotionDialog(appModel));
-        }
-        return PopScope(
-          canPop: true,
-          onPopInvoked: (didPop) {
-            if (didPop) {
-              appModel.exitChessView();
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            if (mounted && identical(appModel.game, _routeGame)) {
+              _showPromotionDialog(appModel);
             }
+          });
+        }
+        return _lastRenderedView = PopScope(
+          onPopInvokedWithResult: (didPop, result) {
+            if (didPop) _leaveGame();
           },
           child: Container(
             decoration: BoxDecoration(gradient: appModel.theme.background),

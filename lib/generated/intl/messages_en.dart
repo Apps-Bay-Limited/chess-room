@@ -118,7 +118,17 @@ class MessageLookup extends MessageLookupByLibrary {
     "Classical_Music_Box": MessageLookupByLibrary.simpleMessage(
       "Classical Music Box",
     ),
+    "Continue_Game": MessageLookupByLibrary.simpleMessage("Continue Game"),
+    "Continue_Game_Description": MessageLookupByLibrary.simpleMessage(
+      "Pick up where you left off",
+    ),
     "Correct": MessageLookupByLibrary.simpleMessage("Correct! Checkmate."),
+    "Daily_Practice_Complete": MessageLookupByLibrary.simpleMessage(
+      "Complete today · keep practicing",
+    ),
+    "Daily_Practice_Ready": MessageLookupByLibrary.simpleMessage(
+      "A fresh challenge for today",
+    ),
     "Daily_Puzzle": MessageLookupByLibrary.simpleMessage("Daily Puzzle"),
     "Done": MessageLookupByLibrary.simpleMessage("Done"),
     "Draw": MessageLookupByLibrary.simpleMessage("Draw"),
@@ -159,6 +169,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "Instant_Face": MessageLookupByLibrary.simpleMessage("Instant Face"),
     "Mate_In_One": MessageLookupByLibrary.simpleMessage("Mate in One"),
+    "Mate_In_Two": MessageLookupByLibrary.simpleMessage("Mate in two"),
     "Medium": MessageLookupByLibrary.simpleMessage("Medium"),
     "Metronome_Go": MessageLookupByLibrary.simpleMessage("Metronome Go"),
     "Minesweeper_Go": MessageLookupByLibrary.simpleMessage("Minesweeper Go"),
@@ -250,6 +261,32 @@ class MessageLookup extends MessageLookupByLibrary {
       "Purchase complete. Ads are removed.",
     ),
     "Puzzle_Complete": MessageLookupByLibrary.simpleMessage("Puzzle complete!"),
+    "Puzzle_Easy": MessageLookupByLibrary.simpleMessage("Easy"),
+    "Puzzle_Explain_Back_Rank": MessageLookupByLibrary.simpleMessage(
+      "The pawns block the king’s escape. Check along the back rank to finish the game.",
+    ),
+    "Puzzle_Explain_Bishop_Mate": MessageLookupByLibrary.simpleMessage(
+      "Coordinate the bishop with your other pieces to cover the king’s escape squares.",
+    ),
+    "Puzzle_Explain_Combination": MessageLookupByLibrary.simpleMessage(
+      "Use forcing checks to limit the replies, then finish with checkmate.",
+    ),
+    "Puzzle_Explain_Fork": MessageLookupByLibrary.simpleMessage(
+      "Check the king and attack another valuable piece at the same time.",
+    ),
+    "Puzzle_Explain_Knight_Mate": MessageLookupByLibrary.simpleMessage(
+      "The knight checks the king while your other pieces cover its escape squares.",
+    ),
+    "Puzzle_Explain_Promotion": MessageLookupByLibrary.simpleMessage(
+      "Promote the pawn safely to gain a queen.",
+    ),
+    "Puzzle_Explain_Queen_Net": MessageLookupByLibrary.simpleMessage(
+      "Coordinate your queen with your supporting pieces to cover every escape square.",
+    ),
+    "Puzzle_Explain_Rook_Mate": MessageLookupByLibrary.simpleMessage(
+      "Cut off the king’s escape squares, then check along the edge of the board.",
+    ),
+    "Puzzle_Hard": MessageLookupByLibrary.simpleMessage("Hard"),
     "Puzzle_Instruction": MessageLookupByLibrary.simpleMessage(
       "White or black to move. Find checkmate in one.",
     ),
@@ -257,12 +294,26 @@ class MessageLookup extends MessageLookupByLibrary {
     "Puzzle_Library_Description": MessageLookupByLibrary.simpleMessage(
       "Practice focused themes at your own pace. Progress is saved on this device.",
     ),
+    "Puzzle_Line_Progress": MessageLookupByLibrary.simpleMessage(
+      "Continue the combination",
+    ),
+    "Puzzle_Medium": MessageLookupByLibrary.simpleMessage("Medium"),
     "Puzzle_Number": m5,
+    "Puzzle_Practice_Next": MessageLookupByLibrary.simpleMessage(
+      "Keep practicing",
+    ),
     "Puzzle_Solved": MessageLookupByLibrary.simpleMessage(
       "Today\'s puzzle is complete.",
     ),
     "Puzzle_Streak": m6,
+    "Puzzle_Why_This_Works": MessageLookupByLibrary.simpleMessage(
+      "Why this works",
+    ),
     "Puzzles_Solved": m7,
+    "Quick_Play": MessageLookupByLibrary.simpleMessage("Quick Play"),
+    "Quick_Play_Description": MessageLookupByLibrary.simpleMessage(
+      "Play AI with your last settings",
+    ),
     "Remove_Ads": MessageLookupByLibrary.simpleMessage("Remove Ads"),
     "Remove_Ads_Description": MessageLookupByLibrary.simpleMessage(
       "Remove ads permanently from this app.",
@@ -277,12 +328,21 @@ class MessageLookup extends MessageLookupByLibrary {
       "Remove Ads is currently unavailable.",
     ),
     "Remove_Ads_With_Price": m8,
+    "Replace_Unfinished_Game": MessageLookupByLibrary.simpleMessage(
+      "Start a new game?",
+    ),
+    "Replace_Unfinished_Game_Description": MessageLookupByLibrary.simpleMessage(
+      "Your unfinished game will be replaced.",
+    ),
     "Replay": MessageLookupByLibrary.simpleMessage("Replay"),
     "Restore_Not_Found": MessageLookupByLibrary.simpleMessage(
       "No previous Remove Ads purchase was found.",
     ),
     "Restore_Purchases": MessageLookupByLibrary.simpleMessage(
       "Restore Purchases",
+    ),
+    "Resume_Game_Unavailable": MessageLookupByLibrary.simpleMessage(
+      "This game could not be restored. You can start a new game.",
     ),
     "Review_Game": MessageLookupByLibrary.simpleMessage(
       "Review Biggest Mistake",
@@ -303,9 +363,18 @@ class MessageLookup extends MessageLookupByLibrary {
     "Stalemate": MessageLookupByLibrary.simpleMessage("Stalemate"),
     "Start": MessageLookupByLibrary.simpleMessage("Start"),
     "Sudoku_Lover": MessageLookupByLibrary.simpleMessage("Sudoku Lover"),
+    "Theme_Back_Rank": MessageLookupByLibrary.simpleMessage("Back-rank mate"),
+    "Theme_Bishop_Mate": MessageLookupByLibrary.simpleMessage("Bishop mate"),
     "Theme_Checkmate": MessageLookupByLibrary.simpleMessage("Checkmate"),
+    "Theme_Combination": MessageLookupByLibrary.simpleMessage("Combinations"),
+    "Theme_Double_Attack": MessageLookupByLibrary.simpleMessage(
+      "Double attack",
+    ),
     "Theme_Forks": MessageLookupByLibrary.simpleMessage("Knight Forks"),
+    "Theme_Knight_Mate": MessageLookupByLibrary.simpleMessage("Knight mate"),
     "Theme_Promotion": MessageLookupByLibrary.simpleMessage("Pawn Promotion"),
+    "Theme_Queen_Net": MessageLookupByLibrary.simpleMessage("Queen mate"),
+    "Theme_Rook_Mate": MessageLookupByLibrary.simpleMessage("Rook mate"),
     "Time_Limit": MessageLookupByLibrary.simpleMessage("Time Limit"),
     "Tip": MessageLookupByLibrary.simpleMessage("Tip"),
     "Tip_Button": MessageLookupByLibrary.simpleMessage("Show Tip Button"),

@@ -1397,6 +1397,291 @@ class S {
       args: [],
     );
   }
+
+  /// `Continue Game`
+  String get Continue_Game {
+    return Intl.message(
+      'Continue Game',
+      name: 'Continue_Game',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Pick up where you left off`
+  String get Continue_Game_Description {
+    return Intl.message(
+      'Pick up where you left off',
+      name: 'Continue_Game_Description',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Quick Play`
+  String get Quick_Play {
+    return Intl.message('Quick Play', name: 'Quick_Play', desc: '', args: []);
+  }
+
+  /// `Play AI with your last settings`
+  String get Quick_Play_Description {
+    return Intl.message(
+      'Play AI with your last settings',
+      name: 'Quick_Play_Description',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Complete today · keep practicing`
+  String get Daily_Practice_Complete {
+    return Intl.message(
+      'Complete today · keep practicing',
+      name: 'Daily_Practice_Complete',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `A fresh challenge for today`
+  String get Daily_Practice_Ready {
+    return Intl.message(
+      'A fresh challenge for today',
+      name: 'Daily_Practice_Ready',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Start a new game?`
+  String get Replace_Unfinished_Game {
+    return Intl.message(
+      'Start a new game?',
+      name: 'Replace_Unfinished_Game',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Your unfinished game will be replaced.`
+  String get Replace_Unfinished_Game_Description {
+    return Intl.message(
+      'Your unfinished game will be replaced.',
+      name: 'Replace_Unfinished_Game_Description',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `This game could not be restored. You can start a new game.`
+  String get Resume_Game_Unavailable {
+    return Intl.message(
+      'This game could not be restored. You can start a new game.',
+      name: 'Resume_Game_Unavailable',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Easy`
+  String get Puzzle_Easy {
+    return Intl.message('Easy', name: 'Puzzle_Easy', desc: '', args: []);
+  }
+
+  /// `Medium`
+  String get Puzzle_Medium {
+    return Intl.message('Medium', name: 'Puzzle_Medium', desc: '', args: []);
+  }
+
+  /// `Hard`
+  String get Puzzle_Hard {
+    return Intl.message('Hard', name: 'Puzzle_Hard', desc: '', args: []);
+  }
+
+  /// `Back-rank mate`
+  String get Theme_Back_Rank {
+    return Intl.message(
+      'Back-rank mate',
+      name: 'Theme_Back_Rank',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Knight mate`
+  String get Theme_Knight_Mate {
+    return Intl.message(
+      'Knight mate',
+      name: 'Theme_Knight_Mate',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Double attack`
+  String get Theme_Double_Attack {
+    return Intl.message(
+      'Double attack',
+      name: 'Theme_Double_Attack',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Keep practicing`
+  String get Puzzle_Practice_Next {
+    return Intl.message(
+      'Keep practicing',
+      name: 'Puzzle_Practice_Next',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Continue the combination`
+  String get Puzzle_Line_Progress {
+    return Intl.message(
+      'Continue the combination',
+      name: 'Puzzle_Line_Progress',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Why this works`
+  String get Puzzle_Why_This_Works {
+    return Intl.message(
+      'Why this works',
+      name: 'Puzzle_Why_This_Works',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Coordinate your queen with your supporting pieces to cover every escape square.`
+  String get Puzzle_Explain_Queen_Net {
+    return Intl.message(
+      'Coordinate your queen with your supporting pieces to cover every escape square.',
+      name: 'Puzzle_Explain_Queen_Net',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `The pawns block the king’s escape. Check along the back rank to finish the game.`
+  String get Puzzle_Explain_Back_Rank {
+    return Intl.message(
+      'The pawns block the king’s escape. Check along the back rank to finish the game.',
+      name: 'Puzzle_Explain_Back_Rank',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `The knight checks the king while your other pieces cover its escape squares.`
+  String get Puzzle_Explain_Knight_Mate {
+    return Intl.message(
+      'The knight checks the king while your other pieces cover its escape squares.',
+      name: 'Puzzle_Explain_Knight_Mate',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Check the king and attack another valuable piece at the same time.`
+  String get Puzzle_Explain_Fork {
+    return Intl.message(
+      'Check the king and attack another valuable piece at the same time.',
+      name: 'Puzzle_Explain_Fork',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Promote the pawn safely to gain a queen.`
+  String get Puzzle_Explain_Promotion {
+    return Intl.message(
+      'Promote the pawn safely to gain a queen.',
+      name: 'Puzzle_Explain_Promotion',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Cut off the king’s escape squares, then check along the edge of the board.`
+  String get Puzzle_Explain_Rook_Mate {
+    return Intl.message(
+      'Cut off the king’s escape squares, then check along the edge of the board.',
+      name: 'Puzzle_Explain_Rook_Mate',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Coordinate the bishop with your other pieces to cover the king’s escape squares.`
+  String get Puzzle_Explain_Bishop_Mate {
+    return Intl.message(
+      'Coordinate the bishop with your other pieces to cover the king’s escape squares.',
+      name: 'Puzzle_Explain_Bishop_Mate',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Use forcing checks to limit the replies, then finish with checkmate.`
+  String get Puzzle_Explain_Combination {
+    return Intl.message(
+      'Use forcing checks to limit the replies, then finish with checkmate.',
+      name: 'Puzzle_Explain_Combination',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Queen mate`
+  String get Theme_Queen_Net {
+    return Intl.message(
+      'Queen mate',
+      name: 'Theme_Queen_Net',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Rook mate`
+  String get Theme_Rook_Mate {
+    return Intl.message(
+      'Rook mate',
+      name: 'Theme_Rook_Mate',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Bishop mate`
+  String get Theme_Bishop_Mate {
+    return Intl.message(
+      'Bishop mate',
+      name: 'Theme_Bishop_Mate',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Mate in two`
+  String get Mate_In_Two {
+    return Intl.message('Mate in two', name: 'Mate_In_Two', desc: '', args: []);
+  }
+
+  /// `Combinations`
+  String get Theme_Combination {
+    return Intl.message(
+      'Combinations',
+      name: 'Theme_Combination',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

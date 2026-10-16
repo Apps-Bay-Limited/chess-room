@@ -1,5 +1,19 @@
 # Changelog
 
+## Unreleased
+
+### Added
+- Quick Play using remembered AI difficulty, side, and time settings.
+- Automatic unfinished-game saves and a Continue Game action, including move history, undo/redo, promotion, and clocks.
+- Daily puzzle completion and streak progress on the home screen.
+- Expanded offline practice to 71 daily puzzles and 77 library puzzles, with eight themes, three difficulty levels, hints, explanations, and mate-in-two combinations.
+
+### Changed
+- Local game clocks pause while the app is backgrounded or the match is closed.
+- Starting another match asks before replacing an unfinished game.
+- Completed daily puzzles lead directly to further practice, and library sessions start with unsolved positions.
+- Added translations for the new home and practice flows in all seven supported locales.
+
 ## 1.3.0+12
 
 ### Fixed

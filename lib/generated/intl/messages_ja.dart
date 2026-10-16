@@ -110,7 +110,15 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "Chess_Tips_Title": MessageLookupByLibrary.simpleMessage("初心者向けのコツ"),
     "Classical_Music_Box": MessageLookupByLibrary.simpleMessage("クラシック音楽ボックス"),
+    "Continue_Game": MessageLookupByLibrary.simpleMessage("対局を再開"),
+    "Continue_Game_Description": MessageLookupByLibrary.simpleMessage(
+      "中断したところから続ける",
+    ),
     "Correct": MessageLookupByLibrary.simpleMessage("正解！チェックメイトです。"),
+    "Daily_Practice_Complete": MessageLookupByLibrary.simpleMessage(
+      "今日の課題は完了 · 練習を続けよう",
+    ),
+    "Daily_Practice_Ready": MessageLookupByLibrary.simpleMessage("今日の新しいチャレンジ"),
     "Daily_Puzzle": MessageLookupByLibrary.simpleMessage("デイリーパズル"),
     "Done": MessageLookupByLibrary.simpleMessage("完了"),
     "Draw": MessageLookupByLibrary.simpleMessage("引き分け"),
@@ -143,6 +151,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "Instant_Face": MessageLookupByLibrary.simpleMessage("Instant Face"),
     "Mate_In_One": MessageLookupByLibrary.simpleMessage("1手詰め"),
+    "Mate_In_Two": MessageLookupByLibrary.simpleMessage("2手でメイト"),
     "Medium": MessageLookupByLibrary.simpleMessage("ふつう"),
     "Metronome_Go": MessageLookupByLibrary.simpleMessage("Metronome Go"),
     "Minesweeper_Go": MessageLookupByLibrary.simpleMessage("Minesweeper Go"),
@@ -220,6 +229,32 @@ class MessageLookup extends MessageLookupByLibrary {
       "購入が完了しました。広告は削除されました。",
     ),
     "Puzzle_Complete": MessageLookupByLibrary.simpleMessage("パズルクリア！"),
+    "Puzzle_Easy": MessageLookupByLibrary.simpleMessage("かんたん"),
+    "Puzzle_Explain_Back_Rank": MessageLookupByLibrary.simpleMessage(
+      "ポーンがキングの逃げ道をふさいでいます。最終ランクでチェックして対局を決めましょう。",
+    ),
+    "Puzzle_Explain_Bishop_Mate": MessageLookupByLibrary.simpleMessage(
+      "ビショップと他の駒を連携させ、キングの逃げ道をふさぎましょう。",
+    ),
+    "Puzzle_Explain_Combination": MessageLookupByLibrary.simpleMessage(
+      "チェックを連続させて相手の応手を絞り、チェックメイトにつなげましょう。",
+    ),
+    "Puzzle_Explain_Fork": MessageLookupByLibrary.simpleMessage(
+      "キングにチェックをかけながら、別の価値の高い駒も同時に攻撃しましょう。",
+    ),
+    "Puzzle_Explain_Knight_Mate": MessageLookupByLibrary.simpleMessage(
+      "ナイトでキングにチェックをかけ、他の駒で逃げ道をふさぎます。",
+    ),
+    "Puzzle_Explain_Promotion": MessageLookupByLibrary.simpleMessage(
+      "ポーンを安全に昇格させてクイーンを手に入れましょう。",
+    ),
+    "Puzzle_Explain_Queen_Net": MessageLookupByLibrary.simpleMessage(
+      "クイーンと支えの駒を連携させ、すべての逃げ道をふさぎましょう。",
+    ),
+    "Puzzle_Explain_Rook_Mate": MessageLookupByLibrary.simpleMessage(
+      "キングの逃げ道をふさいでから、盤の端に沿ってチェックしましょう。",
+    ),
+    "Puzzle_Hard": MessageLookupByLibrary.simpleMessage("むずかしい"),
     "Puzzle_Instruction": MessageLookupByLibrary.simpleMessage(
       "白または黒の手番です。1手でチェックメイトしてください。",
     ),
@@ -227,10 +262,20 @@ class MessageLookup extends MessageLookupByLibrary {
     "Puzzle_Library_Description": MessageLookupByLibrary.simpleMessage(
       "テーマ別の問題を自分のペースで練習できます。進捗はこの端末に保存されます。",
     ),
+    "Puzzle_Line_Progress": MessageLookupByLibrary.simpleMessage(
+      "コンビネーションを続けよう",
+    ),
+    "Puzzle_Medium": MessageLookupByLibrary.simpleMessage("ふつう"),
     "Puzzle_Number": m5,
+    "Puzzle_Practice_Next": MessageLookupByLibrary.simpleMessage("練習を続ける"),
     "Puzzle_Solved": MessageLookupByLibrary.simpleMessage("本日のパズルは完了しています。"),
     "Puzzle_Streak": m6,
+    "Puzzle_Why_This_Works": MessageLookupByLibrary.simpleMessage("この手が有効な理由"),
     "Puzzles_Solved": m7,
+    "Quick_Play": MessageLookupByLibrary.simpleMessage("クイック対局"),
+    "Quick_Play_Description": MessageLookupByLibrary.simpleMessage(
+      "前回の設定でAIと対戦",
+    ),
     "Remove_Ads": MessageLookupByLibrary.simpleMessage("広告を削除"),
     "Remove_Ads_Description": MessageLookupByLibrary.simpleMessage(
       "このアプリから広告を完全に削除します。",
@@ -245,11 +290,20 @@ class MessageLookup extends MessageLookupByLibrary {
       "現在、広告の削除は利用できません。",
     ),
     "Remove_Ads_With_Price": m8,
+    "Replace_Unfinished_Game": MessageLookupByLibrary.simpleMessage(
+      "新しい対局を始めますか？",
+    ),
+    "Replace_Unfinished_Game_Description": MessageLookupByLibrary.simpleMessage(
+      "中断中の対局は新しい対局に置き換わります。",
+    ),
     "Replay": MessageLookupByLibrary.simpleMessage("再生"),
     "Restore_Not_Found": MessageLookupByLibrary.simpleMessage(
       "以前の広告削除の購入が見つかりませんでした。",
     ),
     "Restore_Purchases": MessageLookupByLibrary.simpleMessage("購入を復元"),
+    "Resume_Game_Unavailable": MessageLookupByLibrary.simpleMessage(
+      "この対局を復元できませんでした。新しい対局を始められます。",
+    ),
     "Review_Game": MessageLookupByLibrary.simpleMessage("最大のミスを振り返る"),
     "Review_Move_Title": m9,
     "Saving_Ambulance": MessageLookupByLibrary.simpleMessage("救急車を救え"),
@@ -261,9 +315,16 @@ class MessageLookup extends MessageLookupByLibrary {
     "Stalemate": MessageLookupByLibrary.simpleMessage("ステイルメイト"),
     "Start": MessageLookupByLibrary.simpleMessage("開始"),
     "Sudoku_Lover": MessageLookupByLibrary.simpleMessage("Sudoku Lover"),
+    "Theme_Back_Rank": MessageLookupByLibrary.simpleMessage("バックランクメイト"),
+    "Theme_Bishop_Mate": MessageLookupByLibrary.simpleMessage("ビショップでメイト"),
     "Theme_Checkmate": MessageLookupByLibrary.simpleMessage("チェックメイト"),
+    "Theme_Combination": MessageLookupByLibrary.simpleMessage("コンビネーション"),
+    "Theme_Double_Attack": MessageLookupByLibrary.simpleMessage("ダブルアタック"),
     "Theme_Forks": MessageLookupByLibrary.simpleMessage("ナイトのフォーク"),
+    "Theme_Knight_Mate": MessageLookupByLibrary.simpleMessage("ナイトでメイト"),
     "Theme_Promotion": MessageLookupByLibrary.simpleMessage("ポーンの昇格"),
+    "Theme_Queen_Net": MessageLookupByLibrary.simpleMessage("クイーンでメイト"),
+    "Theme_Rook_Mate": MessageLookupByLibrary.simpleMessage("ルークでメイト"),
     "Time_Limit": MessageLookupByLibrary.simpleMessage("制限時間"),
     "Tip": MessageLookupByLibrary.simpleMessage("アドバイス"),
     "Tip_Button": MessageLookupByLibrary.simpleMessage("アドバイスボタンを表示"),

@@ -1,8 +1,8 @@
 import 'package:chess_room/features/puzzle_library/themed_puzzle.dart';
 import 'package:chess_room/generated/l10n.dart';
-import 'package:chess_room/logic/chess_board.dart';
-import 'package:chess_room/logic/chess_notation.dart';
-import 'package:chess_room/logic/move_calculation/move_classes/move.dart';
+import 'package:chess_room/features/daily_puzzle/daily_puzzle.dart';
+import 'package:chess_room/features/daily_puzzle/puzzle_labels.dart';
+import 'package:chess_room/features/daily_puzzle/puzzle_session.dart';
 import 'package:chess_room/util/app_design.dart';
 import 'package:chess_room/views/components/main_menu_view/game_options/side_picker.dart';
 import 'package:chess_room/views/components/shared/position_board.dart';
@@ -165,72 +165,89 @@ class PuzzleSessionPage extends StatefulWidget {
 }
 
 class _PuzzleSessionPageState extends State<PuzzleSessionPage> {
-  late final List<ThemedPuzzle> _puzzles;
-  late ChessPosition _position;
+  List<ThemedPuzzle> _puzzles = [];
+  late PuzzleSession _session;
   int _index = 0;
   int? _selectedTile;
-  bool _solved = false;
   bool _wrong = false;
+  bool _showHint = false;
 
   ThemedPuzzle get _puzzle => _puzzles[_index];
 
   @override
   void initState() {
     super.initState();
-    _puzzles = themedPuzzles
-        .where((puzzle) => puzzle.theme == widget.theme)
-        .toList(growable: false);
-    _position = chessPositionFromFen(_puzzle.fen);
+    _loadPuzzles();
   }
 
-  void _onTileTap(int tile) {
-    if (_solved) return;
-    if (_selectedTile == null) {
-      final piece = _position.board.tiles[tile];
-      if (piece?.player == _position.activePlayer) {
-        setState(() {
-          _selectedTile = tile;
-          _wrong = false;
-        });
-      }
-      return;
-    }
-    final expected = moveFromUci(_puzzle.solution);
-    final attempt = Move(_selectedTile!, tile);
-    if (attempt == expected) {
-      push(
-        expected,
-        _position.board,
-        promotionType: expected.promotionType,
-      );
-      widget.progressStore.markSolved(_puzzle.id);
+  Future<void> _loadPuzzles() async {
+    final solved = await widget.progressStore.loadSolvedIds();
+    if (!mounted) return;
+    final candidates = themedPuzzles
+        .where((puzzle) => puzzle.theme == widget.theme)
+        .toList(growable: false);
+    setState(() {
+      // Returning players start with an unsolved position rather than
+      // repeatedly solving the first three positions in the same order.
+      _puzzles = [
+        ...candidates.where((puzzle) => !solved.contains(puzzle.id)),
+        ...candidates.where((puzzle) => solved.contains(puzzle.id)),
+      ];
+      _startPuzzle();
+    });
+  }
+
+  void _startPuzzle() {
+    _session = PuzzleSession(
+      fen: _puzzle.fen,
+      solutionLine: _puzzle.solutionLine,
+      checkmateGoal: _puzzle.motif != PuzzleMotif.fork &&
+          _puzzle.motif != PuzzleMotif.promotion,
+    );
+    _selectedTile = null;
+    _wrong = false;
+    _showHint = false;
+  }
+
+  Future<void> _onTileTap(int tile) async {
+    if (_session.isComplete || _session.awaitingReply) return;
+    final piece = _session.position.board.tiles[tile];
+    if (piece?.player == _session.player) {
       setState(() {
-        _selectedTile = null;
-        _solved = true;
+        _selectedTile = _selectedTile == tile ? null : tile;
         _wrong = false;
       });
-    } else {
-      setState(() {
-        _selectedTile = null;
-        _wrong = true;
-      });
+      return;
+    }
+    final selected = _selectedTile;
+    if (selected == null) return;
+    final correct = _session.tryMove(selected, tile);
+    setState(() {
+      _selectedTile = null;
+      _wrong = !correct;
+      _showHint = false;
+    });
+    if (!correct) return;
+    if (_session.awaitingReply) {
+      await Future<void>.delayed(const Duration(milliseconds: 450));
+      if (!mounted) return;
+      setState(_session.playReply);
+    }
+    if (_session.isComplete) {
+      await widget.progressStore.markSolved(_puzzle.id);
     }
   }
 
   void _nextPuzzle() {
     setState(() {
       _index = (_index + 1) % _puzzles.length;
-      _position = chessPositionFromFen(_puzzle.fen);
-      _selectedTile = null;
-      _solved = false;
-      _wrong = false;
+      _startPuzzle();
     });
   }
 
   @override
   Widget build(BuildContext context) {
     final strings = S.of(context);
-    final solution = moveFromUci(_puzzle.solution);
     return CupertinoPageScaffold(
       backgroundColor: const Color(0xff493B24),
       navigationBar: CupertinoNavigationBar(
@@ -238,52 +255,87 @@ class _PuzzleSessionPageState extends State<PuzzleSessionPage> {
         middle: Text(_themeName(strings, widget.theme)),
       ),
       child: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(AppSpacing.xl),
-          child: Column(
-            children: [
-              Text(
-                strings.Puzzle_Number(_index + 1, _puzzles.length),
-                style:
-                    const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(height: AppSpacing.sm),
-              Text(strings.Find_Best_Move),
-              const SizedBox(height: AppSpacing.xl),
-              PositionBoard(
-                key: ValueKey('library-puzzle-${_puzzle.id}'),
-                board: _position.board,
-                pieceTheme: widget.pieceTheme,
-                flipped: _position.activePlayer == Player.player2,
-                selectedTile: _selectedTile,
-                highlightedTiles:
-                    _solved ? {solution.from, solution.to} : const {},
-                onTileTap: _onTileTap,
-              ),
-              const SizedBox(height: AppSpacing.lg),
-              if (_wrong)
-                Text(
-                  strings.Try_Again,
-                  style: const TextStyle(color: CupertinoColors.systemOrange),
-                ),
-              if (_solved) ...[
-                Text(
-                  strings.Puzzle_Complete,
-                  style: const TextStyle(
-                    color: CupertinoColors.activeGreen,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const SizedBox(height: AppSpacing.md),
-                CupertinoButton.filled(
-                  key: const ValueKey('next-library-puzzle'),
-                  onPressed: _nextPuzzle,
-                  child: Text(strings.Next_Puzzle),
-                ),
-              ],
-            ],
+        child: _puzzles.isEmpty
+            ? const Center(child: CupertinoActivityIndicator())
+            : _buildPuzzle(strings),
+      ),
+    );
+  }
+
+  Widget _buildPuzzle(S strings) {
+    final solved = _session.isComplete;
+    final lastMove = _session.lastMove;
+    return SingleChildScrollView(
+      padding: const EdgeInsets.all(AppSpacing.xl),
+      child: Column(
+        children: [
+          Text(
+            strings.Puzzle_Number(_index + 1, _puzzles.length),
+            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           ),
-        ),
+          const SizedBox(height: AppSpacing.sm),
+          Text(
+            puzzleDifficultyLabel(strings, _puzzle.difficulty),
+            style: const TextStyle(color: CupertinoColors.systemGrey2),
+          ),
+          const SizedBox(height: AppSpacing.sm),
+          Text(_session.movesPlayed > 0 && !solved
+              ? strings.Puzzle_Line_Progress
+              : _puzzle.continuation.isNotEmpty
+                  ? strings.Mate_In_Two
+                  : strings.Find_Best_Move),
+          const SizedBox(height: AppSpacing.lg),
+          PositionBoard(
+            key: ValueKey('library-puzzle-${_puzzle.id}'),
+            board: _session.position.board,
+            pieceTheme: widget.pieceTheme,
+            flipped: _session.player == Player.player2,
+            selectedTile: _selectedTile,
+            highlightedTiles: _showHint && !solved
+                ? {_session.expectedMove.from}
+                : lastMove == null
+                    ? const {}
+                    : {lastMove.from, lastMove.to},
+            onTileTap: _onTileTap,
+          ),
+          const SizedBox(height: AppSpacing.lg),
+          if (_wrong)
+            Text(
+              strings.Try_Again,
+              style: const TextStyle(color: CupertinoColors.systemOrange),
+            ),
+          if (!solved && !_session.awaitingReply)
+            CupertinoButton(
+              key: const ValueKey('library-puzzle-hint'),
+              onPressed: () => setState(() => _showHint = !_showHint),
+              child: Text(strings.Tip),
+            ),
+          if (solved) ...[
+            Text(
+              strings.Puzzle_Complete,
+              style: const TextStyle(
+                color: CupertinoColors.activeGreen,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: AppSpacing.md),
+            Text(
+              strings.Puzzle_Why_This_Works,
+              style: const TextStyle(fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: AppSpacing.sm),
+            Text(
+              puzzleExplanation(strings, _puzzle.motif),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: AppSpacing.lg),
+            CupertinoButton.filled(
+              key: const ValueKey('next-library-puzzle'),
+              onPressed: _nextPuzzle,
+              child: Text(strings.Next_Puzzle),
+            ),
+          ],
+        ],
       ),
     );
   }
@@ -293,10 +345,20 @@ String _themeName(S strings, PuzzleTheme theme) => switch (theme) {
       PuzzleTheme.checkmate => strings.Theme_Checkmate,
       PuzzleTheme.fork => strings.Theme_Forks,
       PuzzleTheme.promotion => strings.Theme_Promotion,
+      PuzzleTheme.queenNet => strings.Theme_Queen_Net,
+      PuzzleTheme.backRank => strings.Theme_Back_Rank,
+      PuzzleTheme.knightMate => strings.Theme_Knight_Mate,
+      PuzzleTheme.rookMate => strings.Theme_Rook_Mate,
+      PuzzleTheme.bishopMate => strings.Theme_Bishop_Mate,
     };
 
 String _themeEmoji(PuzzleTheme theme) => switch (theme) {
       PuzzleTheme.checkmate => '♚',
       PuzzleTheme.fork => '♞',
       PuzzleTheme.promotion => '♛',
+      PuzzleTheme.queenNet => '♕',
+      PuzzleTheme.backRank => '♜',
+      PuzzleTheme.knightMate => '♞',
+      PuzzleTheme.rookMate => '♖',
+      PuzzleTheme.bishopMate => '♗',
     };

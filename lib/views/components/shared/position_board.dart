@@ -30,59 +30,65 @@ class PositionBoard extends StatelessWidget {
       aspectRatio: 1,
       child: ClipRRect(
         borderRadius: BorderRadius.circular(12),
-        child: GridView.builder(
-          padding: EdgeInsets.zero,
-          physics: const NeverScrollableScrollPhysics(),
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 8,
-          ),
-          itemCount: 64,
-          itemBuilder: (context, visualIndex) {
-            final tile = flipped ? 63 - visualIndex : visualIndex;
-            final row = tile ~/ 8;
-            final col = tile % 8;
-            final piece = board.tiles[tile];
-            final isSelected = selectedTile == tile;
-            final isHighlighted = highlightedTiles.contains(tile);
-            final baseColor = (row + col).isEven
-                ? const Color(0xffe7d4ad)
-                : const Color(0xff8b6a42);
+        // Chess files keep their physical order in every locale. Only the
+        // explicit flipped setting rotates the board for the other player.
+        child: Directionality(
+          textDirection: TextDirection.ltr,
+          child: GridView.builder(
+            padding: EdgeInsets.zero,
+            physics: const NeverScrollableScrollPhysics(),
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 8,
+            ),
+            itemCount: 64,
+            itemBuilder: (context, visualIndex) {
+              final tile = flipped ? 63 - visualIndex : visualIndex;
+              final row = tile ~/ 8;
+              final col = tile % 8;
+              final piece = board.tiles[tile];
+              final isSelected = selectedTile == tile;
+              final isHighlighted = highlightedTiles.contains(tile);
+              final baseColor = (row + col).isEven
+                  ? const Color(0xffe7d4ad)
+                  : const Color(0xff8b6a42);
 
-            return GestureDetector(
-              key: ValueKey('position-tile-$tile'),
-              behavior: HitTestBehavior.opaque,
-              onTap: onTileTap == null ? null : () => onTileTap!(tile),
-              child: DecoratedBox(
-                decoration: BoxDecoration(
-                  color: isSelected
-                      ? const Color(0xfff1c75b)
-                      : isHighlighted
-                          ? Color.alphaBlend(highlightColor, baseColor)
-                          : baseColor,
-                ),
-                child: piece == null
-                    ? null
-                    : Padding(
-                        padding: const EdgeInsets.all(3),
-                        child: Image.asset(
-                          'assets/images/pieces/${formatPieceTheme(pieceTheme)}/'
-                          '${pieceTypeToString(piece.type)}_'
-                          '${piece.player == Player.player1 ? 'white' : 'black'}.png',
-                          fit: BoxFit.contain,
-                          errorBuilder: (context, error, stackTrace) => Center(
-                            child: Text(
-                              _fallbackPiece(
-                                piece.type,
-                                piece.player == Player.player1,
+              return GestureDetector(
+                key: ValueKey('position-tile-$tile'),
+                behavior: HitTestBehavior.opaque,
+                onTap: onTileTap == null ? null : () => onTileTap!(tile),
+                child: DecoratedBox(
+                  decoration: BoxDecoration(
+                    color: isSelected
+                        ? const Color(0xfff1c75b)
+                        : isHighlighted
+                            ? Color.alphaBlend(highlightColor, baseColor)
+                            : baseColor,
+                  ),
+                  child: piece == null
+                      ? null
+                      : Padding(
+                          padding: const EdgeInsets.all(3),
+                          child: Image.asset(
+                            'assets/images/pieces/${formatPieceTheme(pieceTheme)}/'
+                            '${pieceTypeToString(piece.type)}_'
+                            '${piece.player == Player.player1 ? 'white' : 'black'}.png',
+                            fit: BoxFit.contain,
+                            errorBuilder: (context, error, stackTrace) =>
+                                Center(
+                              child: Text(
+                                _fallbackPiece(
+                                  piece.type,
+                                  piece.player == Player.player1,
+                                ),
+                                style: const TextStyle(fontSize: 24),
                               ),
-                              style: const TextStyle(fontSize: 24),
                             ),
                           ),
                         ),
-                      ),
-              ),
-            );
-          },
+                ),
+              );
+            },
+          ),
         ),
       ),
     );
