@@ -3,6 +3,10 @@ import 'package:chess_room/logic/chess_piece.dart';
 import 'package:chess_room/logic/shared_functions.dart';
 import 'package:chess_room/views/components/main_menu_view/game_options/side_picker.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:chess_room/generated/l10n.dart';
+import 'package:chess_room/logic/chess_piece_labels.dart';
+import 'package:chess_room/model/app_model.dart';
+import 'package:provider/provider.dart';
 
 class PositionBoard extends StatelessWidget {
   final ChessBoard board;
@@ -26,6 +30,8 @@ class PositionBoard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final strings = S.maybeOf(context);
+    final theme = Provider.of<AppModel?>(context)?.theme;
     return AspectRatio(
       aspectRatio: 1,
       child: ClipRRect(
@@ -49,42 +55,56 @@ class PositionBoard extends StatelessWidget {
               final isSelected = selectedTile == tile;
               final isHighlighted = highlightedTiles.contains(tile);
               final baseColor = (row + col).isEven
-                  ? const Color(0xffe7d4ad)
-                  : const Color(0xff8b6a42);
+                  ? theme?.lightTile ?? const Color(0xffe7d4ad)
+                  : theme?.darkTile ?? const Color(0xff8b6a42);
+              final square = '${String.fromCharCode(97 + col)}${8 - row}';
+              final label = strings == null
+                  ? square
+                  : piece == null
+                      ? strings.Empty_Square(square)
+                      : strings.Piece_On_Square(
+                          chessPieceLabel(strings, piece.type, piece.player),
+                          square);
 
-              return GestureDetector(
-                key: ValueKey('position-tile-$tile'),
-                behavior: HitTestBehavior.opaque,
-                onTap: onTileTap == null ? null : () => onTileTap!(tile),
-                child: DecoratedBox(
-                  decoration: BoxDecoration(
-                    color: isSelected
-                        ? const Color(0xfff1c75b)
-                        : isHighlighted
-                            ? Color.alphaBlend(highlightColor, baseColor)
-                            : baseColor,
-                  ),
-                  child: piece == null
-                      ? null
-                      : Padding(
-                          padding: const EdgeInsets.all(3),
-                          child: Image.asset(
-                            'assets/images/pieces/${formatPieceTheme(pieceTheme)}/'
-                            '${pieceTypeToString(piece.type)}_'
-                            '${piece.player == Player.player1 ? 'white' : 'black'}.png',
-                            fit: BoxFit.contain,
-                            errorBuilder: (context, error, stackTrace) =>
-                                Center(
-                              child: Text(
-                                _fallbackPiece(
-                                  piece.type,
-                                  piece.player == Player.player1,
+              return Semantics(
+                label: label,
+                button: onTileTap != null,
+                selected: isSelected,
+                child: GestureDetector(
+                  key: ValueKey('position-tile-$tile'),
+                  behavior: HitTestBehavior.opaque,
+                  onTap: onTileTap == null ? null : () => onTileTap!(tile),
+                  child: DecoratedBox(
+                    decoration: BoxDecoration(
+                      color: isSelected
+                          ? const Color(0xfff1c75b)
+                          : isHighlighted
+                              ? Color.alphaBlend(highlightColor, baseColor)
+                              : baseColor,
+                    ),
+                    child: piece == null
+                        ? null
+                        : Padding(
+                            padding: const EdgeInsets.all(3),
+                            child: Image.asset(
+                              'assets/images/pieces/${formatPieceTheme(pieceTheme)}/'
+                              '${pieceTypeToString(piece.type)}_'
+                              '${piece.player == Player.player1 ? 'white' : 'black'}.png',
+                              fit: BoxFit.contain,
+                              excludeFromSemantics: true,
+                              errorBuilder: (context, error, stackTrace) =>
+                                  Center(
+                                child: Text(
+                                  _fallbackPiece(
+                                    piece.type,
+                                    piece.player == Player.player1,
+                                  ),
+                                  style: const TextStyle(fontSize: 24),
                                 ),
-                                style: const TextStyle(fontSize: 24),
                               ),
                             ),
                           ),
-                        ),
+                  ),
                 ),
               );
             },

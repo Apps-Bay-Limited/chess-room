@@ -2,7 +2,6 @@ import 'package:chess_room/model/app_model.dart';
 import 'package:chess_room/util/app_design.dart';
 import 'package:chess_room/util/remove_ads_purchase_service.dart';
 import 'package:chess_room/views/components/shared/menu_button.dart';
-import 'package:chess_room/views/components/shared/text_variable.dart';
 import 'package:flutter/cupertino.dart';
 
 import '../../../generated/l10n.dart';
@@ -27,36 +26,78 @@ class RemoveAdsSection extends StatelessWidget {
         service.state != RemoveAdsStoreState.purchasing &&
         service.state != RemoveAdsStoreState.pending;
 
-    return Column(
-      children: [
-        TextDefault(S.of(context).Remove_Ads_Description),
-        const SizedBox(height: AppSpacing.lg),
-        if (appModel.isAdsRemoved)
-          TextDefault(
-            S.of(context).Remove_Ads_Purchased,
-            color: AppColors.accent,
-          )
-        else
-          MenuButton(
-            label: price == null
-                ? S.of(context).Remove_Ads
-                : S.of(context).Remove_Ads_With_Price(price),
-            onTap: canBuy ? service.buyRemoveAds : null,
+    return Container(
+      padding: const EdgeInsets.all(AppSpacing.xl),
+      decoration: BoxDecoration(
+        color: AppColors.surface,
+        borderRadius: BorderRadius.circular(AppRadius.md),
+        border: Border.all(color: AppColors.divider),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Row(
+            children: [
+              const Icon(CupertinoIcons.sparkles,
+                  color: AppColors.accent, size: 22),
+              const SizedBox(width: AppSpacing.md),
+              Expanded(
+                child: Text(
+                  S.of(context).Remove_Ads,
+                  style: const TextStyle(
+                    color: AppColors.textPrimary,
+                    fontSize: 17,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+            ],
           ),
-        const SizedBox(height: AppSpacing.md),
-        MenuButton(
-          label: S.of(context).Restore_Purchases,
-          onTap: service.state == RemoveAdsStoreState.loading ||
-                  service.state == RemoveAdsStoreState.purchasing ||
-                  service.state == RemoveAdsStoreState.pending
-              ? null
-              : service.restorePurchases,
-        ),
-        if (status != null) ...[
           const SizedBox(height: AppSpacing.md),
-          TextDefault(status),
+          Text(
+            S.of(context).Remove_Ads_Description,
+            style: const TextStyle(
+                color: AppColors.textSecondary, fontSize: 14, height: 1.4),
+          ),
+          const SizedBox(height: AppSpacing.lg),
+          if (!appModel.isAdsRemoved)
+            MenuButton(
+              label: price == null
+                  ? S.of(context).Remove_Ads
+                  : S.of(context).Remove_Ads_With_Price(price),
+              onTap: canBuy ? service.buyRemoveAds : null,
+            ),
+          const SizedBox(height: AppSpacing.md),
+          CupertinoButton(
+            padding: const EdgeInsets.symmetric(vertical: AppSpacing.md),
+            onPressed: service.state == RemoveAdsStoreState.loading ||
+                    service.state == RemoveAdsStoreState.purchasing ||
+                    service.state == RemoveAdsStoreState.pending
+                ? null
+                : service.restorePurchases,
+            child: Text(
+              S.of(context).Restore_Purchases,
+              style: const TextStyle(color: AppColors.accent, fontSize: 15),
+            ),
+          ),
+          if (status != null) ...[
+            const SizedBox(height: AppSpacing.md),
+            Semantics(
+              liveRegion: true,
+              child: Text(
+                status,
+                style: TextStyle(
+                  color: appModel.isAdsRemoved
+                      ? AppColors.success
+                      : AppColors.textSecondary,
+                  fontSize: 14,
+                  height: 1.4,
+                ),
+              ),
+            ),
+          ],
         ],
-      ],
+      ),
     );
   }
 

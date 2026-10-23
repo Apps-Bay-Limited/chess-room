@@ -14,6 +14,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 /// en passant and undo information are retained. FEN alone loses that state in
 /// this engine.
 class InProgressGame {
+  final String? sessionId;
   final int playerCount;
   final int aiDifficulty;
   final Player selectedSide;
@@ -27,6 +28,7 @@ class InProgressGame {
   final List<MoveReviewRecord> reviews;
 
   const InProgressGame({
+    this.sessionId,
     required this.playerCount,
     required this.aiDifficulty,
     required this.selectedSide,
@@ -49,6 +51,7 @@ class InProgressGame {
 
   Map<String, Object?> toJson() => {
         'version': 1,
+        'sessionId': sessionId,
         'playerCount': playerCount,
         'aiDifficulty': aiDifficulty,
         'selectedSide': selectedSide.name,
@@ -67,6 +70,7 @@ class InProgressGame {
       throw const FormatException('Unsupported unfinished game version.');
     }
     final game = InProgressGame(
+      sessionId: json['sessionId'] as String?,
       playerCount: json['playerCount']! as int,
       aiDifficulty: json['aiDifficulty']! as int,
       selectedSide: Player.values.byName(json['selectedSide']! as String),

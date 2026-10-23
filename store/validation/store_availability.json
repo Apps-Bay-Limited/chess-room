@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "platform": "iOS",
+  "checkedAtUtc": "2026-10-16T01:49:58.228457Z",
+  "requestedProductIDs": [
+    "com.appsbay.chessRoom1.remove_ads"
+  ],
+  "storeAvailable": true,
+  "productFound": true,
+  "notFoundProductIDs": [],
+  "queryStatus": "found",
+  "restoreRequested": false,
+  "restoreStatus": "not_requested",
+  "purchaseAttempted": false,
+  "entitlementPreferencesWritten": false,
+  "restorationVerified": false,
+  "availabilityStatus": "available",
+  "returnedProductIDs": [
+    "com.appsbay.chessRoom1.remove_ads"
+  ],
+  "unexpectedProductCount": 0,
+  "unexpectedNotFoundCount": 0,
+  "elapsedMilliseconds": 649,
+  "status": "product_ready"
+}

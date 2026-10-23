@@ -1,0 +1,3 @@
+- Empieza una partida al instante con Quick Play.
+- Retoma tus partidas pendientes con Continue Game.
+- Mejora con más puzles diarios, pistas y explicaciones.

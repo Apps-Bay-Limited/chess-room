@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:app_tracking_transparency/app_tracking_transparency.dart';
 import 'package:chess_room/features/daily_puzzle/daily_puzzle_page.dart';
 import 'package:chess_room/features/daily_puzzle/daily_puzzle_progress.dart';
@@ -15,11 +17,14 @@ import 'package:provider/provider.dart';
 
 import '../generated/l10n.dart';
 import '../util/ads_manager.dart';
+import '../util/app_design.dart';
+import 'components/shared/app_page.dart';
 import 'components/shared/banner_ad_slot.dart';
-import 'components/shared/menu_button.dart';
 
 class MainMenuView extends StatefulWidget {
-  const MainMenuView({super.key});
+  final bool initializeServices;
+
+  const MainMenuView({super.key, this.initializeServices = true});
 
   @override
   State<MainMenuView> createState() => _MainMenuViewState();
@@ -34,10 +39,12 @@ class _MainMenuViewState extends State<MainMenuView>
       const PuzzleProgress(streak: 0, solvedToday: false);
   bool _openingGame = false;
   bool _ready = false;
+  late final VoidCallback _practiceListener;
 
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
+    AdsManager.practiceSessionCount.removeListener(_practiceListener);
     _appModel?.purchaseService.removeListener(_handleRemoveAdsChanged);
     _stopAppOpenAds();
     super.dispose();
@@ -47,6 +54,13 @@ class _MainMenuViewState extends State<MainMenuView>
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
+    _practiceListener = () {
+      if (!AdsManager.isPracticeInProgress) _requestRatingAtRest();
+    };
+    AdsManager.practiceSessionCount.addListener(_practiceListener);
+    if (widget.initializeServices) {
+      unawaited(InAppReviewHelper.shared.initialize());
+    }
     _refreshDailyProgress();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       if (!mounted) return;
@@ -55,9 +69,28 @@ class _MainMenuViewState extends State<MainMenuView>
       if (mounted) setState(() => _ready = true);
     });
 
-    if (!kIsWeb) {
+    if (!kIsWeb && widget.initializeServices) {
       _initAppServices();
     }
+  }
+
+  void _requestRatingAtRest() {
+    if (!widget.initializeServices || !mounted) return;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      final model = context.read<AppModel>();
+      unawaited(InAppReviewHelper.shared.maybeRequestReview(
+        isBlocked: () =>
+            !mounted ||
+            WidgetsBinding.instance.lifecycleState !=
+                AppLifecycleState.resumed ||
+            !(ModalRoute.of(context)?.isCurrent ?? false) ||
+            model.gameInProgress ||
+            AdsManager.isPracticeInProgress ||
+            AdsManager.isFullScreenAdShowing ||
+            model.purchaseService.isStoreFlowActive,
+      ));
+    });
   }
 
   @override
@@ -66,9 +99,14 @@ class _MainMenuViewState extends State<MainMenuView>
   }
 
   Future<void> _refreshDailyProgress() async {
-    final progress =
-        await SharedPreferencesPuzzleProgressStore().load(DateTime.now());
-    if (mounted) setState(() => _dailyProgress = progress);
+    try {
+      final progress =
+          await SharedPreferencesPuzzleProgressStore().load(DateTime.now());
+      if (mounted) setState(() => _dailyProgress = progress);
+    } catch (_) {
+      // Keep Home usable and retain its last known progress if local storage
+      // is unavailable or contains values written with an incompatible type.
+    }
   }
 
   Future<void> _openGame(AppModel appModel, {bool resume = false}) async {
@@ -108,6 +146,7 @@ class _MainMenuViewState extends State<MainMenuView>
       );
     } finally {
       if (mounted) setState(() => _openingGame = false);
+      _requestRatingAtRest();
     }
   }
 
@@ -119,6 +158,16 @@ class _MainMenuViewState extends State<MainMenuView>
       ),
     );
     if (mounted) await _refreshDailyProgress();
+    _requestRatingAtRest();
+  }
+
+  Future<void> _openSetup(AppModel model, int players) async {
+    model.setPlayerCount(players);
+    await Navigator.push<void>(
+      context,
+      CupertinoPageRoute(builder: (_) => const SinglePlayerView()),
+    );
+    _requestRatingAtRest();
   }
 
   Future<void> _initAppServices() async {
@@ -138,7 +187,6 @@ class _MainMenuViewState extends State<MainMenuView>
       AdsManager.setAdsRemoved(_appModel!.isAdsRemoved);
       if (_appModel!.isAdsRemoved) {
         _stopAppOpenAds();
-        InAppReviewHelper.checkAndAskForReview();
         return;
       }
 
@@ -147,7 +195,6 @@ class _MainMenuViewState extends State<MainMenuView>
         return;
       }
       if (!consentAllowsAds) {
-        InAppReviewHelper.checkAndAskForReview();
         return;
       }
 
@@ -172,8 +219,6 @@ class _MainMenuViewState extends State<MainMenuView>
             _appModel!.purchaseService.isStoreFlowActive,
       );
       WidgetsBinding.instance.addObserver(_appLifecycleReactor!);
-
-      InAppReviewHelper.checkAndAskForReview();
     });
   }
 
@@ -203,99 +248,125 @@ class _MainMenuViewState extends State<MainMenuView>
 
   @override
   Widget build(BuildContext context) {
-    double width = MediaQuery.of(context).size.height < 800 ? 72 : 100;
-
     return Consumer<AppModel>(
       builder: (context, appModel, child) {
-        return Container(
-          decoration: BoxDecoration(gradient: appModel.theme.background),
+        final strings = S.of(context);
+        return AppPage(
           child: Column(
             children: [
               Expanded(
                 child: SingleChildScrollView(
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 20,
-                    horizontal: 24,
-                  ),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Container(
-                        padding: EdgeInsets.fromLTRB(
-                            10, MediaQuery.of(context).padding.top + 12, 10, 0),
-                        child: Image.asset(
-                          'assets/images/chess-piece.png',
-                          width: width,
-                        ),
-                      ),
-                      const SizedBox(height: 30),
-                      HomePlayActions(
-                        hasSavedGame: appModel.hasResumableGame,
-                        solvedToday: _dailyProgress.solvedToday,
-                        streak: _dailyProgress.streak,
-                        isLoading: !_ready || _openingGame,
-                        onContinue: () => _openGame(appModel, resume: true),
-                        onQuickPlay: () => _openGame(appModel),
-                        onDailyPuzzle: () => _openDailyPuzzle(appModel),
-                      ),
-                      const SizedBox(height: 20),
-                      MenuButton(
-                        key: const ValueKey('vs-ai-button'),
-                        label: S.of(context).Vs_AI_Player,
-                        onTap: () {
-                          appModel.setPlayerCount(1);
-                          Navigator.push(
-                            context,
-                            CupertinoPageRoute(
-                              builder: (context) => const SinglePlayerView(),
+                  padding: const EdgeInsets.all(AppSpacing.xl),
+                  child: AppContent(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        Row(
+                          children: [
+                            Image.asset(
+                              'assets/images/chess-piece.png',
+                              width: 36,
+                              height: 36,
+                              excludeFromSemantics: true,
                             ),
-                          );
-                        },
-                      ),
-                      const SizedBox(height: 20),
-                      MenuButton(
-                        key: const ValueKey('two-players-button'),
-                        label: S.of(context).Two_Players,
-                        onTap: () {
-                          appModel.setPlayerCount(2);
-                          Navigator.push(
-                            context,
-                            CupertinoPageRoute(
-                              builder: (context) => const SinglePlayerView(),
-                            ),
-                          );
-                        },
-                      ),
-                      const SizedBox(height: 20),
-                      MenuButton(
-                        key: const ValueKey('training-button'),
-                        label: S.of(context).Training,
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            CupertinoPageRoute(
-                              builder: (context) => TrainingHubPage(
-                                pieceTheme: appModel.pieceTheme,
+                            const SizedBox(width: AppSpacing.md),
+                            Expanded(
+                              child: Text(
+                                strings.Chess_Room,
+                                style: const TextStyle(
+                                  color: AppColors.textPrimary,
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.w700,
+                                ),
                               ),
                             ),
-                          );
-                        },
-                      ),
-                      const SizedBox(height: 20),
-                      MenuButton(
-                        key: const ValueKey('settings-button'),
-                        label: S.of(context).Settings,
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            CupertinoPageRoute(
-                              builder: (context) =>
-                                  SettingsView(appModel: appModel),
+                            Semantics(
+                              label: strings.Settings,
+                              button: true,
+                              child: CupertinoButton(
+                                key: const ValueKey('settings-button'),
+                                padding: const EdgeInsets.all(AppSpacing.md),
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    CupertinoPageRoute(
+                                      builder: (context) =>
+                                          SettingsView(appModel: appModel),
+                                    ),
+                                  );
+                                },
+                                child: const Icon(
+                                  CupertinoIcons.gear_alt,
+                                  color: AppColors.textSecondary,
+                                  size: 25,
+                                ),
+                              ),
                             ),
-                          );
-                        },
-                      ),
-                    ],
+                          ],
+                        ),
+                        const SizedBox(height: AppSpacing.lg),
+                        Text(
+                          strings.Home_Subtitle,
+                          style: const TextStyle(
+                            color: AppColors.textSecondary,
+                            fontSize: 16,
+                            height: 1.5,
+                          ),
+                        ),
+                        const SizedBox(height: AppSpacing.xxl),
+                        HomePlayActions(
+                          hasSavedGame: appModel.hasResumableGame,
+                          solvedToday: _dailyProgress.solvedToday,
+                          streak: _dailyProgress.streak,
+                          isLoading: !_ready || _openingGame,
+                          onContinue: () => _openGame(appModel, resume: true),
+                          onQuickPlay: () => _openGame(appModel),
+                          onDailyPuzzle: () => _openDailyPuzzle(appModel),
+                        ),
+                        const SizedBox(height: AppSpacing.xxl),
+                        Text(
+                          strings.Home_Play_Options,
+                          style: const TextStyle(
+                            color: AppColors.textSecondary,
+                            fontSize: 13,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        const SizedBox(height: AppSpacing.md),
+                        _HomeDestination(
+                          key: const ValueKey('vs-ai-button'),
+                          title: strings.Vs_AI_Player,
+                          detail: strings.Home_AI_Description,
+                          icon: CupertinoIcons.slider_horizontal_3,
+                          onTap: () => _openSetup(appModel, 1),
+                        ),
+                        const SizedBox(height: AppSpacing.sm),
+                        _HomeDestination(
+                          key: const ValueKey('two-players-button'),
+                          title: strings.Two_Players,
+                          detail: strings.Home_Local_Description,
+                          icon: CupertinoIcons.person_2,
+                          onTap: () => _openSetup(appModel, 2),
+                        ),
+                        const SizedBox(height: AppSpacing.sm),
+                        _HomeDestination(
+                          key: const ValueKey('training-button'),
+                          title: strings.Training,
+                          detail: strings.Home_Training_Description,
+                          icon: CupertinoIcons.book,
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              CupertinoPageRoute(
+                                builder: (context) => TrainingHubPage(
+                                  pieceTheme: appModel.pieceTheme,
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -304,6 +375,67 @@ class _MainMenuViewState extends State<MainMenuView>
           ),
         );
       },
+    );
+  }
+}
+
+class _HomeDestination extends StatelessWidget {
+  final String title;
+  final String detail;
+  final IconData icon;
+  final VoidCallback onTap;
+
+  const _HomeDestination({
+    super.key,
+    required this.title,
+    required this.detail,
+    required this.icon,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return CupertinoButton(
+      padding: const EdgeInsets.all(AppSpacing.lg),
+      color: AppColors.surface,
+      borderRadius: BorderRadius.circular(AppRadius.md),
+      onPressed: onTap,
+      child: Row(
+        children: [
+          Icon(icon, color: AppColors.accent, size: 23),
+          const SizedBox(width: AppSpacing.lg),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: const TextStyle(
+                    color: AppColors.textPrimary,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                const SizedBox(height: AppSpacing.xs),
+                Text(
+                  detail,
+                  style: const TextStyle(
+                    color: AppColors.textSecondary,
+                    fontSize: 13,
+                    height: 1.4,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(width: AppSpacing.sm),
+          const Icon(
+            CupertinoIcons.chevron_forward,
+            color: AppColors.textSecondary,
+            size: 15,
+          ),
+        ],
+      ),
     );
   }
 }

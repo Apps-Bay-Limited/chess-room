@@ -1,3 +1,7 @@
+import 'dart:async';
+
+import 'package:chess_room/util/in_app_reviewer_helper.dart';
+import 'package:chess_room/util/practice_session_scope.dart';
 import 'package:chess_room/features/opening_trainer/opening_course.dart';
 import 'package:chess_room/generated/l10n.dart';
 import 'package:chess_room/logic/chess_board.dart';
@@ -6,6 +10,7 @@ import 'package:chess_room/logic/move_calculation/move_classes/move.dart';
 import 'package:chess_room/util/app_design.dart';
 import 'package:chess_room/views/components/main_menu_view/game_options/side_picker.dart';
 import 'package:chess_room/views/components/shared/position_board.dart';
+import 'package:chess_room/views/components/shared/app_page.dart';
 import 'package:flutter/cupertino.dart';
 
 class OpeningTrainerPage extends StatefulWidget {
@@ -25,6 +30,8 @@ class OpeningTrainerPage extends StatefulWidget {
 class _OpeningTrainerPageState extends State<OpeningTrainerPage> {
   late final OpeningProgressStore _store;
   Set<String> _completed = {};
+  bool _progressFailed = false;
+  int _loadRevision = 0;
 
   @override
   void initState() {
@@ -34,20 +41,27 @@ class _OpeningTrainerPageState extends State<OpeningTrainerPage> {
   }
 
   Future<void> _loadProgress() async {
-    final completed = await _store.loadCompletedIds();
-    if (mounted) setState(() => _completed = completed);
+    final revision = ++_loadRevision;
+    try {
+      final completed = await _store.loadCompletedIds();
+      if (!mounted || revision != _loadRevision) return;
+      setState(() {
+        _completed = completed;
+        _progressFailed = false;
+      });
+    } catch (_) {
+      if (!mounted || revision != _loadRevision) return;
+      setState(() => _progressFailed = true);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     final strings = S.of(context);
-    return CupertinoPageScaffold(
-      backgroundColor: const Color(0xff493B24),
-      navigationBar: CupertinoNavigationBar(
-        backgroundColor: const Color(0xff24201C),
-        middle: Text(strings.Opening_Trainer),
-      ),
-      child: SafeArea(
+    return PracticeSessionScope(
+        child: AppPage(
+      title: strings.Opening_Trainer,
+      child: AppContent(
         child: ListView.separated(
           padding: const EdgeInsets.all(AppSpacing.xl),
           itemCount: openingCourses.length + 1,
@@ -56,14 +70,31 @@ class _OpeningTrainerPageState extends State<OpeningTrainerPage> {
             if (index == 0) {
               return Padding(
                 padding: const EdgeInsets.only(bottom: AppSpacing.sm),
-                child: Text(
-                  strings.Opening_Trainer_Description,
-                  style: const TextStyle(fontSize: 17),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      strings.Opening_Trainer_Description,
+                      style: const TextStyle(
+                          fontSize: 17,
+                          color: AppColors.textSecondary,
+                          height: 1.4),
+                    ),
+                    if (_progressFailed) ...[
+                      const SizedBox(height: AppSpacing.md),
+                      Text(strings.Training_Progress_Unavailable),
+                      CupertinoButton(
+                        onPressed: _loadProgress,
+                        child: Text(strings.Retry),
+                      ),
+                    ],
+                  ],
                 ),
               );
             }
             final course = openingCourses[index - 1];
-            final complete = _completed.contains(course.id.name);
+            final complete =
+                !_progressFailed && _completed.contains(course.id.name);
             return CupertinoButton(
               key: ValueKey('opening-${course.id.name}'),
               padding: EdgeInsets.zero,
@@ -78,17 +109,21 @@ class _OpeningTrainerPageState extends State<OpeningTrainerPage> {
                     ),
                   ),
                 );
-                _loadProgress();
+                if (mounted) _loadProgress();
               },
               child: Container(
                 width: double.infinity,
                 padding: const EdgeInsets.all(AppSpacing.xl),
                 decoration: BoxDecoration(
-                  color: const Color(0x33000000),
+                  color: AppColors.surface,
+                  border: Border.all(color: AppColors.divider),
                   borderRadius: BorderRadius.circular(AppRadius.md),
                 ),
                 child: Row(
                   children: [
+                    const Icon(CupertinoIcons.book,
+                        color: AppColors.accent, size: 28),
+                    const SizedBox(width: AppSpacing.lg),
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -96,7 +131,7 @@ class _OpeningTrainerPageState extends State<OpeningTrainerPage> {
                           Text(
                             openingName(strings, course.id),
                             style: const TextStyle(
-                              color: CupertinoColors.white,
+                              color: AppColors.textPrimary,
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
                             ),
@@ -105,12 +140,13 @@ class _OpeningTrainerPageState extends State<OpeningTrainerPage> {
                           Text(
                             openingDescription(strings, course.id),
                             style: const TextStyle(
-                              color: CupertinoColors.systemGrey2,
+                              color: AppColors.textSecondary,
                             ),
                           ),
                         ],
                       ),
                     ),
+                    const SizedBox(width: AppSpacing.sm),
                     Icon(
                       complete
                           ? CupertinoIcons.check_mark_circled_solid
@@ -126,7 +162,7 @@ class _OpeningTrainerPageState extends State<OpeningTrainerPage> {
           },
         ),
       ),
-    );
+    ));
   }
 }
 
@@ -152,6 +188,8 @@ class _OpeningSessionPageState extends State<OpeningSessionPage> {
   int? _selectedTile;
   bool _wrong = false;
   bool _complete = false;
+  bool _savingCompletion = false;
+  bool _completionFailed = false;
 
   Move get _expectedMove => moveFromUci(widget.course.moves[_moveIndex]);
 
@@ -172,7 +210,7 @@ class _OpeningSessionPageState extends State<OpeningSessionPage> {
       push(_expectedMove, _board);
       final finished = _moveIndex == widget.course.moves.length - 1;
       if (finished) {
-        widget.progressStore.markCompleted(widget.course.id.name);
+        _recordCompletion();
       }
       setState(() {
         _moveIndex++;
@@ -185,6 +223,23 @@ class _OpeningSessionPageState extends State<OpeningSessionPage> {
         _selectedTile = null;
         _wrong = true;
       });
+    }
+  }
+
+  Future<void> _recordCompletion() async {
+    if (_savingCompletion) return;
+    setState(() => _savingCompletion = true);
+    try {
+      await widget.progressStore.markCompleted(widget.course.id.name);
+      if (mounted) setState(() => _completionFailed = false);
+      // Eligibility accounting must not keep a successfully saved lesson busy.
+      unawaited(InAppReviewHelper.shared
+          .recordCompletedActivity('opening:${widget.course.id.name}')
+          .catchError((Object _) {}));
+    } catch (_) {
+      if (mounted) setState(() => _completionFailed = true);
+    } finally {
+      if (mounted) setState(() => _savingCompletion = false);
     }
   }
 
@@ -202,13 +257,10 @@ class _OpeningSessionPageState extends State<OpeningSessionPage> {
   Widget build(BuildContext context) {
     final strings = S.of(context);
     final player = _moveIndex.isEven ? Player.player1 : Player.player2;
-    return CupertinoPageScaffold(
-      backgroundColor: const Color(0xff493B24),
-      navigationBar: CupertinoNavigationBar(
-        backgroundColor: const Color(0xff24201C),
-        middle: Text(openingName(strings, widget.course.id)),
-      ),
-      child: SafeArea(
+    return PracticeSessionScope(
+        child: AppPage(
+      title: openingName(strings, widget.course.id),
+      child: AppContent(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(AppSpacing.xl),
           child: Column(
@@ -240,6 +292,15 @@ class _OpeningSessionPageState extends State<OpeningSessionPage> {
                 onTileTap: _onTileTap,
               ),
               const SizedBox(height: AppSpacing.lg),
+              if (_completionFailed) ...[
+                Text(strings.Training_Progress_Unavailable,
+                    style: const TextStyle(color: AppColors.textSecondary)),
+                CupertinoButton(
+                  key: const ValueKey('retry-opening-completion'),
+                  onPressed: _savingCompletion ? null : _recordCompletion,
+                  child: Text(strings.Retry),
+                ),
+              ],
               if (_wrong)
                 Text(
                   strings.Opening_Try_Again,
@@ -248,14 +309,14 @@ class _OpeningSessionPageState extends State<OpeningSessionPage> {
               if (_complete)
                 CupertinoButton.filled(
                   key: const ValueKey('restart-opening'),
-                  onPressed: _restart,
+                  onPressed: _savingCompletion ? null : _restart,
                   child: Text(strings.Practice_Again),
                 ),
             ],
           ),
         ),
       ),
-    );
+    ));
   }
 }
 

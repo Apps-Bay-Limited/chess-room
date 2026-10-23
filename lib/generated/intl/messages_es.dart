@@ -20,26 +20,61 @@ typedef String MessageIfAbsent(String messageStr, List<dynamic> args);
 class MessageLookup extends MessageLookupByLibrary {
   String get localeName => 'es';
 
-  static String m0(count) => "${count} min";
+  static String m0(square) => "Casilla vacía ${square}";
 
-  static String m1(count) => "${count} jugadas";
+  static String m1(count) => "${count} min";
 
-  static String m2(current, total) => "Jugada ${current} de ${total}";
+  static String m2(count) => "${count} jugadas";
 
-  static String m3(current, total, side) =>
+  static String m3(current, total) => "Jugada ${current} de ${total}";
+
+  static String m4(current, total, side) =>
       "Jugada ${current} de ${total}: juega con ${side}";
 
-  static String m4(value) => "Pérdida de evaluación: ${value} peones";
+  static String m5(completed, total) =>
+      "${completed} de ${total} aperturas completadas";
 
-  static String m5(current, total) => "Problema ${current} de ${total}";
+  static String m6(value) => "Pérdida de evaluación: ${value} peones";
 
-  static String m6(count) => "Racha: ${count}";
+  static String m7(piece, square) => "${piece} en ${square}";
 
-  static String m7(solved, total) => "${solved} de ${total} resueltos";
+  static String m8(current, total) => "Problema ${current} de ${total}";
 
-  static String m8(price) => "Eliminar anuncios ${price}";
+  static String m9(piece, support, square) =>
+      "Escape cerrado: ${piece} en ${support} controla ${square}.";
 
-  static String m9(current, total, classification) =>
+  static String m10(from, king, target) =>
+      "Desde ${from}, el caballo da jaque al rey en ${king} y también ataca ${target}.";
+
+  static String m11(line) => "Una solución: ${line}.";
+
+  static String m12(square) =>
+      "Jaque mate al rey en ${square}: no hay escape, captura ni bloqueo legal.";
+
+  static String m13(piece, from, to) => "${piece}: ${from} → ${to}.";
+
+  static String m14(squares) =>
+      "Los peones defensores en ${squares} bloquean la salida de su propio rey.";
+
+  static String m15(square, piece) =>
+      "El peón alcanza ${square} y se convierte en ${piece}.";
+
+  static String m16(reply, finish) =>
+      "Después de ${reply}, ${finish} da jaque mate.";
+
+  static String m17(piece, support, square) =>
+      "Apoyo: ${piece} en ${support} protege ${square}.";
+
+  static String m18(count) => "Racha: ${count}";
+
+  static String m19(completed, total) =>
+      "${completed} de ${total} problemas completados";
+
+  static String m20(solved, total) => "${solved} de ${total} resueltos";
+
+  static String m21(price) => "Eliminar anuncios ${price}";
+
+  static String m22(current, total, classification) =>
       "Jugada ${current} de ${total}: ${classification}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
@@ -59,6 +94,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "Blunder": MessageLookupByLibrary.simpleMessage("Error grave"),
     "Blunder_Explanation": MessageLookupByLibrary.simpleMessage(
       "Esta jugada pierde mucho material o permite un ataque decisivo.",
+    ),
+    "Board_Coordinates": MessageLookupByLibrary.simpleMessage(
+      "Coordenadas del tablero",
+    ),
+    "Board_Coordinates_Description": MessageLookupByLibrary.simpleMessage(
+      "Mostrar las columnas y filas alrededor del tablero.",
     ),
     "Cancel": MessageLookupByLibrary.simpleMessage("Cancelar"),
     "Chess_Bishop_Rule": MessageLookupByLibrary.simpleMessage(
@@ -105,6 +146,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Chess_Rook_Rule": MessageLookupByLibrary.simpleMessage(
       "Torre — mueve cualquier número de casillas en horizontal o vertical.",
     ),
+    "Chess_Room": MessageLookupByLibrary.simpleMessage("Chess Room"),
     "Chess_Room_Result": MessageLookupByLibrary.simpleMessage(
       "Resultado de Chess Room",
     ),
@@ -126,6 +168,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "Classical_Music_Box": MessageLookupByLibrary.simpleMessage(
       "Caja de música clásica",
     ),
+    "Clock_Active": MessageLookupByLibrary.simpleMessage("Juegan"),
+    "Clock_Black": MessageLookupByLibrary.simpleMessage("Negras"),
+    "Clock_White": MessageLookupByLibrary.simpleMessage("Blancas"),
     "Continue_Game": MessageLookupByLibrary.simpleMessage("Continuar partida"),
     "Continue_Game_Description": MessageLookupByLibrary.simpleMessage(
       "Retoma donde lo dejaste",
@@ -138,10 +183,21 @@ class MessageLookup extends MessageLookupByLibrary {
       "Un nuevo reto para hoy",
     ),
     "Daily_Puzzle": MessageLookupByLibrary.simpleMessage("Problema diario"),
+    "Delete": MessageLookupByLibrary.simpleMessage("Eliminar"),
+    "Delete_Game_Failed": MessageLookupByLibrary.simpleMessage(
+      "No se pudo eliminar esta partida. Inténtalo de nuevo.",
+    ),
+    "Delete_Game_Message": MessageLookupByLibrary.simpleMessage(
+      "La partida guardada se eliminará de este dispositivo. No se puede deshacer.",
+    ),
+    "Delete_Game_Title": MessageLookupByLibrary.simpleMessage(
+      "¿Eliminar esta partida?",
+    ),
     "Done": MessageLookupByLibrary.simpleMessage("Hecho"),
     "Draw": MessageLookupByLibrary.simpleMessage("Tablas"),
     "Easy": MessageLookupByLibrary.simpleMessage("Fácil"),
     "Easy_Unit": MessageLookupByLibrary.simpleMessage("Easy Unit"),
+    "Empty_Square": m0,
     "Export_PGN": MessageLookupByLibrary.simpleMessage("Copiar PGN"),
     "Extreme": MessageLookupByLibrary.simpleMessage("Extrema"),
     "Falling_Block_Puzzle": MessageLookupByLibrary.simpleMessage(
@@ -150,9 +206,11 @@ class MessageLookup extends MessageLookupByLibrary {
     "Find_Best_Move": MessageLookupByLibrary.simpleMessage(
       "Encuentra la mejor jugada.",
     ),
+    "First_Move": MessageLookupByLibrary.simpleMessage("Primera jugada"),
     "Fling_Knife": MessageLookupByLibrary.simpleMessage(
       "Lanzamiento de cuchillos",
     ),
+    "Flip_Board": MessageLookupByLibrary.simpleMessage("Girar tablero"),
     "Full_Game_Review": MessageLookupByLibrary.simpleMessage(
       "Revisión completa de la partida",
     ),
@@ -162,12 +220,37 @@ class MessageLookup extends MessageLookupByLibrary {
     "Game_Replay": MessageLookupByLibrary.simpleMessage(
       "Repetición de la partida",
     ),
+    "Game_Setup_Description": MessageLookupByLibrary.simpleMessage(
+      "Elige un desafío a tu nivel y realiza tu primera jugada.",
+    ),
+    "Gameplay_Settings": MessageLookupByLibrary.simpleMessage("Juego"),
     "Good_Move": MessageLookupByLibrary.simpleMessage("Buena jugada"),
     "Good_Move_Explanation": MessageLookupByLibrary.simpleMessage(
       "Esta jugada se acerca a la mejor opción del motor.",
     ),
     "Hard": MessageLookupByLibrary.simpleMessage("Difícil"),
-    "Hints": MessageLookupByLibrary.simpleMessage("Pistas"),
+    "Help_And_Privacy": MessageLookupByLibrary.simpleMessage(
+      "Ayuda y privacidad",
+    ),
+    "Hints": MessageLookupByLibrary.simpleMessage("Jugadas legales"),
+    "Hints_Description": MessageLookupByLibrary.simpleMessage(
+      "Mostrar los destinos legales al seleccionar una pieza.",
+    ),
+    "Home_AI_Description": MessageLookupByLibrary.simpleMessage(
+      "Elige nivel, color y ritmo de juego",
+    ),
+    "Home_Local_Description": MessageLookupByLibrary.simpleMessage(
+      "Jugad juntos en un mismo dispositivo",
+    ),
+    "Home_Play_Options": MessageLookupByLibrary.simpleMessage(
+      "Más formas de jugar",
+    ),
+    "Home_Subtitle": MessageLookupByLibrary.simpleMessage(
+      "Juega una partida. Mejora tu próxima jugada.",
+    ),
+    "Home_Training_Description": MessageLookupByLibrary.simpleMessage(
+      "Problemas y aperturas guiadas",
+    ),
     "How_To_Play_Chess": MessageLookupByLibrary.simpleMessage(
       "Cómo jugar al ajedrez",
     ),
@@ -182,22 +265,27 @@ class MessageLookup extends MessageLookupByLibrary {
       "Esta jugada cede una pequeña parte de la ventaja de la posición.",
     ),
     "Instant_Face": MessageLookupByLibrary.simpleMessage("Instant Face"),
+    "Last_Move": MessageLookupByLibrary.simpleMessage("Última jugada"),
+    "Local_Data_Unavailable": MessageLookupByLibrary.simpleMessage(
+      "Los datos guardados no están disponibles temporalmente. Inténtalo de nuevo.",
+    ),
     "Mate_In_One": MessageLookupByLibrary.simpleMessage("Mate en uno"),
     "Mate_In_Two": MessageLookupByLibrary.simpleMessage("Mate en dos"),
     "Medium": MessageLookupByLibrary.simpleMessage("Media"),
     "Metronome_Go": MessageLookupByLibrary.simpleMessage("Metronome Go"),
     "Minesweeper_Go": MessageLookupByLibrary.simpleMessage("Minesweeper Go"),
     "Mint_Translate": MessageLookupByLibrary.simpleMessage("Mint Translate"),
-    "Minute_Count": m0,
+    "Minute_Count": m1,
     "Mistake": MessageLookupByLibrary.simpleMessage("Error"),
     "Mistake_Explanation": MessageLookupByLibrary.simpleMessage(
       "Una jugada más fuerte habría mantenido una posición mucho mejor.",
     ),
     "Money_Tracker": MessageLookupByLibrary.simpleMessage("Control de gastos"),
     "More_Apps": MessageLookupByLibrary.simpleMessage("Más aplicaciones"),
-    "Move_Count": m1,
-    "Move_Of": m2,
+    "Move_Count": m2,
+    "Move_Of": m3,
     "Next": MessageLookupByLibrary.simpleMessage("Siguiente"),
+    "Next_Move": MessageLookupByLibrary.simpleMessage("Jugada siguiente"),
     "Next_Puzzle": MessageLookupByLibrary.simpleMessage("Siguiente problema"),
     "No_Limit": MessageLookupByLibrary.simpleMessage("Sin límite"),
     "No_Saved_Games": MessageLookupByLibrary.simpleMessage(
@@ -218,7 +306,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Opening_London_Description": MessageLookupByLibrary.simpleMessage(
       "Construye una posición fiable con el alfil de casillas negras fuera de la cadena de peones.",
     ),
-    "Opening_Move_Prompt": m3,
+    "Opening_Move_Prompt": m4,
     "Opening_Queens_Gambit": MessageLookupByLibrary.simpleMessage(
       "Gambito de dama",
     ),
@@ -246,6 +334,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Opening_Try_Again": MessageLookupByLibrary.simpleMessage(
       "Esta jugada no pertenece a la variante de entrenamiento. Inténtalo de nuevo.",
     ),
+    "Openings_Completed_Count": m5,
     "PGN_Copied": MessageLookupByLibrary.simpleMessage(
       "PGN copiado al portapapeles.",
     ),
@@ -256,13 +345,29 @@ class MessageLookup extends MessageLookupByLibrary {
       "No se pudo importar este PGN.",
     ),
     "Paste_PGN": MessageLookupByLibrary.simpleMessage("Pega una partida PGN"),
-    "Pawns_Lost": m4,
+    "Pawns_Lost": m6,
     "Pick_Your_Side": MessageLookupByLibrary.simpleMessage("Elige tu bando"),
+    "Piece_Black_Bishop": MessageLookupByLibrary.simpleMessage("Alfil negro"),
+    "Piece_Black_King": MessageLookupByLibrary.simpleMessage("Rey negro"),
+    "Piece_Black_Knight": MessageLookupByLibrary.simpleMessage("Caballo negro"),
+    "Piece_Black_Pawn": MessageLookupByLibrary.simpleMessage("Peón negro"),
+    "Piece_Black_Queen": MessageLookupByLibrary.simpleMessage("Dama negra"),
+    "Piece_Black_Rook": MessageLookupByLibrary.simpleMessage("Torre negra"),
+    "Piece_On_Square": m7,
+    "Piece_White_Bishop": MessageLookupByLibrary.simpleMessage("Alfil blanco"),
+    "Piece_White_King": MessageLookupByLibrary.simpleMessage("Rey blanco"),
+    "Piece_White_Knight": MessageLookupByLibrary.simpleMessage(
+      "Caballo blanco",
+    ),
+    "Piece_White_Pawn": MessageLookupByLibrary.simpleMessage("Peón blanco"),
+    "Piece_White_Queen": MessageLookupByLibrary.simpleMessage("Dama blanca"),
+    "Piece_White_Rook": MessageLookupByLibrary.simpleMessage("Torre blanca"),
     "Played_Move": MessageLookupByLibrary.simpleMessage("Jugada"),
     "Practice_Again": MessageLookupByLibrary.simpleMessage(
       "Practicar de nuevo",
     ),
     "Previous": MessageLookupByLibrary.simpleMessage("Anterior"),
+    "Previous_Move": MessageLookupByLibrary.simpleMessage("Jugada anterior"),
     "Privacy_Choices": MessageLookupByLibrary.simpleMessage(
       "Opciones de privacidad",
     ),
@@ -313,6 +418,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Corta las vías de escape del rey y después da jaque por el borde del tablero.",
     ),
     "Puzzle_Hard": MessageLookupByLibrary.simpleMessage("Difícil"),
+    "Puzzle_Hint": MessageLookupByLibrary.simpleMessage("Mostrar pista"),
     "Puzzle_Instruction": MessageLookupByLibrary.simpleMessage(
       "Juegan blancas o negras. Encuentra el mate en una jugada.",
     ),
@@ -326,22 +432,33 @@ class MessageLookup extends MessageLookupByLibrary {
       "Continúa la combinación",
     ),
     "Puzzle_Medium": MessageLookupByLibrary.simpleMessage("Media"),
-    "Puzzle_Number": m5,
+    "Puzzle_Number": m8,
+    "Puzzle_Position_Escape": m9,
+    "Puzzle_Position_Fork": m10,
+    "Puzzle_Position_Line": m11,
+    "Puzzle_Position_Mate": m12,
+    "Puzzle_Position_Move": m13,
+    "Puzzle_Position_Pawns": m14,
+    "Puzzle_Position_Promotion": m15,
+    "Puzzle_Position_Reply": m16,
+    "Puzzle_Position_Support": m17,
     "Puzzle_Practice_Next": MessageLookupByLibrary.simpleMessage(
       "Seguir practicando",
     ),
     "Puzzle_Solved": MessageLookupByLibrary.simpleMessage(
       "El problema de hoy está completado.",
     ),
-    "Puzzle_Streak": m6,
+    "Puzzle_Streak": m18,
     "Puzzle_Why_This_Works": MessageLookupByLibrary.simpleMessage(
       "Por qué funciona",
     ),
-    "Puzzles_Solved": m7,
+    "Puzzles_Completed_Count": m19,
+    "Puzzles_Solved": m20,
     "Quick_Play": MessageLookupByLibrary.simpleMessage("Partida rápida"),
     "Quick_Play_Description": MessageLookupByLibrary.simpleMessage(
       "Juega contra la IA con tus últimos ajustes",
     ),
+    "Redo_Move": MessageLookupByLibrary.simpleMessage("Rehacer jugada"),
     "Remove_Ads": MessageLookupByLibrary.simpleMessage("Eliminar anuncios"),
     "Remove_Ads_Description": MessageLookupByLibrary.simpleMessage(
       "Elimina los anuncios de esta aplicación para siempre.",
@@ -355,7 +472,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Remove_Ads_Unavailable": MessageLookupByLibrary.simpleMessage(
       "La eliminación de anuncios no está disponible en este momento.",
     ),
-    "Remove_Ads_With_Price": m8,
+    "Remove_Ads_With_Price": m21,
     "Replace_Unfinished_Game": MessageLookupByLibrary.simpleMessage(
       "¿Empezar una nueva partida?",
     ),
@@ -372,10 +489,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "Resume_Game_Unavailable": MessageLookupByLibrary.simpleMessage(
       "No se pudo restaurar esta partida. Puedes empezar una nueva.",
     ),
-    "Review_Game": MessageLookupByLibrary.simpleMessage(
-      "Revisar el mayor error",
-    ),
-    "Review_Move_Title": m9,
+    "Retry": MessageLookupByLibrary.simpleMessage("Reintentar"),
+    "Review_Game": MessageLookupByLibrary.simpleMessage("Analizar partida"),
+    "Review_Move_Title": m22,
     "Saving_Ambulance": MessageLookupByLibrary.simpleMessage(
       "Salvar la ambulancia",
     ),
@@ -387,6 +503,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "Shows": MessageLookupByLibrary.simpleMessage("Programas"),
     "Simple_Calculator": MessageLookupByLibrary.simpleMessage(
       "Calculadora sencilla",
+    ),
+    "Sound": MessageLookupByLibrary.simpleMessage("Sonido"),
+    "Sound_Description": MessageLookupByLibrary.simpleMessage(
+      "Reproducir sonidos al mover las piezas.",
     ),
     "Stalemate": MessageLookupByLibrary.simpleMessage("Ahogado"),
     "Start": MessageLookupByLibrary.simpleMessage("Empezar"),
@@ -408,21 +528,32 @@ class MessageLookup extends MessageLookupByLibrary {
     "Theme_Queen_Net": MessageLookupByLibrary.simpleMessage("Mate con dama"),
     "Theme_Rook_Mate": MessageLookupByLibrary.simpleMessage("Mate con torre"),
     "Time_Limit": MessageLookupByLibrary.simpleMessage("Límite de tiempo"),
-    "Tip": MessageLookupByLibrary.simpleMessage("Consejo"),
-    "Tip_Button": MessageLookupByLibrary.simpleMessage(
-      "Mostrar botón de consejo",
+    "Tip": MessageLookupByLibrary.simpleMessage("Sugerir jugada"),
+    "Tip_Button": MessageLookupByLibrary.simpleMessage("Botón de sugerencias"),
+    "Tip_Button_Description": MessageLookupByLibrary.simpleMessage(
+      "Mostrar un botón que sugiere una jugada mejor.",
     ),
     "Training": MessageLookupByLibrary.simpleMessage("Entrenamiento"),
     "Training_Description": MessageLookupByLibrary.simpleMessage(
       "Elige una sesión de problemas específica o aprende una variante de apertura fiable.",
+    ),
+    "Training_Progress": MessageLookupByLibrary.simpleMessage("Tu progreso"),
+    "Training_Progress_Unavailable": MessageLookupByLibrary.simpleMessage(
+      "El progreso no está disponible temporalmente. Inténtalo de nuevo.",
     ),
     "Try_Again": MessageLookupByLibrary.simpleMessage(
       "No del todo — inténtalo de nuevo",
     ),
     "Two_Players": MessageLookupByLibrary.simpleMessage("Dos jugadores"),
     "Undo": MessageLookupByLibrary.simpleMessage("Deshacer/Rehacer"),
+    "Undo_Description": MessageLookupByLibrary.simpleMessage(
+      "Permitir deshacer y rehacer jugadas.",
+    ),
+    "Undo_Move": MessageLookupByLibrary.simpleMessage("Deshacer jugada"),
     "Unfinished": MessageLookupByLibrary.simpleMessage("Partida sin terminar"),
-    "Vs_AI_Player": MessageLookupByLibrary.simpleMessage("Contra la IA"),
+    "Vs_AI_Player": MessageLookupByLibrary.simpleMessage(
+      "Configurar partida contra la IA",
+    ),
     "We_Play_Piano": MessageLookupByLibrary.simpleMessage("We Play Piano"),
     "White": MessageLookupByLibrary.simpleMessage("Blancas"),
     "White_Wins": MessageLookupByLibrary.simpleMessage("¡Ganan las blancas!"),

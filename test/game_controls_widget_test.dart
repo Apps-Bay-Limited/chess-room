@@ -98,7 +98,7 @@ void main() {
     await tester.pump();
 
     final tipToggle = find.descendant(
-      of: find.widgetWithText(Toggle, 'Show Tip Button'),
+      of: find.widgetWithText(Toggle, 'Move suggestion button'),
       matching: find.byType(CupertinoSwitch),
     );
     expect(tipToggle, findsOneWidget);

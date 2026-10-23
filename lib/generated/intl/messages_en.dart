@@ -20,26 +20,61 @@ typedef String MessageIfAbsent(String messageStr, List<dynamic> args);
 class MessageLookup extends MessageLookupByLibrary {
   String get localeName => 'en';
 
-  static String m0(count) => "${count} min";
+  static String m0(square) => "Empty square ${square}";
 
-  static String m1(count) => "${count} moves";
+  static String m1(count) => "${count} min";
 
-  static String m2(current, total) => "Move ${current} of ${total}";
+  static String m2(count) => "${count} moves";
 
-  static String m3(current, total, side) =>
+  static String m3(current, total) => "Move ${current} of ${total}";
+
+  static String m4(current, total, side) =>
       "Move ${current} of ${total}: play for ${side}";
 
-  static String m4(value) => "Lost ${value} pawns of evaluation";
+  static String m5(completed, total) =>
+      "${completed} of ${total} openings completed";
 
-  static String m5(current, total) => "Puzzle ${current} of ${total}";
+  static String m6(value) => "Lost ${value} pawns of evaluation";
 
-  static String m6(count) => "Streak: ${count}";
+  static String m7(piece, square) => "${piece} on ${square}";
 
-  static String m7(solved, total) => "${solved} of ${total} solved";
+  static String m8(current, total) => "Puzzle ${current} of ${total}";
 
-  static String m8(price) => "Remove Ads ${price}";
+  static String m9(piece, support, square) =>
+      "Escape denied: ${piece} on ${support} covers ${square}.";
 
-  static String m9(current, total, classification) =>
+  static String m10(from, king, target) =>
+      "From ${from}, the knight checks the king on ${king} and also attacks ${target}.";
+
+  static String m11(line) => "One solution: ${line}.";
+
+  static String m12(square) =>
+      "Checkmate against the king on ${square}: there is no legal escape, capture or block.";
+
+  static String m13(piece, from, to) => "${piece}: ${from} → ${to}.";
+
+  static String m14(squares) =>
+      "The defending pawns on ${squares} block their own king’s escape.";
+
+  static String m15(square, piece) =>
+      "The pawn reaches ${square} and becomes ${piece}.";
+
+  static String m16(reply, finish) =>
+      "After ${reply}, ${finish} delivers checkmate.";
+
+  static String m17(piece, support, square) =>
+      "Support: ${piece} on ${support} protects ${square}.";
+
+  static String m18(count) => "Streak: ${count}";
+
+  static String m19(completed, total) =>
+      "${completed} of ${total} puzzles completed";
+
+  static String m20(solved, total) => "${solved} of ${total} solved";
+
+  static String m21(price) => "Remove Ads ${price}";
+
+  static String m22(current, total, classification) =>
       "Move ${current} of ${total}: ${classification}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
@@ -55,6 +90,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "Blunder": MessageLookupByLibrary.simpleMessage("Blunder"),
     "Blunder_Explanation": MessageLookupByLibrary.simpleMessage(
       "This move loses significant material or allows a decisive attack.",
+    ),
+    "Board_Coordinates": MessageLookupByLibrary.simpleMessage(
+      "Board coordinates",
+    ),
+    "Board_Coordinates_Description": MessageLookupByLibrary.simpleMessage(
+      "Show files and ranks around the board.",
     ),
     "Cancel": MessageLookupByLibrary.simpleMessage("Cancel"),
     "Chess_Bishop_Rule": MessageLookupByLibrary.simpleMessage(
@@ -101,6 +142,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Chess_Rook_Rule": MessageLookupByLibrary.simpleMessage(
       "Rook — moves any number of squares horizontally or vertically.",
     ),
+    "Chess_Room": MessageLookupByLibrary.simpleMessage("Chess Room"),
     "Chess_Room_Result": MessageLookupByLibrary.simpleMessage(
       "Chess Room Result",
     ),
@@ -118,6 +160,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "Classical_Music_Box": MessageLookupByLibrary.simpleMessage(
       "Classical Music Box",
     ),
+    "Clock_Active": MessageLookupByLibrary.simpleMessage("To move"),
+    "Clock_Black": MessageLookupByLibrary.simpleMessage("Black"),
+    "Clock_White": MessageLookupByLibrary.simpleMessage("White"),
     "Continue_Game": MessageLookupByLibrary.simpleMessage("Continue Game"),
     "Continue_Game_Description": MessageLookupByLibrary.simpleMessage(
       "Pick up where you left off",
@@ -130,10 +175,21 @@ class MessageLookup extends MessageLookupByLibrary {
       "A fresh challenge for today",
     ),
     "Daily_Puzzle": MessageLookupByLibrary.simpleMessage("Daily Puzzle"),
+    "Delete": MessageLookupByLibrary.simpleMessage("Delete"),
+    "Delete_Game_Failed": MessageLookupByLibrary.simpleMessage(
+      "Could not delete this game. Please try again.",
+    ),
+    "Delete_Game_Message": MessageLookupByLibrary.simpleMessage(
+      "This removes the saved game from this device. This cannot be undone.",
+    ),
+    "Delete_Game_Title": MessageLookupByLibrary.simpleMessage(
+      "Delete this game?",
+    ),
     "Done": MessageLookupByLibrary.simpleMessage("Done"),
     "Draw": MessageLookupByLibrary.simpleMessage("Draw"),
     "Easy": MessageLookupByLibrary.simpleMessage("Easy"),
     "Easy_Unit": MessageLookupByLibrary.simpleMessage("Easy Unit"),
+    "Empty_Square": m0,
     "Export_PGN": MessageLookupByLibrary.simpleMessage("Copy PGN"),
     "Extreme": MessageLookupByLibrary.simpleMessage("Extreme"),
     "Falling_Block_Puzzle": MessageLookupByLibrary.simpleMessage(
@@ -142,18 +198,43 @@ class MessageLookup extends MessageLookupByLibrary {
     "Find_Best_Move": MessageLookupByLibrary.simpleMessage(
       "Find the best move.",
     ),
+    "First_Move": MessageLookupByLibrary.simpleMessage("First move"),
     "Fling_Knife": MessageLookupByLibrary.simpleMessage("Fling Knife"),
+    "Flip_Board": MessageLookupByLibrary.simpleMessage("Flip board"),
     "Full_Game_Review": MessageLookupByLibrary.simpleMessage(
       "Full Game Review",
     ),
     "Game_History": MessageLookupByLibrary.simpleMessage("Game History"),
     "Game_Replay": MessageLookupByLibrary.simpleMessage("Game Replay"),
+    "Game_Setup_Description": MessageLookupByLibrary.simpleMessage(
+      "Choose a comfortable challenge and make your first move.",
+    ),
+    "Gameplay_Settings": MessageLookupByLibrary.simpleMessage("Gameplay"),
     "Good_Move": MessageLookupByLibrary.simpleMessage("Good move"),
     "Good_Move_Explanation": MessageLookupByLibrary.simpleMessage(
       "This move stays close to the engine\'s best choice.",
     ),
     "Hard": MessageLookupByLibrary.simpleMessage("Hard"),
-    "Hints": MessageLookupByLibrary.simpleMessage("Hints"),
+    "Help_And_Privacy": MessageLookupByLibrary.simpleMessage("Help & privacy"),
+    "Hints": MessageLookupByLibrary.simpleMessage("Legal moves"),
+    "Hints_Description": MessageLookupByLibrary.simpleMessage(
+      "Show legal destinations when you select a piece.",
+    ),
+    "Home_AI_Description": MessageLookupByLibrary.simpleMessage(
+      "Choose your level, side and clock",
+    ),
+    "Home_Local_Description": MessageLookupByLibrary.simpleMessage(
+      "Play together on one device",
+    ),
+    "Home_Play_Options": MessageLookupByLibrary.simpleMessage(
+      "More ways to play",
+    ),
+    "Home_Subtitle": MessageLookupByLibrary.simpleMessage(
+      "Play a game. Sharpen your next move.",
+    ),
+    "Home_Training_Description": MessageLookupByLibrary.simpleMessage(
+      "Puzzles and guided openings",
+    ),
     "How_To_Play_Chess": MessageLookupByLibrary.simpleMessage(
       "How to Play Chess",
     ),
@@ -168,22 +249,27 @@ class MessageLookup extends MessageLookupByLibrary {
       "This move gives away a small part of the position\'s advantage.",
     ),
     "Instant_Face": MessageLookupByLibrary.simpleMessage("Instant Face"),
+    "Last_Move": MessageLookupByLibrary.simpleMessage("Last move"),
+    "Local_Data_Unavailable": MessageLookupByLibrary.simpleMessage(
+      "Saved data is temporarily unavailable. Please try again.",
+    ),
     "Mate_In_One": MessageLookupByLibrary.simpleMessage("Mate in One"),
     "Mate_In_Two": MessageLookupByLibrary.simpleMessage("Mate in two"),
     "Medium": MessageLookupByLibrary.simpleMessage("Medium"),
     "Metronome_Go": MessageLookupByLibrary.simpleMessage("Metronome Go"),
     "Minesweeper_Go": MessageLookupByLibrary.simpleMessage("Minesweeper Go"),
     "Mint_Translate": MessageLookupByLibrary.simpleMessage("Mint Translate"),
-    "Minute_Count": m0,
+    "Minute_Count": m1,
     "Mistake": MessageLookupByLibrary.simpleMessage("Mistake"),
     "Mistake_Explanation": MessageLookupByLibrary.simpleMessage(
       "A stronger move would have preserved a much better position.",
     ),
     "Money_Tracker": MessageLookupByLibrary.simpleMessage("Money Tracker"),
     "More_Apps": MessageLookupByLibrary.simpleMessage("More Apps"),
-    "Move_Count": m1,
-    "Move_Of": m2,
+    "Move_Count": m2,
+    "Move_Of": m3,
     "Next": MessageLookupByLibrary.simpleMessage("Next"),
+    "Next_Move": MessageLookupByLibrary.simpleMessage("Next move"),
     "Next_Puzzle": MessageLookupByLibrary.simpleMessage("Next Puzzle"),
     "No_Limit": MessageLookupByLibrary.simpleMessage("No limit"),
     "No_Saved_Games": MessageLookupByLibrary.simpleMessage(
@@ -202,7 +288,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Opening_London_Description": MessageLookupByLibrary.simpleMessage(
       "Build a reliable setup with the dark-squared bishop outside the pawn chain.",
     ),
-    "Opening_Move_Prompt": m3,
+    "Opening_Move_Prompt": m4,
     "Opening_Queens_Gambit": MessageLookupByLibrary.simpleMessage(
       "Queen\'s Gambit",
     ),
@@ -226,6 +312,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Opening_Try_Again": MessageLookupByLibrary.simpleMessage(
       "That move is outside this training line. Try again.",
     ),
+    "Openings_Completed_Count": m5,
     "PGN_Copied": MessageLookupByLibrary.simpleMessage(
       "PGN copied to the clipboard.",
     ),
@@ -236,11 +323,25 @@ class MessageLookup extends MessageLookupByLibrary {
       "This PGN could not be imported.",
     ),
     "Paste_PGN": MessageLookupByLibrary.simpleMessage("Paste a PGN game"),
-    "Pawns_Lost": m4,
+    "Pawns_Lost": m6,
     "Pick_Your_Side": MessageLookupByLibrary.simpleMessage("Pick Your Side"),
+    "Piece_Black_Bishop": MessageLookupByLibrary.simpleMessage("Black bishop"),
+    "Piece_Black_King": MessageLookupByLibrary.simpleMessage("Black king"),
+    "Piece_Black_Knight": MessageLookupByLibrary.simpleMessage("Black knight"),
+    "Piece_Black_Pawn": MessageLookupByLibrary.simpleMessage("Black pawn"),
+    "Piece_Black_Queen": MessageLookupByLibrary.simpleMessage("Black queen"),
+    "Piece_Black_Rook": MessageLookupByLibrary.simpleMessage("Black rook"),
+    "Piece_On_Square": m7,
+    "Piece_White_Bishop": MessageLookupByLibrary.simpleMessage("White bishop"),
+    "Piece_White_King": MessageLookupByLibrary.simpleMessage("White king"),
+    "Piece_White_Knight": MessageLookupByLibrary.simpleMessage("White knight"),
+    "Piece_White_Pawn": MessageLookupByLibrary.simpleMessage("White pawn"),
+    "Piece_White_Queen": MessageLookupByLibrary.simpleMessage("White queen"),
+    "Piece_White_Rook": MessageLookupByLibrary.simpleMessage("White rook"),
     "Played_Move": MessageLookupByLibrary.simpleMessage("Played"),
     "Practice_Again": MessageLookupByLibrary.simpleMessage("Practice Again"),
     "Previous": MessageLookupByLibrary.simpleMessage("Previous"),
+    "Previous_Move": MessageLookupByLibrary.simpleMessage("Previous move"),
     "Privacy_Choices": MessageLookupByLibrary.simpleMessage("Privacy Choices"),
     "Purchase_Cancelled": MessageLookupByLibrary.simpleMessage(
       "Purchase cancelled.",
@@ -287,6 +388,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Cut off the king’s escape squares, then check along the edge of the board.",
     ),
     "Puzzle_Hard": MessageLookupByLibrary.simpleMessage("Hard"),
+    "Puzzle_Hint": MessageLookupByLibrary.simpleMessage("Show hint"),
     "Puzzle_Instruction": MessageLookupByLibrary.simpleMessage(
       "White or black to move. Find checkmate in one.",
     ),
@@ -298,22 +400,33 @@ class MessageLookup extends MessageLookupByLibrary {
       "Continue the combination",
     ),
     "Puzzle_Medium": MessageLookupByLibrary.simpleMessage("Medium"),
-    "Puzzle_Number": m5,
+    "Puzzle_Number": m8,
+    "Puzzle_Position_Escape": m9,
+    "Puzzle_Position_Fork": m10,
+    "Puzzle_Position_Line": m11,
+    "Puzzle_Position_Mate": m12,
+    "Puzzle_Position_Move": m13,
+    "Puzzle_Position_Pawns": m14,
+    "Puzzle_Position_Promotion": m15,
+    "Puzzle_Position_Reply": m16,
+    "Puzzle_Position_Support": m17,
     "Puzzle_Practice_Next": MessageLookupByLibrary.simpleMessage(
       "Keep practicing",
     ),
     "Puzzle_Solved": MessageLookupByLibrary.simpleMessage(
       "Today\'s puzzle is complete.",
     ),
-    "Puzzle_Streak": m6,
+    "Puzzle_Streak": m18,
     "Puzzle_Why_This_Works": MessageLookupByLibrary.simpleMessage(
       "Why this works",
     ),
-    "Puzzles_Solved": m7,
+    "Puzzles_Completed_Count": m19,
+    "Puzzles_Solved": m20,
     "Quick_Play": MessageLookupByLibrary.simpleMessage("Quick Play"),
     "Quick_Play_Description": MessageLookupByLibrary.simpleMessage(
       "Play AI with your last settings",
     ),
+    "Redo_Move": MessageLookupByLibrary.simpleMessage("Redo move"),
     "Remove_Ads": MessageLookupByLibrary.simpleMessage("Remove Ads"),
     "Remove_Ads_Description": MessageLookupByLibrary.simpleMessage(
       "Remove ads permanently from this app.",
@@ -327,7 +440,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Remove_Ads_Unavailable": MessageLookupByLibrary.simpleMessage(
       "Remove Ads is currently unavailable.",
     ),
-    "Remove_Ads_With_Price": m8,
+    "Remove_Ads_With_Price": m21,
     "Replace_Unfinished_Game": MessageLookupByLibrary.simpleMessage(
       "Start a new game?",
     ),
@@ -344,10 +457,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "Resume_Game_Unavailable": MessageLookupByLibrary.simpleMessage(
       "This game could not be restored. You can start a new game.",
     ),
-    "Review_Game": MessageLookupByLibrary.simpleMessage(
-      "Review Biggest Mistake",
-    ),
-    "Review_Move_Title": m9,
+    "Retry": MessageLookupByLibrary.simpleMessage("Retry"),
+    "Review_Game": MessageLookupByLibrary.simpleMessage("Review Game"),
+    "Review_Move_Title": m22,
     "Saving_Ambulance": MessageLookupByLibrary.simpleMessage(
       "Saving Ambulance",
     ),
@@ -359,6 +471,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "Shows": MessageLookupByLibrary.simpleMessage("Shows"),
     "Simple_Calculator": MessageLookupByLibrary.simpleMessage(
       "Simple Calculator",
+    ),
+    "Sound": MessageLookupByLibrary.simpleMessage("Sound"),
+    "Sound_Description": MessageLookupByLibrary.simpleMessage(
+      "Play sounds when pieces move.",
     ),
     "Stalemate": MessageLookupByLibrary.simpleMessage("Stalemate"),
     "Start": MessageLookupByLibrary.simpleMessage("Start"),
@@ -376,17 +492,30 @@ class MessageLookup extends MessageLookupByLibrary {
     "Theme_Queen_Net": MessageLookupByLibrary.simpleMessage("Queen mate"),
     "Theme_Rook_Mate": MessageLookupByLibrary.simpleMessage("Rook mate"),
     "Time_Limit": MessageLookupByLibrary.simpleMessage("Time Limit"),
-    "Tip": MessageLookupByLibrary.simpleMessage("Tip"),
-    "Tip_Button": MessageLookupByLibrary.simpleMessage("Show Tip Button"),
+    "Tip": MessageLookupByLibrary.simpleMessage("Suggest a move"),
+    "Tip_Button": MessageLookupByLibrary.simpleMessage(
+      "Move suggestion button",
+    ),
+    "Tip_Button_Description": MessageLookupByLibrary.simpleMessage(
+      "Show a button that suggests a stronger move.",
+    ),
     "Training": MessageLookupByLibrary.simpleMessage("Training"),
     "Training_Description": MessageLookupByLibrary.simpleMessage(
       "Choose a focused puzzle session or learn a dependable opening line.",
     ),
+    "Training_Progress": MessageLookupByLibrary.simpleMessage("Your progress"),
+    "Training_Progress_Unavailable": MessageLookupByLibrary.simpleMessage(
+      "Progress is temporarily unavailable. Please try again.",
+    ),
     "Try_Again": MessageLookupByLibrary.simpleMessage("Not quite — try again"),
     "Two_Players": MessageLookupByLibrary.simpleMessage("Two Players"),
     "Undo": MessageLookupByLibrary.simpleMessage("Undo/Redo"),
+    "Undo_Description": MessageLookupByLibrary.simpleMessage(
+      "Allow taking back and replaying moves.",
+    ),
+    "Undo_Move": MessageLookupByLibrary.simpleMessage("Undo move"),
     "Unfinished": MessageLookupByLibrary.simpleMessage("Unfinished game"),
-    "Vs_AI_Player": MessageLookupByLibrary.simpleMessage("Vs AI Player"),
+    "Vs_AI_Player": MessageLookupByLibrary.simpleMessage("Set Up AI Game"),
     "We_Play_Piano": MessageLookupByLibrary.simpleMessage("We Play Piano"),
     "White": MessageLookupByLibrary.simpleMessage("White"),
     "White_Wins": MessageLookupByLibrary.simpleMessage("White wins!"),

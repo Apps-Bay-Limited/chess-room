@@ -2,6 +2,9 @@ import 'package:chess_room/model/app_model.dart';
 import 'package:chess_room/views/components/chess_view/game_info_and_controls/moves_undo_redo_row/rounded_icon_button.dart';
 import 'package:flutter/cupertino.dart';
 
+import 'restart_game_button.dart';
+import 'package:chess_room/generated/l10n.dart';
+
 class UndoRedoButtons extends StatelessWidget {
   final AppModel appModel;
 
@@ -32,6 +35,7 @@ class UndoRedoButtons extends StatelessWidget {
         Expanded(
           child: RoundedIconButton(
             icon: CupertinoIcons.back,
+            label: S.of(context).Back,
             onPressed: () {
               // exitChessView() runs once via PopScope.onPopInvoked in
               // chess_view.dart when this pop completes.
@@ -41,18 +45,14 @@ class UndoRedoButtons extends StatelessWidget {
         ),
         const SizedBox(width: 10),
         Expanded(
-          child: RoundedIconButton(
-            icon: CupertinoIcons.arrow_2_circlepath,
-            onPressed: () {
-              appModel.newGame(context);
-            },
-          ),
+          child: RestartGameButton(appModel: appModel),
         ),
         appModel.allowUndoRedo ? const SizedBox(width: 10) : Container(),
         appModel.allowUndoRedo
             ? Expanded(
                 child: RoundedIconButton(
                   icon: CupertinoIcons.arrow_counterclockwise,
+                  label: S.of(context).Undo_Move,
                   onPressed: undoEnabled ? () => undo() : null,
                 ),
               )
@@ -62,6 +62,7 @@ class UndoRedoButtons extends StatelessWidget {
             ? Expanded(
                 child: RoundedIconButton(
                   icon: CupertinoIcons.arrow_clockwise,
+                  label: S.of(context).Redo_Move,
                   onPressed: redoEnabled ? () => redo() : null,
                 ),
               )

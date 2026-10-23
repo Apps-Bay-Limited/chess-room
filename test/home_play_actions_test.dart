@@ -1,4 +1,5 @@
 import 'package:chess_room/generated/l10n.dart';
+import 'package:chess_room/util/app_design.dart';
 import 'package:chess_room/views/components/main_menu_view/home_play_actions.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -22,6 +23,20 @@ void main() {
 
     expect(find.text('Streak: 4'), findsOneWidget);
     expect(find.text('Complete today · keep practicing'), findsOneWidget);
+    final buttons =
+        tester.widgetList<CupertinoButton>(find.byType(CupertinoButton));
+    expect(buttons.where((button) => button.color == AppColors.accent),
+        hasLength(1));
+    expect(
+      tester
+          .widget<CupertinoButton>(find.descendant(
+            of: find.byKey(const ValueKey('continue-game-button')),
+            matching: find.byType(CupertinoButton),
+            matchRoot: true,
+          ))
+          .color,
+      AppColors.accent,
+    );
     await tester.tap(find.byKey(const ValueKey('continue-game-button')));
     await tester.tap(find.byKey(const ValueKey('quick-play-button')));
     await tester.tap(find.byKey(const ValueKey('daily-puzzle-button')));

@@ -88,10 +88,10 @@ List<AppTheme> get themeList {
         begin: Alignment.topCenter,
         end: Alignment.bottomCenter,
         colors: [
-          Color(0xff0E0D09),
-          Color(0xff24201C),
-          Color(0xff493B24),
-          Color(0xff4A3C22),
+          Color(0xff181714),
+          Color(0xff211F1B),
+          Color(0xff29261F),
+          Color(0xff302B22),
         ],
       ),
     ),
@@ -264,10 +264,13 @@ List<AppTheme> get themeList {
     ),
     AppTheme(
       name: 'Video Chess',
-      background: LinearGradient(begin: Alignment.topCenter, end: Alignment.bottomCenter, colors: [
-        Color(0xff382db5),
-        Color(0xff382db5),
-      ]),
+      background: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [
+            Color(0xff382db5),
+            Color(0xff382db5),
+          ]),
       lightTile: Color(0xff584fdb),
       darkTile: Color(0xff382db5),
       moveHint: Color(0x88c4c6ff),

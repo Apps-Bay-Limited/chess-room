@@ -54,10 +54,10 @@ class S {
     return Localizations.of<S>(context, S);
   }
 
-  /// `Vs AI Player`
+  /// `Set Up AI Game`
   String get Vs_AI_Player {
     return Intl.message(
-      'Vs AI Player',
+      'Set Up AI Game',
       name: 'Vs_AI_Player',
       desc: '',
       args: [],
@@ -189,20 +189,20 @@ class S {
     );
   }
 
-  /// `Hints`
+  /// `Legal moves`
   String get Hints {
-    return Intl.message('Hints', name: 'Hints', desc: '', args: []);
+    return Intl.message('Legal moves', name: 'Hints', desc: '', args: []);
   }
 
-  /// `Tip`
+  /// `Suggest a move`
   String get Tip {
-    return Intl.message('Tip', name: 'Tip', desc: '', args: []);
+    return Intl.message('Suggest a move', name: 'Tip', desc: '', args: []);
   }
 
-  /// `Show Tip Button`
+  /// `Move suggestion button`
   String get Tip_Button {
     return Intl.message(
-      'Show Tip Button',
+      'Move suggestion button',
       name: 'Tip_Button',
       desc: '',
       args: [],
@@ -619,14 +619,9 @@ class S {
     );
   }
 
-  /// `Review Biggest Mistake`
+  /// `Review Game`
   String get Review_Game {
-    return Intl.message(
-      'Review Biggest Mistake',
-      name: 'Review_Game',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Review Game', name: 'Review_Game', desc: '', args: []);
   }
 
   /// `Biggest Mistake`
@@ -1681,6 +1676,536 @@ class S {
       desc: '',
       args: [],
     );
+  }
+
+  /// `Chess Room`
+  String get Chess_Room {
+    return Intl.message('Chess Room', name: 'Chess_Room', desc: '', args: []);
+  }
+
+  /// `Play a game. Sharpen your next move.`
+  String get Home_Subtitle {
+    return Intl.message(
+      'Play a game. Sharpen your next move.',
+      name: 'Home_Subtitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `More ways to play`
+  String get Home_Play_Options {
+    return Intl.message(
+      'More ways to play',
+      name: 'Home_Play_Options',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Choose your level, side and clock`
+  String get Home_AI_Description {
+    return Intl.message(
+      'Choose your level, side and clock',
+      name: 'Home_AI_Description',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Play together on one device`
+  String get Home_Local_Description {
+    return Intl.message(
+      'Play together on one device',
+      name: 'Home_Local_Description',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Puzzles and guided openings`
+  String get Home_Training_Description {
+    return Intl.message(
+      'Puzzles and guided openings',
+      name: 'Home_Training_Description',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Gameplay`
+  String get Gameplay_Settings {
+    return Intl.message(
+      'Gameplay',
+      name: 'Gameplay_Settings',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Help & privacy`
+  String get Help_And_Privacy {
+    return Intl.message(
+      'Help & privacy',
+      name: 'Help_And_Privacy',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Show legal destinations when you select a piece.`
+  String get Hints_Description {
+    return Intl.message(
+      'Show legal destinations when you select a piece.',
+      name: 'Hints_Description',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Show a button that suggests a stronger move.`
+  String get Tip_Button_Description {
+    return Intl.message(
+      'Show a button that suggests a stronger move.',
+      name: 'Tip_Button_Description',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Allow taking back and replaying moves.`
+  String get Undo_Description {
+    return Intl.message(
+      'Allow taking back and replaying moves.',
+      name: 'Undo_Description',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Sound`
+  String get Sound {
+    return Intl.message('Sound', name: 'Sound', desc: '', args: []);
+  }
+
+  /// `Play sounds when pieces move.`
+  String get Sound_Description {
+    return Intl.message(
+      'Play sounds when pieces move.',
+      name: 'Sound_Description',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Choose a comfortable challenge and make your first move.`
+  String get Game_Setup_Description {
+    return Intl.message(
+      'Choose a comfortable challenge and make your first move.',
+      name: 'Game_Setup_Description',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Your progress`
+  String get Training_Progress {
+    return Intl.message(
+      'Your progress',
+      name: 'Training_Progress',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Progress is temporarily unavailable. Please try again.`
+  String get Training_Progress_Unavailable {
+    return Intl.message(
+      'Progress is temporarily unavailable. Please try again.',
+      name: 'Training_Progress_Unavailable',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Retry`
+  String get Retry {
+    return Intl.message('Retry', name: 'Retry', desc: '', args: []);
+  }
+
+  /// `{completed} of {total} puzzles completed`
+  String Puzzles_Completed_Count(Object completed, Object total) {
+    return Intl.message(
+      '$completed of $total puzzles completed',
+      name: 'Puzzles_Completed_Count',
+      desc: '',
+      args: [completed, total],
+    );
+  }
+
+  /// `{completed} of {total} openings completed`
+  String Openings_Completed_Count(Object completed, Object total) {
+    return Intl.message(
+      '$completed of $total openings completed',
+      name: 'Openings_Completed_Count',
+      desc: '',
+      args: [completed, total],
+    );
+  }
+
+  /// `Delete this game?`
+  String get Delete_Game_Title {
+    return Intl.message(
+      'Delete this game?',
+      name: 'Delete_Game_Title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `This removes the saved game from this device. This cannot be undone.`
+  String get Delete_Game_Message {
+    return Intl.message(
+      'This removes the saved game from this device. This cannot be undone.',
+      name: 'Delete_Game_Message',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Delete`
+  String get Delete {
+    return Intl.message('Delete', name: 'Delete', desc: '', args: []);
+  }
+
+  /// `Flip board`
+  String get Flip_Board {
+    return Intl.message('Flip board', name: 'Flip_Board', desc: '', args: []);
+  }
+
+  /// `Previous move`
+  String get Previous_Move {
+    return Intl.message(
+      'Previous move',
+      name: 'Previous_Move',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Next move`
+  String get Next_Move {
+    return Intl.message('Next move', name: 'Next_Move', desc: '', args: []);
+  }
+
+  /// `First move`
+  String get First_Move {
+    return Intl.message('First move', name: 'First_Move', desc: '', args: []);
+  }
+
+  /// `Last move`
+  String get Last_Move {
+    return Intl.message('Last move', name: 'Last_Move', desc: '', args: []);
+  }
+
+  /// `Undo move`
+  String get Undo_Move {
+    return Intl.message('Undo move', name: 'Undo_Move', desc: '', args: []);
+  }
+
+  /// `Redo move`
+  String get Redo_Move {
+    return Intl.message('Redo move', name: 'Redo_Move', desc: '', args: []);
+  }
+
+  /// `White`
+  String get Clock_White {
+    return Intl.message('White', name: 'Clock_White', desc: '', args: []);
+  }
+
+  /// `Black`
+  String get Clock_Black {
+    return Intl.message('Black', name: 'Clock_Black', desc: '', args: []);
+  }
+
+  /// `To move`
+  String get Clock_Active {
+    return Intl.message('To move', name: 'Clock_Active', desc: '', args: []);
+  }
+
+  /// `Board coordinates`
+  String get Board_Coordinates {
+    return Intl.message(
+      'Board coordinates',
+      name: 'Board_Coordinates',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Show files and ranks around the board.`
+  String get Board_Coordinates_Description {
+    return Intl.message(
+      'Show files and ranks around the board.',
+      name: 'Board_Coordinates_Description',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `{piece} on {square}`
+  String Piece_On_Square(Object piece, Object square) {
+    return Intl.message(
+      '$piece on $square',
+      name: 'Piece_On_Square',
+      desc: '',
+      args: [piece, square],
+    );
+  }
+
+  /// `Empty square {square}`
+  String Empty_Square(Object square) {
+    return Intl.message(
+      'Empty square $square',
+      name: 'Empty_Square',
+      desc: '',
+      args: [square],
+    );
+  }
+
+  /// `White pawn`
+  String get Piece_White_Pawn {
+    return Intl.message(
+      'White pawn',
+      name: 'Piece_White_Pawn',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `White rook`
+  String get Piece_White_Rook {
+    return Intl.message(
+      'White rook',
+      name: 'Piece_White_Rook',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `White knight`
+  String get Piece_White_Knight {
+    return Intl.message(
+      'White knight',
+      name: 'Piece_White_Knight',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `White bishop`
+  String get Piece_White_Bishop {
+    return Intl.message(
+      'White bishop',
+      name: 'Piece_White_Bishop',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `White queen`
+  String get Piece_White_Queen {
+    return Intl.message(
+      'White queen',
+      name: 'Piece_White_Queen',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `White king`
+  String get Piece_White_King {
+    return Intl.message(
+      'White king',
+      name: 'Piece_White_King',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Black pawn`
+  String get Piece_Black_Pawn {
+    return Intl.message(
+      'Black pawn',
+      name: 'Piece_Black_Pawn',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Black rook`
+  String get Piece_Black_Rook {
+    return Intl.message(
+      'Black rook',
+      name: 'Piece_Black_Rook',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Black knight`
+  String get Piece_Black_Knight {
+    return Intl.message(
+      'Black knight',
+      name: 'Piece_Black_Knight',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Black bishop`
+  String get Piece_Black_Bishop {
+    return Intl.message(
+      'Black bishop',
+      name: 'Piece_Black_Bishop',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Black queen`
+  String get Piece_Black_Queen {
+    return Intl.message(
+      'Black queen',
+      name: 'Piece_Black_Queen',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Black king`
+  String get Piece_Black_King {
+    return Intl.message(
+      'Black king',
+      name: 'Piece_Black_King',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `One solution: {line}.`
+  String Puzzle_Position_Line(Object line) {
+    return Intl.message(
+      'One solution: $line.',
+      name: 'Puzzle_Position_Line',
+      desc: '',
+      args: [line],
+    );
+  }
+
+  /// `{piece}: {from} → {to}.`
+  String Puzzle_Position_Move(Object piece, Object from, Object to) {
+    return Intl.message(
+      '$piece: $from → $to.',
+      name: 'Puzzle_Position_Move',
+      desc: '',
+      args: [piece, from, to],
+    );
+  }
+
+  /// `Checkmate against the king on {square}: there is no legal escape, capture or block.`
+  String Puzzle_Position_Mate(Object square) {
+    return Intl.message(
+      'Checkmate against the king on $square: there is no legal escape, capture or block.',
+      name: 'Puzzle_Position_Mate',
+      desc: '',
+      args: [square],
+    );
+  }
+
+  /// `Support: {piece} on {support} protects {square}.`
+  String Puzzle_Position_Support(Object piece, Object support, Object square) {
+    return Intl.message(
+      'Support: $piece on $support protects $square.',
+      name: 'Puzzle_Position_Support',
+      desc: '',
+      args: [piece, support, square],
+    );
+  }
+
+  /// `Escape denied: {piece} on {support} covers {square}.`
+  String Puzzle_Position_Escape(Object piece, Object support, Object square) {
+    return Intl.message(
+      'Escape denied: $piece on $support covers $square.',
+      name: 'Puzzle_Position_Escape',
+      desc: '',
+      args: [piece, support, square],
+    );
+  }
+
+  /// `The defending pawns on {squares} block their own king’s escape.`
+  String Puzzle_Position_Pawns(Object squares) {
+    return Intl.message(
+      'The defending pawns on $squares block their own king’s escape.',
+      name: 'Puzzle_Position_Pawns',
+      desc: '',
+      args: [squares],
+    );
+  }
+
+  /// `From {from}, the knight checks the king on {king} and also attacks {target}.`
+  String Puzzle_Position_Fork(Object from, Object king, Object target) {
+    return Intl.message(
+      'From $from, the knight checks the king on $king and also attacks $target.',
+      name: 'Puzzle_Position_Fork',
+      desc: '',
+      args: [from, king, target],
+    );
+  }
+
+  /// `The pawn reaches {square} and becomes {piece}.`
+  String Puzzle_Position_Promotion(Object square, Object piece) {
+    return Intl.message(
+      'The pawn reaches $square and becomes $piece.',
+      name: 'Puzzle_Position_Promotion',
+      desc: '',
+      args: [square, piece],
+    );
+  }
+
+  /// `After {reply}, {finish} delivers checkmate.`
+  String Puzzle_Position_Reply(Object reply, Object finish) {
+    return Intl.message(
+      'After $reply, $finish delivers checkmate.',
+      name: 'Puzzle_Position_Reply',
+      desc: '',
+      args: [reply, finish],
+    );
+  }
+
+  /// `Saved data is temporarily unavailable. Please try again.`
+  String get Local_Data_Unavailable {
+    return Intl.message(
+      'Saved data is temporarily unavailable. Please try again.',
+      name: 'Local_Data_Unavailable',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Could not delete this game. Please try again.`
+  String get Delete_Game_Failed {
+    return Intl.message(
+      'Could not delete this game. Please try again.',
+      name: 'Delete_Game_Failed',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Show hint`
+  String get Puzzle_Hint {
+    return Intl.message('Show hint', name: 'Puzzle_Hint', desc: '', args: []);
   }
 }
 

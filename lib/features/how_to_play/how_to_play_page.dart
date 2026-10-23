@@ -1,5 +1,6 @@
 import 'package:chess_room/generated/l10n.dart';
 import 'package:chess_room/util/app_design.dart';
+import 'package:chess_room/views/components/shared/app_page.dart';
 import 'package:flutter/cupertino.dart';
 
 class HowToPlayPage extends StatelessWidget {
@@ -9,13 +10,9 @@ class HowToPlayPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final strings = S.of(context);
 
-    return CupertinoPageScaffold(
-      backgroundColor: const Color(0xff493B24),
-      navigationBar: CupertinoNavigationBar(
-        backgroundColor: const Color(0xff24201C),
-        middle: Text(strings.How_To_Play_Chess),
-      ),
-      child: SafeArea(
+    return AppPage(
+      title: strings.How_To_Play_Chess,
+      child: AppContent(
         child: ListView(
           padding: const EdgeInsets.all(AppSpacing.xl),
           children: [
@@ -94,7 +91,8 @@ class _RuleSection extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(AppSpacing.xl),
       decoration: BoxDecoration(
-        color: const Color(0x33000000),
+        color: AppColors.surface,
+        border: Border.all(color: AppColors.divider),
         borderRadius: BorderRadius.circular(AppRadius.md),
       ),
       child: Column(
@@ -103,7 +101,7 @@ class _RuleSection extends StatelessWidget {
           Text(
             title,
             style: const TextStyle(
-              color: CupertinoColors.white,
+              color: AppColors.textPrimary,
               fontSize: 20,
               fontWeight: FontWeight.bold,
             ),
@@ -126,7 +124,7 @@ class _RuleText extends StatelessWidget {
     return Text(
       text,
       style: const TextStyle(
-        color: CupertinoColors.systemGrey2,
+        color: AppColors.textSecondary,
         fontSize: 16,
         height: 1.4,
       ),
@@ -151,8 +149,9 @@ class _PieceRule extends StatelessWidget {
             width: 36,
             child: Text(
               symbol,
+              textScaler: TextScaler.noScaling,
               style: const TextStyle(
-                color: CupertinoColors.white,
+                color: AppColors.textPrimary,
                 fontSize: 28,
               ),
             ),
@@ -180,7 +179,7 @@ class _BulletRule extends StatelessWidget {
           const Text(
             '•',
             style: TextStyle(
-              color: CupertinoColors.white,
+              color: AppColors.textPrimary,
               fontSize: 18,
             ),
           ),

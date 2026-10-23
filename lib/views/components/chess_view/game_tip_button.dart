@@ -1,5 +1,4 @@
 import 'package:chess_room/util/app_design.dart';
-import 'package:chess_room/views/btn.dart';
 import 'package:flutter/cupertino.dart';
 
 class GameTipButton extends StatelessWidget {
@@ -16,12 +15,12 @@ class GameTipButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Btn(
-      onTap: onTap,
-      width: 150,
-      height: kMinTouchTarget,
-      borderRadius: AppRadius.pill,
-      color: CupertinoColors.white.withValues(alpha: 0.12),
+    return CupertinoButton(
+      onPressed: onTap,
+      minimumSize: const Size(kMinTouchTarget, kMinTouchTarget),
+      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+      borderRadius: BorderRadius.circular(AppRadius.md),
+      color: AppColors.surfaceRaised,
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -34,14 +33,15 @@ class GameTipButton extends StatelessWidget {
               color: AppColors.accent,
             ),
           const SizedBox(width: 8),
-          Text(
+          Flexible(
+              child: Text(
             label,
             style: const TextStyle(
-              color: CupertinoColors.white,
+              color: AppColors.textPrimary,
               fontSize: 17,
               fontWeight: FontWeight.w700,
             ),
-          ),
+          )),
         ],
       ),
     );

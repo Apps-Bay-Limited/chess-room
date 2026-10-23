@@ -1,0 +1,1 @@
+offline,puzzles,tactics,checkmate,beginner,training,openings,board,two player,practice

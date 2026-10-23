@@ -106,6 +106,33 @@ void main() {
     }
   });
 
+  test('session IDs round-trip without breaking legacy version-one saves',
+      () async {
+    final original = _snapshot(_play(['e2e4', 'e7e5']), Player.player1);
+    final legacyJson = original.toJson()..remove('sessionId');
+    final legacy = InProgressGame.fromJson(legacyJson);
+    expect(legacy.sessionId, isNull);
+    expect(legacy.restore().board.moveCount, 2);
+
+    // A resumed legacy match receives one ID from AppModel. Persisting it must
+    // retain that same identity for later resumes and completion deduplication.
+    const stableId = 'game-legacy-resume-stable-identity';
+    final identified = InProgressGame.fromJson({
+      ...legacyJson,
+      'sessionId': stableId,
+    });
+    final store = SharedPreferencesInProgressGameStore();
+    await store.save(_roundTrip(identified));
+    final firstLoad = (await store.load())!;
+    await store.save(_roundTrip(firstLoad));
+    final secondLoad = (await store.load())!;
+    expect(firstLoad.sessionId, stableId);
+    expect(secondLoad.sessionId, stableId);
+    expect(secondLoad.restore().board.moveCount, 2);
+    expect(chessPositionToFen(secondLoad.restore().board, Player.player1),
+        chessPositionToFen(original.restore().board, Player.player1));
+  });
+
   test('storage persists clocks and independent match settings', () async {
     final store = SharedPreferencesInProgressGameStore();
     final saved = _snapshot(_play(['e2e4']), Player.player2);

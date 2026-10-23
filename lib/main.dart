@@ -10,6 +10,7 @@ import 'generated/l10n.dart';
 import 'logic/shared_functions.dart';
 import 'model/app_model.dart';
 import 'util/ads_manager.dart';
+import 'util/app_design.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -44,7 +45,9 @@ void _loadFlameAssets() async {
 }
 
 class App extends StatelessWidget {
-  const App({super.key});
+  final bool initializeServices;
+
+  const App({super.key, this.initializeServices = true});
 
   @override
   Widget build(BuildContext context) {
@@ -79,14 +82,20 @@ class App extends StatelessWidget {
           }
           return const Locale('en', '');
         },
-        theme: CupertinoThemeData(
+        theme: const CupertinoThemeData(
           brightness: Brightness.dark,
+          primaryColor: AppColors.accent,
+          primaryContrastingColor: AppColors.onAccent,
+          scaffoldBackgroundColor: AppColors.background,
+          barBackgroundColor: AppColors.surface,
           textTheme: CupertinoTextThemeData(
-            textStyle: TextStyle(fontFamily: 'Jura', fontSize: 16),
-            pickerTextStyle: TextStyle(fontFamily: 'Jura'),
+            textStyle: TextStyle(
+                color: AppColors.textPrimary, fontSize: 16, height: 1.35),
+            pickerTextStyle:
+                TextStyle(color: AppColors.textPrimary, fontSize: 20),
           ),
         ),
-        home: MainMenuView(),
+        home: MainMenuView(initializeServices: initializeServices),
       ),
     );
   }

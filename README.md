@@ -11,6 +11,8 @@ Welcome to the **Chess Room**! This repository contains the source code for the 
 - **Performance Analysis**: Track your progress and identify areas for improvement.
 - **Quick Play & Continue**: Start an AI match with your remembered settings or resume an automatically saved unfinished game. Local clocks pause while you are away.
 - **Daily Practice**: 71 offline daily puzzles and a 77-position training library, including mate-in-two combinations, hints, and explanations. Daily completion and streaks appear on the home screen.
+- **Refined Play & Learning**: A focused home screen, grouped settings, named AI levels, labeled clocks, optional board coordinates, and position-specific puzzle explanations in all seven languages.
+- **Practice Progress & Safer History**: Puzzle/opening completion totals, confirmation before deleting saved games, and a board-flip control during replay.
 
 ## Installation
 
@@ -35,8 +37,8 @@ To run the project locally, follow these steps:
 
 ## Requirements
 
-- **Flutter**: Version 3.0.0 or later
-- **Dart**: Version 2.17.0 or later
+- **Flutter / Dart**: The current release is verified with Flutter 3.47.7 and Dart 3.13.5. Use an SDK compatible with the committed dependency lockfile; the package requires Dart 3.3 or later.
+- **iOS**: Version 15.0 or later.
 
 
 ## Environment Setup
@@ -45,6 +47,32 @@ To run the project locally, follow these steps:
 2. Set up an emulator or connect a physical device.
 
 ## Release configuration and builds
+
+Version 1.5.0+14 audit results and remaining release checks live in
+`store/RELEASE_VALIDATION_1.5.md`. The older 1.4.0 copy, screenshots and native
+evidence in `store/README.md` and `store/RELEASE_VALIDATION.md` are retained as
+historical records. Refresh store screenshots for the current interface before
+uploading a 1.5 release.
+
+Run the native save and restore phases on the same device to check that real
+preferences survive a process restart. The harness uses its own saved-game key,
+does not clear user game history, and never initiates a purchase:
+
+```bash
+flutter drive --profile --keep-app-running --driver=test_driver/release_smoke.dart --target=integration_test/release_smoke_test.dart --dart-define=SMOKE_PHASE=save --dart-define-from-file=lib/config/ads_release.json -d DEVICE_ID
+flutter drive --profile --keep-app-running --driver=test_driver/release_smoke.dart --target=integration_test/release_smoke_test.dart --dart-define=SMOKE_PHASE=restore --dart-define-from-file=lib/config/ads_release.json -d DEVICE_ID
+```
+
+Use debug mode for emulators/simulators. StoreKit purchase restoration requires
+the owner's sandbox test account and is separate from the unattended smoke test.
+For the interface regression pass, use `integration_test/ux_polish_test.dart`
+as the target with the same save/restore phases. It also checks native promotion,
+undo/redo, Settings, and Training. Set `CAPTURE_STORE=true` and
+`CHESS_SCREENSHOT_DIR` to capture the updated screens in a separate output folder.
+Keep `--keep-app-running` on every `flutter drive` invocation: the default
+cleanup uninstalls the app and deletes its local data. Use a dedicated test
+device, terminate only Chess Room between the save and restore phases, and
+restore the normal `lib/main.dart` entry point after testing.
 
 Release builds must be produced with `tool/release_build.sh`. The script validates signing and AdMob configuration, rejects Google test IDs, and injects the Dart ad-unit values with `--dart-define-from-file`. Do not use a bare `flutter build` for store artifacts.
 

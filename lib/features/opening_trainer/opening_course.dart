@@ -42,23 +42,30 @@ abstract class OpeningProgressStore {
 
 class SharedPreferencesOpeningProgressStore implements OpeningProgressStore {
   static const _key = 'opening_trainer_completed_v1';
+  static Future<void> _pendingWrite = Future<void>.value();
 
   @override
   Future<Set<String>> loadCompletedIds() async {
     final prefs = await SharedPreferences.getInstance();
-    final encoded = prefs.getString(_key);
-    if (encoded == null) return {};
+    final encoded = prefs.get(_key);
+    if (encoded is! String) return {};
     try {
-      return (jsonDecode(encoded) as List).cast<String>().toSet();
+      final decoded = jsonDecode(encoded);
+      return decoded is List ? decoded.whereType<String>().toSet() : {};
     } on FormatException {
       return {};
     }
   }
 
   @override
-  Future<void> markCompleted(String openingId) async {
-    final completed = (await loadCompletedIds())..add(openingId);
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString(_key, jsonEncode(completed.toList()..sort()));
+  Future<void> markCompleted(String openingId) {
+    // Different practice routes can complete while an earlier write is pending.
+    final update = _pendingWrite.then((_) async {
+      final completed = (await loadCompletedIds())..add(openingId);
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString(_key, jsonEncode(completed.toList()..sort()));
+    });
+    _pendingWrite = update.catchError((Object _) {});
+    return update;
   }
 }

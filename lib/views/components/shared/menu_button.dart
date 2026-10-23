@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 
 import '../../../util/app_design.dart';
-import '../../btn.dart';
 
 /// The single primary-action button style used across menu/setup screens
 /// (main menu, single player setup, settings). Keeping one definition
@@ -20,21 +19,27 @@ class MenuButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Btn(
-      onTap: onTap,
-      height: 60,
-      width: width,
-      borderRadius: AppRadius.pill,
-      color: AppColors.accent,
-      child: Text(
-        label,
-        textAlign: TextAlign.center,
-        maxLines: 2,
-        overflow: TextOverflow.ellipsis,
-        style: const TextStyle(
-          color: AppColors.onAccent,
-          fontSize: 20,
-          fontWeight: FontWeight.w800,
+    return ConstrainedBox(
+      constraints: BoxConstraints(maxWidth: width),
+      child: SizedBox(
+        width: double.infinity,
+        child: CupertinoButton(
+          onPressed: onTap,
+          minimumSize: const Size(kMinTouchTarget, kMinTouchTarget),
+          borderRadius: BorderRadius.circular(AppRadius.md),
+          padding: const EdgeInsets.symmetric(
+              horizontal: AppSpacing.lg, vertical: AppSpacing.lg),
+          color: AppColors.accent,
+          disabledColor: AppColors.accent.withValues(alpha: 0.4),
+          child: Text(
+            label,
+            textAlign: TextAlign.center,
+            style: const TextStyle(
+              color: AppColors.onAccent,
+              fontSize: 17,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
         ),
       ),
     );

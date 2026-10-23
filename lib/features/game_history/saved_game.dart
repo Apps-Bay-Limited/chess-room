@@ -89,6 +89,7 @@ abstract class GameHistoryStore {
 class SharedPreferencesGameHistoryStore implements GameHistoryStore {
   static const _key = 'saved_game_history_v1';
   static const _maximumGames = 100;
+  static Future<void> _pendingMutation = Future<void>.value();
 
   @override
   Future<List<SavedGame>> loadGames() async {
@@ -107,27 +108,39 @@ class SharedPreferencesGameHistoryStore implements GameHistoryStore {
   }
 
   @override
-  Future<void> saveGame(SavedGame game) async {
-    final games =
-        (await loadGames()).where((item) => item.id != game.id).toList();
-    games.insert(0, game);
-    if (games.length > _maximumGames) {
-      games.removeRange(_maximumGames, games.length);
-    }
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString(
-      _key,
-      jsonEncode(games.map((item) => item.toJson()).toList()),
-    );
+  Future<void> saveGame(SavedGame game) {
+    return _mutate(() async {
+      final games =
+          (await loadGames()).where((item) => item.id != game.id).toList();
+      games.insert(0, game);
+      if (games.length > _maximumGames) {
+        games.removeRange(_maximumGames, games.length);
+      }
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString(
+        _key,
+        jsonEncode(games.map((item) => item.toJson()).toList()),
+      );
+    });
   }
 
   @override
-  Future<void> deleteGame(String id) async {
-    final games = (await loadGames()).where((game) => game.id != id).toList();
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString(
-      _key,
-      jsonEncode(games.map((item) => item.toJson()).toList()),
-    );
+  Future<void> deleteGame(String id) {
+    return _mutate(() async {
+      final games = (await loadGames()).where((game) => game.id != id).toList();
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString(
+        _key,
+        jsonEncode(games.map((item) => item.toJson()).toList()),
+      );
+    });
+  }
+
+  Future<void> _mutate(Future<void> Function() mutation) {
+    // Share the queue across instances: a completed match, an import and a
+    // deletion must each observe the previous mutation's committed history.
+    final update = _pendingMutation.then((_) => mutation());
+    _pendingMutation = update.catchError((Object _) {});
+    return update;
   }
 }

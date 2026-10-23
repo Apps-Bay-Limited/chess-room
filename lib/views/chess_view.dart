@@ -15,6 +15,8 @@ import '../generated/l10n.dart';
 import 'components/chess_view/game_info_and_controls/game_status.dart';
 import 'components/shared/banner_ad_slot.dart';
 import 'components/shared/menu_button.dart';
+import 'components/shared/app_page.dart';
+import 'package:chess_room/util/app_design.dart';
 
 class ChessView extends StatefulWidget {
   final AppModel appModel;
@@ -30,6 +32,7 @@ class _ChessViewState extends State<ChessView> with WidgetsBindingObserver {
   ChessGame? _routeGame;
   bool _didLeave = false;
   Widget? _lastRenderedView;
+  bool _showCoordinates = false;
 
   _ChessViewState(this.appModel);
 
@@ -89,58 +92,88 @@ class _ChessViewState extends State<ChessView> with WidgetsBindingObserver {
           onPopInvokedWithResult: (didPop, result) {
             if (didPop) _leaveGame();
           },
-          child: Container(
-            decoration: BoxDecoration(gradient: appModel.theme.background),
+          child: AppPage(
             child: Column(
               children: [
                 Expanded(
                   child: SingleChildScrollView(
-                    padding: const EdgeInsets.all(30),
-                    child: Column(
-                      children: [
-                        const SizedBox(
-                          height: 30,
-                        ),
-                        GameInfoAndControls(appModel: appModel),
-                        const SizedBox(height: 30),
-                        ChessBoardWidget(appModel),
-                        const SizedBox(height: 30),
-                        GameStatus(),
-                        if (!appModel.gameOver && appModel.showTipButton) ...[
-                          const SizedBox(height: 14),
-                          GameTipButton(
-                            key: const ValueKey('game-tip-button'),
-                            label: S.of(context).Tip,
-                            isLoading: appModel.tipInProgress,
-                            onTap: appModel.isAIsTurn || appModel.tipInProgress
-                                ? null
-                                : appModel.game?.showTip,
-                          ),
-                        ],
-                        if (appModel.gameOver) ...[
-                          const SizedBox(height: 24),
-                          if (appModel.moveReviewRecords.isNotEmpty) ...[
-                            MenuButton(
-                              key: const ValueKey('review-game-button'),
-                              label: S.of(context).Review_Game,
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  CupertinoPageRoute(
-                                    builder: (context) => GameReviewPage(
-                                      records: appModel.moveReviewRecords,
-                                      pieceTheme: appModel.pieceTheme,
-                                    ),
-                                  ),
-                                );
-                              },
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 30, vertical: 12),
+                    child: AppContent(
+                        maxWidth: 600,
+                        child: Column(
+                          children: [
+                            GameInfoAndControls(appModel: appModel),
+                            Align(
+                              alignment: AlignmentDirectional.centerEnd,
+                              child: Semantics(
+                                toggled: _showCoordinates,
+                                label: S.of(context).Board_Coordinates,
+                                child: CupertinoButton(
+                                  key: const ValueKey(
+                                      'board-coordinates-button'),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 12, vertical: 8),
+                                  minimumSize: const Size(
+                                      kMinTouchTarget, kMinTouchTarget),
+                                  onPressed: () => setState(() =>
+                                      _showCoordinates = !_showCoordinates),
+                                  child: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        const Icon(CupertinoIcons.number,
+                                            size: 18),
+                                        const SizedBox(width: 6),
+                                        Flexible(
+                                            child: Text(
+                                                S.of(context).Board_Coordinates,
+                                                style: const TextStyle(
+                                                    fontSize: 13))),
+                                      ]),
+                                ),
+                              ),
                             ),
+                            ChessBoardWidget(appModel,
+                                showCoordinates: _showCoordinates),
                             const SizedBox(height: 24),
+                            GameStatus(),
+                            if (!appModel.gameOver &&
+                                appModel.showTipButton) ...[
+                              const SizedBox(height: 14),
+                              GameTipButton(
+                                key: const ValueKey('game-tip-button'),
+                                label: S.of(context).Tip,
+                                isLoading: appModel.tipInProgress,
+                                onTap:
+                                    appModel.isAIsTurn || appModel.tipInProgress
+                                        ? null
+                                        : appModel.game?.showTip,
+                              ),
+                            ],
+                            if (appModel.gameOver) ...[
+                              const SizedBox(height: 24),
+                              if (appModel.moveReviewRecords.isNotEmpty) ...[
+                                MenuButton(
+                                  key: const ValueKey('review-game-button'),
+                                  label: S.of(context).Review_Game,
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      CupertinoPageRoute(
+                                        builder: (context) => GameReviewPage(
+                                          records: appModel.moveReviewRecords,
+                                          pieceTheme: appModel.pieceTheme,
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                ),
+                                const SizedBox(height: 24),
+                              ],
+                              ResultShareSection(appModel: appModel),
+                            ],
                           ],
-                          ResultShareSection(appModel: appModel),
-                        ],
-                      ],
-                    ),
+                        )),
                   ),
                 ),
                 const BannerAdSlot(),

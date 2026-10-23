@@ -1,6 +1,33 @@
 # Changelog
 
-## Unreleased
+## 1.5.0+14
+
+### Added
+- Training progress totals for puzzles and openings, with refresh and retry support.
+- Confirmation before deleting saved games and a board flip control in replay.
+- Optional board coordinates during games and localized board-square accessibility labels.
+- Position-specific puzzle explanations with example moves, supporting pieces, and verified tactical details.
+- A visible sound setting using the existing saved preference.
+
+### Changed
+- Refined Home with one primary play action, compact navigation, and a smaller brand header.
+- Unified charcoal surfaces, brass accents, typography, cards, and navigation across play and practice.
+- Kept page text readable on bright app themes and clarified source-piece puzzle hints.
+- Grouped Settings, clarified legal-move and move-suggestion controls, and named AI difficulty choices.
+- Labeled clocks and emphasized the active side; bounded game boards and reading widths on larger screens.
+- Added recoverable practice-progress and saved-game storage errors without changing saved-data formats.
+- Updated all seven supported locales for the new interface and teaching text.
+
+### Fixed
+- Promotion choices fit narrow dialogs, and queued taps cannot promote twice or close the match.
+- Required promotion cannot be dismissed with system Back.
+- Damaged daily-progress preferences no longer interrupt Home startup or resume.
+- Concurrent history saves and opening completions preserve every result.
+- Failed opening and puzzle-library completion saves can be retried without replaying a solution.
+- PGN import keeps its controller alive through dismissal and ignores queued confirmations.
+- Large-text clock settings remain readable in longer translations.
+
+## 1.4.0+13
 
 ### Added
 - Quick Play using remembered AI difficulty, side, and time settings.
@@ -9,10 +36,20 @@
 - Expanded offline practice to 71 daily puzzles and 77 library puzzles, with eight themes, three difficulty levels, hints, explanations, and mate-in-two combinations.
 
 ### Changed
+- App-open ads now respect active practice sessions, a minimum background interval, and a cooldown.
+- Rating requests follow completed activities and wait for a safe return home, with persistent eligibility and request limits.
+- In-game Restart asks for confirmation and pauses the clock while the choice is open.
 - Local game clocks pause while the app is backgrounded or the match is closed.
 - Starting another match asks before replacing an unfinished game.
 - Completed daily puzzles lead directly to further practice, and library sessions start with unsolved positions.
 - Added translations for the new home and practice flows in all seven supported locales.
+
+### Release preparation
+- Added a native integration smoke harness using isolated match/history storage.
+- Added native promotion/undo/redo checks and a non-purchasing StoreKit product probe.
+- Prepared localized store metadata and screenshot-order experiment plans.
+- Updated Android build tooling for Flutter 3.47 and aligned iOS deployment targets to iOS 15.
+- Unified iOS plugin installation through CocoaPods to avoid duplicate WebView classes.
 
 ## 1.3.0+12
 

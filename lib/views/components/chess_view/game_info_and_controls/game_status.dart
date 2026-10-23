@@ -1,8 +1,8 @@
 import 'package:chess_room/model/app_model.dart';
 import 'package:chess_room/views/components/main_menu_view/game_options/side_picker.dart';
-import 'package:chess_room/views/components/shared/text_variable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
+import 'package:chess_room/util/app_design.dart';
 
 import '../../../../generated/l10n.dart';
 
@@ -12,7 +12,13 @@ class GameStatus extends StatelessWidget {
     return Consumer<AppModel>(
       builder: (context, appModel, child) => Row(
         children: [
-          TextRegular(_getStatus(appModel, context)),
+          Flexible(
+              child: Text(_getStatus(appModel, context),
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w500,
+                      color: AppColors.textPrimary))),
           !appModel.gameOver && appModel.playerCount == 1 && appModel.isAIsTurn
               ? CupertinoActivityIndicator(radius: 12)
               : Container()
@@ -45,7 +51,7 @@ class GameStatus extends StatelessWidget {
           if (appModel.isAIsTurn) {
             return S.of(context).You_Win + "!";
           } else {
-            return S.of(context).You_Lose + ' :(';
+            return S.of(context).You_Lose;
           }
         } else {
           if (appModel.turn == Player.player1) {

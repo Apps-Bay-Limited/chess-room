@@ -1,3 +1,7 @@
+import 'dart:async';
+
+import 'package:chess_room/util/in_app_reviewer_helper.dart';
+import 'package:chess_room/util/practice_session_scope.dart';
 import 'package:chess_room/features/puzzle_library/themed_puzzle.dart';
 import 'package:chess_room/generated/l10n.dart';
 import 'package:chess_room/features/daily_puzzle/daily_puzzle.dart';
@@ -6,6 +10,7 @@ import 'package:chess_room/features/daily_puzzle/puzzle_session.dart';
 import 'package:chess_room/util/app_design.dart';
 import 'package:chess_room/views/components/main_menu_view/game_options/side_picker.dart';
 import 'package:chess_room/views/components/shared/position_board.dart';
+import 'package:chess_room/views/components/shared/app_page.dart';
 import 'package:flutter/cupertino.dart';
 
 class PuzzleLibraryPage extends StatefulWidget {
@@ -25,6 +30,8 @@ class PuzzleLibraryPage extends StatefulWidget {
 class _PuzzleLibraryPageState extends State<PuzzleLibraryPage> {
   late final PuzzleLibraryProgressStore _store;
   Set<String> _solvedIds = {};
+  bool _progressFailed = false;
+  int _loadRevision = 0;
 
   @override
   void initState() {
@@ -35,20 +42,27 @@ class _PuzzleLibraryPageState extends State<PuzzleLibraryPage> {
   }
 
   Future<void> _loadProgress() async {
-    final solved = await _store.loadSolvedIds();
-    if (mounted) setState(() => _solvedIds = solved);
+    final revision = ++_loadRevision;
+    try {
+      final solved = await _store.loadSolvedIds();
+      if (!mounted || revision != _loadRevision) return;
+      setState(() {
+        _solvedIds = solved;
+        _progressFailed = false;
+      });
+    } catch (_) {
+      if (!mounted || revision != _loadRevision) return;
+      setState(() => _progressFailed = true);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     final strings = S.of(context);
-    return CupertinoPageScaffold(
-      backgroundColor: const Color(0xff493B24),
-      navigationBar: CupertinoNavigationBar(
-        backgroundColor: const Color(0xff24201C),
-        middle: Text(strings.Puzzle_Library),
-      ),
-      child: SafeArea(
+    return PracticeSessionScope(
+        child: AppPage(
+      title: strings.Puzzle_Library,
+      child: AppContent(
         child: ListView(
           padding: const EdgeInsets.all(AppSpacing.xl),
           children: [
@@ -57,13 +71,23 @@ class _PuzzleLibraryPageState extends State<PuzzleLibraryPage> {
               style: const TextStyle(fontSize: 17),
             ),
             const SizedBox(height: AppSpacing.xl),
+            if (_progressFailed) ...[
+              Text(strings.Training_Progress_Unavailable),
+              CupertinoButton(
+                onPressed: _loadProgress,
+                child: Text(strings.Retry),
+              ),
+            ],
             for (final theme in PuzzleTheme.values) ...[
               _ThemeCard(
                 theme: theme,
-                solved: themedPuzzles
-                    .where((puzzle) =>
-                        puzzle.theme == theme && _solvedIds.contains(puzzle.id))
-                    .length,
+                solved: _progressFailed
+                    ? null
+                    : themedPuzzles
+                        .where((puzzle) =>
+                            puzzle.theme == theme &&
+                            _solvedIds.contains(puzzle.id))
+                        .length,
                 total: themedPuzzles
                     .where((puzzle) => puzzle.theme == theme)
                     .length,
@@ -78,7 +102,7 @@ class _PuzzleLibraryPageState extends State<PuzzleLibraryPage> {
                       ),
                     ),
                   );
-                  _loadProgress();
+                  if (mounted) _loadProgress();
                 },
               ),
               const SizedBox(height: AppSpacing.md),
@@ -86,13 +110,13 @@ class _PuzzleLibraryPageState extends State<PuzzleLibraryPage> {
           ],
         ),
       ),
-    );
+    ));
   }
 }
 
 class _ThemeCard extends StatelessWidget {
   final PuzzleTheme theme;
-  final int solved;
+  final int? solved;
   final int total;
   final VoidCallback onTap;
 
@@ -114,12 +138,13 @@ class _ThemeCard extends StatelessWidget {
         width: double.infinity,
         padding: const EdgeInsets.all(AppSpacing.xl),
         decoration: BoxDecoration(
-          color: const Color(0x33000000),
+          color: AppColors.surface,
+          border: Border.all(color: AppColors.divider),
           borderRadius: BorderRadius.circular(AppRadius.md),
         ),
         child: Row(
           children: [
-            Text(_themeEmoji(theme), style: const TextStyle(fontSize: 34)),
+            Icon(_themeIcon(theme), size: 28, color: AppColors.accent),
             const SizedBox(width: AppSpacing.lg),
             Expanded(
               child: Column(
@@ -130,17 +155,21 @@ class _ThemeCard extends StatelessWidget {
                     style: const TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
-                      color: CupertinoColors.white,
+                      color: AppColors.textPrimary,
                     ),
                   ),
                   Text(
-                    strings.Puzzles_Solved(solved, total),
-                    style: const TextStyle(color: CupertinoColors.systemGrey2),
+                    solved == null
+                        ? strings.Training_Progress_Unavailable
+                        : strings.Puzzles_Solved(solved!, total),
+                    style: const TextStyle(color: AppColors.textSecondary),
                   ),
                 ],
               ),
             ),
-            const Icon(CupertinoIcons.chevron_forward),
+            const SizedBox(width: AppSpacing.sm),
+            const Icon(CupertinoIcons.chevron_forward,
+                size: 20, color: AppColors.textSecondary),
           ],
         ),
       ),
@@ -171,6 +200,9 @@ class _PuzzleSessionPageState extends State<PuzzleSessionPage> {
   int? _selectedTile;
   bool _wrong = false;
   bool _showHint = false;
+  bool _progressFailed = false;
+  bool _savingProgress = false;
+  final Set<String> _pendingCompletions = {};
 
   ThemedPuzzle get _puzzle => _puzzles[_index];
 
@@ -181,7 +213,12 @@ class _PuzzleSessionPageState extends State<PuzzleSessionPage> {
   }
 
   Future<void> _loadPuzzles() async {
-    final solved = await widget.progressStore.loadSolvedIds();
+    Set<String> solved = {};
+    try {
+      solved = await widget.progressStore.loadSolvedIds();
+    } catch (_) {
+      _progressFailed = true;
+    }
     if (!mounted) return;
     final candidates = themedPuzzles
         .where((puzzle) => puzzle.theme == widget.theme)
@@ -193,7 +230,7 @@ class _PuzzleSessionPageState extends State<PuzzleSessionPage> {
         ...candidates.where((puzzle) => !solved.contains(puzzle.id)),
         ...candidates.where((puzzle) => solved.contains(puzzle.id)),
       ];
-      _startPuzzle();
+      if (_puzzles.isNotEmpty) _startPuzzle();
     });
   }
 
@@ -210,9 +247,11 @@ class _PuzzleSessionPageState extends State<PuzzleSessionPage> {
   }
 
   Future<void> _onTileTap(int tile) async {
-    if (_session.isComplete || _session.awaitingReply) return;
-    final piece = _session.position.board.tiles[tile];
-    if (piece?.player == _session.player) {
+    final session = _session;
+    final completedId = _puzzle.id;
+    if (_savingProgress || session.isComplete || session.awaitingReply) return;
+    final piece = session.position.board.tiles[tile];
+    if (piece?.player == session.player) {
       setState(() {
         _selectedTile = _selectedTile == tile ? null : tile;
         _wrong = false;
@@ -221,20 +260,60 @@ class _PuzzleSessionPageState extends State<PuzzleSessionPage> {
     }
     final selected = _selectedTile;
     if (selected == null) return;
-    final correct = _session.tryMove(selected, tile);
+    final correct = session.tryMove(selected, tile);
     setState(() {
       _selectedTile = null;
       _wrong = !correct;
       _showHint = false;
     });
     if (!correct) return;
-    if (_session.awaitingReply) {
+    if (session.awaitingReply) {
       await Future<void>.delayed(const Duration(milliseconds: 450));
-      if (!mounted) return;
-      setState(_session.playReply);
+      if (!mounted || !identical(session, _session)) return;
+      setState(session.playReply);
     }
-    if (_session.isComplete) {
-      await widget.progressStore.markSolved(_puzzle.id);
+    if (session.isComplete) {
+      _pendingCompletions.add(completedId);
+      await _savePendingCompletions();
+    }
+  }
+
+  Future<void> _savePendingCompletions() async {
+    if (_savingProgress) return;
+    setState(() => _savingProgress = true);
+    try {
+      while (_pendingCompletions.isNotEmpty) {
+        final completedId = _pendingCompletions.first;
+        await widget.progressStore.markSolved(completedId);
+        _pendingCompletions.remove(completedId);
+        // Eligibility accounting is independent of the saved practice result.
+        unawaited(InAppReviewHelper.shared
+            .recordCompletedActivity('puzzle:$completedId')
+            .catchError((Object _) {}));
+      }
+      if (mounted) setState(() => _progressFailed = false);
+    } catch (_) {
+      if (mounted) setState(() => _progressFailed = true);
+    } finally {
+      if (mounted) setState(() => _savingProgress = false);
+    }
+  }
+
+  Future<void> _retryProgress() async {
+    if (_savingProgress) return;
+    if (_pendingCompletions.isNotEmpty) {
+      await _savePendingCompletions();
+      return;
+    }
+    setState(() => _savingProgress = true);
+    try {
+      // Refresh availability without replacing the player's current position.
+      await widget.progressStore.loadSolvedIds();
+      if (mounted) setState(() => _progressFailed = false);
+    } catch (_) {
+      if (mounted) setState(() => _progressFailed = true);
+    } finally {
+      if (mounted) setState(() => _savingProgress = false);
     }
   }
 
@@ -248,18 +327,15 @@ class _PuzzleSessionPageState extends State<PuzzleSessionPage> {
   @override
   Widget build(BuildContext context) {
     final strings = S.of(context);
-    return CupertinoPageScaffold(
-      backgroundColor: const Color(0xff493B24),
-      navigationBar: CupertinoNavigationBar(
-        backgroundColor: const Color(0xff24201C),
-        middle: Text(_themeName(strings, widget.theme)),
-      ),
-      child: SafeArea(
+    return PracticeSessionScope(
+        child: AppPage(
+      title: _themeName(strings, widget.theme),
+      child: AppContent(
         child: _puzzles.isEmpty
             ? const Center(child: CupertinoActivityIndicator())
             : _buildPuzzle(strings),
       ),
-    );
+    ));
   }
 
   Widget _buildPuzzle(S strings) {
@@ -269,6 +345,16 @@ class _PuzzleSessionPageState extends State<PuzzleSessionPage> {
       padding: const EdgeInsets.all(AppSpacing.xl),
       child: Column(
         children: [
+          if (_progressFailed) ...[
+            Text(strings.Training_Progress_Unavailable,
+                style: const TextStyle(color: AppColors.textSecondary)),
+            CupertinoButton(
+              key: const ValueKey('retry-library-progress'),
+              onPressed: _savingProgress ? null : _retryProgress,
+              child: Text(strings.Retry),
+            ),
+            const SizedBox(height: AppSpacing.md),
+          ],
           Text(
             strings.Puzzle_Number(_index + 1, _puzzles.length),
             style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
@@ -276,7 +362,7 @@ class _PuzzleSessionPageState extends State<PuzzleSessionPage> {
           const SizedBox(height: AppSpacing.sm),
           Text(
             puzzleDifficultyLabel(strings, _puzzle.difficulty),
-            style: const TextStyle(color: CupertinoColors.systemGrey2),
+            style: const TextStyle(color: AppColors.textSecondary),
           ),
           const SizedBox(height: AppSpacing.sm),
           Text(_session.movesPlayed > 0 && !solved
@@ -296,7 +382,7 @@ class _PuzzleSessionPageState extends State<PuzzleSessionPage> {
                 : lastMove == null
                     ? const {}
                     : {lastMove.from, lastMove.to},
-            onTileTap: _onTileTap,
+            onTileTap: _savingProgress ? null : _onTileTap,
           ),
           const SizedBox(height: AppSpacing.lg),
           if (_wrong)
@@ -308,13 +394,13 @@ class _PuzzleSessionPageState extends State<PuzzleSessionPage> {
             CupertinoButton(
               key: const ValueKey('library-puzzle-hint'),
               onPressed: () => setState(() => _showHint = !_showHint),
-              child: Text(strings.Tip),
+              child: Text(strings.Puzzle_Hint),
             ),
           if (solved) ...[
             Text(
               strings.Puzzle_Complete,
               style: const TextStyle(
-                color: CupertinoColors.activeGreen,
+                color: AppColors.success,
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -325,13 +411,18 @@ class _PuzzleSessionPageState extends State<PuzzleSessionPage> {
             ),
             const SizedBox(height: AppSpacing.sm),
             Text(
-              puzzleExplanation(strings, _puzzle.motif),
+              puzzlePositionExplanation(
+                strings,
+                fen: _puzzle.fen,
+                solutionLine: _puzzle.solutionLine,
+                motif: _puzzle.motif,
+              ),
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: AppSpacing.lg),
             CupertinoButton.filled(
               key: const ValueKey('next-library-puzzle'),
-              onPressed: _nextPuzzle,
+              onPressed: _savingProgress ? null : _nextPuzzle,
               child: Text(strings.Next_Puzzle),
             ),
           ],
@@ -352,13 +443,13 @@ String _themeName(S strings, PuzzleTheme theme) => switch (theme) {
       PuzzleTheme.bishopMate => strings.Theme_Bishop_Mate,
     };
 
-String _themeEmoji(PuzzleTheme theme) => switch (theme) {
-      PuzzleTheme.checkmate => '♚',
-      PuzzleTheme.fork => '♞',
-      PuzzleTheme.promotion => '♛',
-      PuzzleTheme.queenNet => '♕',
-      PuzzleTheme.backRank => '♜',
-      PuzzleTheme.knightMate => '♞',
-      PuzzleTheme.rookMate => '♖',
-      PuzzleTheme.bishopMate => '♗',
+IconData _themeIcon(PuzzleTheme theme) => switch (theme) {
+      PuzzleTheme.checkmate => CupertinoIcons.flag,
+      PuzzleTheme.fork => CupertinoIcons.arrow_branch,
+      PuzzleTheme.promotion => CupertinoIcons.arrow_up,
+      PuzzleTheme.queenNet => CupertinoIcons.square_grid_2x2,
+      PuzzleTheme.backRank => CupertinoIcons.rectangle,
+      PuzzleTheme.knightMate => CupertinoIcons.bolt,
+      PuzzleTheme.rookMate => CupertinoIcons.arrow_up_right,
+      PuzzleTheme.bishopMate => CupertinoIcons.arrow_up_right_square,
     };

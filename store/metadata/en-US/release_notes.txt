@@ -1,0 +1,3 @@
+- Start a match instantly with Quick Play.
+- Resume unfinished games with Continue Game.
+- Build your skills with more daily puzzles, hints, and explanations.

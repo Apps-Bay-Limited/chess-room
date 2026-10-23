@@ -1,0 +1,143 @@
+{
+  "version": "1.4.0+13",
+  "metadata_files": 43,
+  "screenshots": [
+    {
+      "file": "store/screenshots/android/01-quick-play.png",
+      "width": 1080,
+      "height": 1920,
+      "bit_depth": 8,
+      "color_type": 2,
+      "has_transparency_chunk": false,
+      "sha256": "6a20b954d4e5e11a7162d8a37b7e9684cd2634eb4310339cbe368869a930dc6d"
+    },
+    {
+      "file": "store/screenshots/android/02-play-offline.png",
+      "width": 1080,
+      "height": 1920,
+      "bit_depth": 8,
+      "color_type": 2,
+      "has_transparency_chunk": false,
+      "sha256": "c8d65feb30c929c296dcefa1eea2eb825c30c89f2d2f0b11aca71ec44bea5189"
+    },
+    {
+      "file": "store/screenshots/android/03-continue-game.png",
+      "width": 1080,
+      "height": 1920,
+      "bit_depth": 8,
+      "color_type": 2,
+      "has_transparency_chunk": false,
+      "sha256": "1b09db4ae97af02d736a70e378ec22ac23f88e30e51996e353b8ada1c49657a0"
+    },
+    {
+      "file": "store/screenshots/android/04-daily-practice.png",
+      "width": 1080,
+      "height": 1920,
+      "bit_depth": 8,
+      "color_type": 2,
+      "has_transparency_chunk": false,
+      "sha256": "149f93261aafb733e0e02a35af4ead886b7ba3371b672fb6496e4816f6a847d8"
+    },
+    {
+      "file": "store/screenshots/android/05-learn-from-solutions.png",
+      "width": 1080,
+      "height": 1920,
+      "bit_depth": 8,
+      "color_type": 2,
+      "has_transparency_chunk": false,
+      "sha256": "c3f2261f0058a6ab220d5aa8e0e9c821ab6861ad3903c3bafdf8d6ff1a299cb1"
+    },
+    {
+      "file": "store/screenshots/ipad/01-quick-play.png",
+      "width": 2064,
+      "height": 2752,
+      "bit_depth": 8,
+      "color_type": 2,
+      "has_transparency_chunk": false,
+      "sha256": "8b589a4e09b2c89eaefe8c78e99a009488277db421929c7a7687d147e658b4b6"
+    },
+    {
+      "file": "store/screenshots/ipad/02-play-offline.png",
+      "width": 2064,
+      "height": 2752,
+      "bit_depth": 8,
+      "color_type": 2,
+      "has_transparency_chunk": false,
+      "sha256": "5a7aab9372ec1f46de9b72d2256dc7f692dbbdcfe28207b68093c6f49151b50a"
+    },
+    {
+      "file": "store/screenshots/ipad/03-continue-game.png",
+      "width": 2064,
+      "height": 2752,
+      "bit_depth": 8,
+      "color_type": 2,
+      "has_transparency_chunk": false,
+      "sha256": "56fb81f20022467a4fcc7be7ba561c717235abbd2597dd277095ec2f3f7510d4"
+    },
+    {
+      "file": "store/screenshots/ipad/04-daily-practice.png",
+      "width": 2064,
+      "height": 2752,
+      "bit_depth": 8,
+      "color_type": 2,
+      "has_transparency_chunk": false,
+      "sha256": "a8f426c5b532bfcd8cc907f6ab902c9c57653db9271f7056c5864fbcd2b67044"
+    },
+    {
+      "file": "store/screenshots/ipad/05-learn-from-solutions.png",
+      "width": 2064,
+      "height": 2752,
+      "bit_depth": 8,
+      "color_type": 2,
+      "has_transparency_chunk": false,
+      "sha256": "ad50f3a37bb4bc7839f4cfe630f0c193d1398712b6c9fbb30c1a8daf4afcac49"
+    },
+    {
+      "file": "store/screenshots/iphone/01-quick-play.png",
+      "width": 1320,
+      "height": 2868,
+      "bit_depth": 8,
+      "color_type": 2,
+      "has_transparency_chunk": false,
+      "sha256": "d03192303f0e43a8576bc09a34d46117407f5766bb921935d171e39097383d2f"
+    },
+    {
+      "file": "store/screenshots/iphone/02-play-offline.png",
+      "width": 1320,
+      "height": 2868,
+      "bit_depth": 8,
+      "color_type": 2,
+      "has_transparency_chunk": false,
+      "sha256": "2042412b15c1b73979ea23c8815bd1bb7b339170f3b8e5944e620766bc567918"
+    },
+    {
+      "file": "store/screenshots/iphone/03-continue-game.png",
+      "width": 1320,
+      "height": 2868,
+      "bit_depth": 8,
+      "color_type": 2,
+      "has_transparency_chunk": false,
+      "sha256": "c8fddbd88be19a2a425f758a9f96bc8ba9b6a5eb3ee130e9b1f27befecbf3396"
+    },
+    {
+      "file": "store/screenshots/iphone/04-daily-practice.png",
+      "width": 1320,
+      "height": 2868,
+      "bit_depth": 8,
+      "color_type": 2,
+      "has_transparency_chunk": false,
+      "sha256": "02e53efe4f118536f385bcd41c6c30e2d7e183b95ecac7db0559f1a31efcfe7b"
+    },
+    {
+      "file": "store/screenshots/iphone/05-learn-from-solutions.png",
+      "width": 1320,
+      "height": 2868,
+      "bit_depth": 8,
+      "color_type": 2,
+      "has_transparency_chunk": false,
+      "sha256": "1428c8239787ac782693ddd7babaa4e2433877ffc5200a74199581dc4192e52a"
+    }
+  ],
+  "uploaded": false,
+  "experiment_started": false
+}

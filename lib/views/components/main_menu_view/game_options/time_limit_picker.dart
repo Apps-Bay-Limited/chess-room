@@ -19,42 +19,52 @@ class TimeLimitPicker extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final strings = S.of(context);
-    return Container(
-      height: 60,
-      padding: const EdgeInsets.only(left: 16, right: 6),
-      decoration: BoxDecoration(
-        color: CupertinoColors.white.withValues(alpha: 0.1),
-        borderRadius: BorderRadius.circular(AppRadius.md),
-      ),
-      child: Row(
-        children: [
-          Expanded(child: TextDefault(strings.Time_Limit)),
-          CupertinoButton(
-            key: const ValueKey('time-limit-picker-button'),
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-            onPressed: () => _showPicker(context),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  timeLimitLabel(strings, selectedTime),
-                  style: const TextStyle(
-                    color: CupertinoColors.white,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-                const SizedBox(width: 6),
-                const Icon(
-                  CupertinoIcons.chevron_up_chevron_down,
-                  color: AppColors.accent,
-                  size: 17,
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
+    return LayoutBuilder(builder: (context, constraints) {
+      final stacked = constraints.maxWidth < 420 &&
+          MediaQuery.textScalerOf(context).scale(16) > 20;
+      final valueButton = CupertinoButton(
+        key: const ValueKey('time-limit-picker-button'),
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+        onPressed: () => _showPicker(context),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Flexible(
+                child: Text(
+              timeLimitLabel(strings, selectedTime),
+              style: const TextStyle(
+                  color: AppColors.textPrimary, fontWeight: FontWeight.w600),
+            )),
+            const SizedBox(width: 6),
+            const Icon(CupertinoIcons.chevron_up_chevron_down,
+                color: AppColors.accent, size: 17),
+          ],
+        ),
+      );
+      return Container(
+        constraints: const BoxConstraints(minHeight: 60),
+        padding: const EdgeInsets.only(left: 16, right: 6),
+        decoration: BoxDecoration(
+          color: AppColors.surfaceRaised,
+          borderRadius: BorderRadius.circular(AppRadius.md),
+        ),
+        child: stacked
+            ? Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  const SizedBox(height: 12),
+                  TextDefault(strings.Time_Limit),
+                  valueButton
+                ],
+              )
+            : Row(
+                children: [
+                  Expanded(child: TextDefault(strings.Time_Limit)),
+                  Flexible(child: valueButton),
+                ],
+              ),
+      );
+    });
   }
 
   Future<void> _showPicker(BuildContext context) async {
@@ -68,41 +78,44 @@ class TimeLimitPicker extends StatelessWidget {
       builder: (popupContext) {
         return Container(
           height: 340,
-          color: const Color(0xff24201C),
+          color: AppColors.surface,
           child: SafeArea(
             top: false,
             child: Column(
               children: [
-                SizedBox(
-                  height: 52,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      CupertinoButton(
-                        onPressed: () => Navigator.pop(popupContext),
-                        child: Text(strings.Cancel),
-                      ),
-                      Text(
-                        strings.Time_Limit,
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  child: Column(children: [
+                    Text(strings.Time_Limit,
+                        textAlign: TextAlign.center,
                         style: const TextStyle(
-                          color: CupertinoColors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 17,
-                        ),
-                      ),
-                      CupertinoButton(
-                        key: const ValueKey('time-limit-done-button'),
-                        onPressed: () {
-                          setFunc(pendingTime);
-                          Navigator.pop(popupContext);
-                        },
-                        child: Text(
-                          strings.Done,
-                          style: const TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                    ],
-                  ),
+                            color: AppColors.textPrimary,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 17)),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Flexible(
+                            child: CupertinoButton(
+                          onPressed: () => Navigator.pop(popupContext),
+                          child: Text(strings.Cancel),
+                        )),
+                        Flexible(
+                            child: CupertinoButton(
+                          key: const ValueKey('time-limit-done-button'),
+                          onPressed: () {
+                            setFunc(pendingTime);
+                            Navigator.pop(popupContext);
+                          },
+                          child: Text(
+                            strings.Done,
+                            style: const TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        )),
+                      ],
+                    ),
+                  ]),
                 ),
                 Expanded(
                   child: CupertinoPicker(
@@ -110,7 +123,11 @@ class TimeLimitPicker extends StatelessWidget {
                     scrollController: FixedExtentScrollController(
                       initialItem: initialIndex < 0 ? 0 : initialIndex,
                     ),
-                    itemExtent: 44,
+                    itemExtent:
+                        (MediaQuery.textScalerOf(popupContext).scale(19) *
+                                    1.35 +
+                                12)
+                            .clamp(44, 100),
                     useMagnifier: true,
                     magnification: 1.08,
                     onSelectedItemChanged: (index) {

@@ -1,0 +1,1 @@
+Play offline chess, solve daily puzzles and return to your saved game.

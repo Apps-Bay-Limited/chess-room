@@ -26,11 +26,45 @@ class AppDurations {
 }
 
 class AppColors {
-  static const Color accent = Color(0xffCC996F);
-  static const Color onAccent = Color(0xff473D3D);
-  static const Color onAccentDetail = Color(0xff332C26);
+  static const Color background = Color(0xff181714);
+  static const Color surface = Color(0xff24221E);
+  static const Color surfaceRaised = Color(0xff302D27);
+  static const Color textPrimary = Color(0xffF4F0E8);
+  static const Color textSecondary = Color(0xffC3BDB2);
+  static const Color divider = Color(0xff514B40);
+  static const Color accent = Color(0xffD0AD7A);
+  static const Color onAccent = Color(0xff211D17);
+  static const Color onAccentDetail = Color(0xff332C22);
+  static const Color success = Color(0xffA6CB9C);
   static const Color error = Color(0xffE0654F);
   static const Color disabled = Color(0x66FFFFFF);
+}
+
+/// Keeps page text readable while retaining each selected theme's hues.
+/// Board colors and theme previews use the original, unmodified palette.
+LinearGradient readablePageGradient(LinearGradient gradient) {
+  final foregrounds = [
+    AppColors.textPrimary,
+    AppColors.textSecondary,
+    AppColors.accent,
+  ];
+  final needsScrim = gradient.colors.any((background) => foregrounds.any(
+      (foreground) =>
+          (foreground.computeLuminance() + .05) /
+              (background.computeLuminance() + .05) <
+          4.5));
+  if (!needsScrim) return gradient;
+  // Even white under this scrim supports 4.5:1 for our darkest page text.
+  return LinearGradient(
+    begin: gradient.begin,
+    end: gradient.end,
+    stops: gradient.stops,
+    tileMode: gradient.tileMode,
+    transform: gradient.transform,
+    colors: gradient.colors
+        .map((color) => Color.alphaBlend(const Color(0xBF000000), color))
+        .toList(),
+  );
 }
 
 /// Minimum touch target per HIG (44pt) / Material (48dp); use 48 as the

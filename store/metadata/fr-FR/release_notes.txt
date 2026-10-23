@@ -1,0 +1,3 @@
+- Lancez une partie en un instant avec Quick Play.
+- Reprenez vos parties en cours avec Continue Game.
+- Progressez avec davantage de défis quotidiens, d’indices et d’explications.

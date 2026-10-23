@@ -20,26 +20,60 @@ typedef String MessageIfAbsent(String messageStr, List<dynamic> args);
 class MessageLookup extends MessageLookupByLibrary {
   String get localeName => 'ar';
 
-  static String m0(count) => "${count} د";
+  static String m0(square) => "مربع فارغ ${square}";
 
-  static String m1(count) => "${count} نقلة";
+  static String m1(count) => "${count} د";
 
-  static String m2(current, total) => "النقلة ${current} من ${total}";
+  static String m2(count) => "${count} نقلة";
 
-  static String m3(current, total, side) =>
+  static String m3(current, total) => "النقلة ${current} من ${total}";
+
+  static String m4(current, total, side) =>
       "النقلة ${current} من ${total}: العب بـ${side}";
 
-  static String m4(value) => "خسرت ما يعادل ${value} بيادق من التقييم";
+  static String m5(completed, total) =>
+      "اكتمل ${completed} من ${total} افتتاحية";
 
-  static String m5(current, total) => "اللغز ${current} من ${total}";
+  static String m6(value) => "خسرت ما يعادل ${value} بيادق من التقييم";
 
-  static String m6(count) => "السلسلة: ${count}";
+  static String m7(piece, square) => "${piece} على ${square}";
 
-  static String m7(solved, total) => "تم حل ${solved} من ${total}";
+  static String m8(current, total) => "اللغز ${current} من ${total}";
 
-  static String m8(price) => "إزالة الإعلانات ${price}";
+  static String m9(piece, support, square) =>
+      "إغلاق الهروب: ${piece} على ${support} يسيطر على ${square}.";
 
-  static String m9(current, total, classification) =>
+  static String m10(from, king, target) =>
+      "من ${from}، يهدد الحصان الملك على ${king} بالكش ويهاجم أيضًا ${target}.";
+
+  static String m11(line) => "أحد الحلول: ${line}.";
+
+  static String m12(square) =>
+      "كش مات للملك على ${square}: لا توجد نقلة قانونية للهروب أو الأخذ أو الحجب.";
+
+  static String m13(piece, from, to) => "${piece}: ${from} → ${to}.";
+
+  static String m14(squares) =>
+      "بيادق الطرف المدافع على ${squares} تسدّ طريق هروب ملكها.";
+
+  static String m15(square, piece) =>
+      "يصل البيدق إلى ${square} ويترقّى إلى ${piece}.";
+
+  static String m16(reply, finish) =>
+      "بعد ${reply}، تحقق النقلة ${finish} كش مات.";
+
+  static String m17(piece, support, square) =>
+      "الدعم: ${piece} على ${support} يحمي ${square}.";
+
+  static String m18(count) => "السلسلة: ${count}";
+
+  static String m19(completed, total) => "اكتمل ${completed} من ${total} لغزًا";
+
+  static String m20(solved, total) => "تم حل ${solved} من ${total}";
+
+  static String m21(price) => "إزالة الإعلانات ${price}";
+
+  static String m22(current, total, classification) =>
       "النقلة ${current} من ${total}: ${classification}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
@@ -59,6 +93,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "Blunder": MessageLookupByLibrary.simpleMessage("خطأ فادح"),
     "Blunder_Explanation": MessageLookupByLibrary.simpleMessage(
       "تؤدي هذه النقلة إلى خسارة كبيرة في القطع أو تسمح بهجوم حاسم.",
+    ),
+    "Board_Coordinates": MessageLookupByLibrary.simpleMessage(
+      "إحداثيات الرقعة",
+    ),
+    "Board_Coordinates_Description": MessageLookupByLibrary.simpleMessage(
+      "إظهار الأعمدة والصفوف حول الرقعة.",
     ),
     "Cancel": MessageLookupByLibrary.simpleMessage("إلغاء"),
     "Chess_Bishop_Rule": MessageLookupByLibrary.simpleMessage(
@@ -101,6 +141,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Chess_Rook_Rule": MessageLookupByLibrary.simpleMessage(
       "الرخ — يتحرك أي عدد من المربعات أفقيًا أو عموديًا.",
     ),
+    "Chess_Room": MessageLookupByLibrary.simpleMessage("غرفة الشطرنج"),
     "Chess_Room_Result": MessageLookupByLibrary.simpleMessage(
       "نتيجة Chess Room",
     ),
@@ -118,6 +159,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "Classical_Music_Box": MessageLookupByLibrary.simpleMessage(
       "صندوق الموسيقى الكلاسيكية",
     ),
+    "Clock_Active": MessageLookupByLibrary.simpleMessage("صاحب الدور"),
+    "Clock_Black": MessageLookupByLibrary.simpleMessage("الأسود"),
+    "Clock_White": MessageLookupByLibrary.simpleMessage("الأبيض"),
     "Continue_Game": MessageLookupByLibrary.simpleMessage("متابعة المباراة"),
     "Continue_Game_Description": MessageLookupByLibrary.simpleMessage(
       "تابع من حيث توقفت",
@@ -130,28 +174,64 @@ class MessageLookup extends MessageLookupByLibrary {
       "تحدٍّ جديد لهذا اليوم",
     ),
     "Daily_Puzzle": MessageLookupByLibrary.simpleMessage("لغز اليوم"),
+    "Delete": MessageLookupByLibrary.simpleMessage("حذف"),
+    "Delete_Game_Failed": MessageLookupByLibrary.simpleMessage(
+      "تعذّر حذف هذه المباراة. يُرجى المحاولة مجددًا.",
+    ),
+    "Delete_Game_Message": MessageLookupByLibrary.simpleMessage(
+      "ستُحذف المباراة المحفوظة من هذا الجهاز. لا يمكن التراجع عن ذلك.",
+    ),
+    "Delete_Game_Title": MessageLookupByLibrary.simpleMessage(
+      "حذف هذه المباراة؟",
+    ),
     "Done": MessageLookupByLibrary.simpleMessage("تم"),
     "Draw": MessageLookupByLibrary.simpleMessage("تعادل"),
     "Easy": MessageLookupByLibrary.simpleMessage("سهل"),
     "Easy_Unit": MessageLookupByLibrary.simpleMessage("وحدات سهلة"),
+    "Empty_Square": m0,
     "Export_PGN": MessageLookupByLibrary.simpleMessage("نسخ PGN"),
     "Extreme": MessageLookupByLibrary.simpleMessage("فائق"),
     "Falling_Block_Puzzle": MessageLookupByLibrary.simpleMessage(
       "لغز الكتل المتساقطة",
     ),
     "Find_Best_Move": MessageLookupByLibrary.simpleMessage("أوجد أفضل نقلة."),
+    "First_Move": MessageLookupByLibrary.simpleMessage("النقلة الأولى"),
     "Fling_Knife": MessageLookupByLibrary.simpleMessage("رمي السكاكين"),
+    "Flip_Board": MessageLookupByLibrary.simpleMessage("قلب الرقعة"),
     "Full_Game_Review": MessageLookupByLibrary.simpleMessage(
       "مراجعة كاملة للمباراة",
     ),
     "Game_History": MessageLookupByLibrary.simpleMessage("سجل المباريات"),
     "Game_Replay": MessageLookupByLibrary.simpleMessage("إعادة عرض المباراة"),
+    "Game_Setup_Description": MessageLookupByLibrary.simpleMessage(
+      "اختر تحديًا مناسبًا لمستواك والعب نقلتك الأولى.",
+    ),
+    "Gameplay_Settings": MessageLookupByLibrary.simpleMessage("إعدادات اللعب"),
     "Good_Move": MessageLookupByLibrary.simpleMessage("نقلة جيدة"),
     "Good_Move_Explanation": MessageLookupByLibrary.simpleMessage(
       "هذه النقلة قريبة من أفضل خيار يقترحه المحرك.",
     ),
     "Hard": MessageLookupByLibrary.simpleMessage("صعب"),
-    "Hints": MessageLookupByLibrary.simpleMessage("تلميحات"),
+    "Help_And_Privacy": MessageLookupByLibrary.simpleMessage(
+      "المساعدة والخصوصية",
+    ),
+    "Hints": MessageLookupByLibrary.simpleMessage("النقلات القانونية"),
+    "Hints_Description": MessageLookupByLibrary.simpleMessage(
+      "إظهار المربعات المتاحة عند اختيار قطعة.",
+    ),
+    "Home_AI_Description": MessageLookupByLibrary.simpleMessage(
+      "اختر المستوى واللون ووقت اللعب",
+    ),
+    "Home_Local_Description": MessageLookupByLibrary.simpleMessage(
+      "العبا معًا على جهاز واحد",
+    ),
+    "Home_Play_Options": MessageLookupByLibrary.simpleMessage("طرق أخرى للعب"),
+    "Home_Subtitle": MessageLookupByLibrary.simpleMessage(
+      "العب مباراة. وطوّر نقلتك القادمة.",
+    ),
+    "Home_Training_Description": MessageLookupByLibrary.simpleMessage(
+      "ألغاز وافتتاحيات موجّهة",
+    ),
     "How_To_Play_Chess": MessageLookupByLibrary.simpleMessage(
       "كيفية لعب الشطرنج",
     ),
@@ -166,22 +246,27 @@ class MessageLookup extends MessageLookupByLibrary {
       "تتنازل هذه النقلة عن جزء صغير من أفضلية الوضع.",
     ),
     "Instant_Face": MessageLookupByLibrary.simpleMessage("الوجه الفوري"),
+    "Last_Move": MessageLookupByLibrary.simpleMessage("النقلة الأخيرة"),
+    "Local_Data_Unavailable": MessageLookupByLibrary.simpleMessage(
+      "البيانات المحفوظة غير متاحة مؤقتًا. يُرجى المحاولة مجددًا.",
+    ),
     "Mate_In_One": MessageLookupByLibrary.simpleMessage("كش مات في نقلة واحدة"),
     "Mate_In_Two": MessageLookupByLibrary.simpleMessage("مات في نقلتين"),
     "Medium": MessageLookupByLibrary.simpleMessage("متوسط"),
     "Metronome_Go": MessageLookupByLibrary.simpleMessage("بندول الإيقاع Go"),
     "Minesweeper_Go": MessageLookupByLibrary.simpleMessage("كاسحة الألغام Go"),
     "Mint_Translate": MessageLookupByLibrary.simpleMessage("ترجمة Mint"),
-    "Minute_Count": m0,
+    "Minute_Count": m1,
     "Mistake": MessageLookupByLibrary.simpleMessage("خطأ"),
     "Mistake_Explanation": MessageLookupByLibrary.simpleMessage(
       "كان من الممكن لنقلة أقوى أن تحافظ على وضع أفضل بكثير.",
     ),
     "Money_Tracker": MessageLookupByLibrary.simpleMessage("متتبع الأموال"),
     "More_Apps": MessageLookupByLibrary.simpleMessage("المزيد من التطبيقات"),
-    "Move_Count": m1,
-    "Move_Of": m2,
+    "Move_Count": m2,
+    "Move_Of": m3,
     "Next": MessageLookupByLibrary.simpleMessage("التالي"),
+    "Next_Move": MessageLookupByLibrary.simpleMessage("النقلة التالية"),
     "Next_Puzzle": MessageLookupByLibrary.simpleMessage("اللغز التالي"),
     "No_Limit": MessageLookupByLibrary.simpleMessage("بلا حد"),
     "No_Saved_Games": MessageLookupByLibrary.simpleMessage(
@@ -202,7 +287,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Opening_London_Description": MessageLookupByLibrary.simpleMessage(
       "ابنِ وضعًا موثوقًا مع إخراج فيل المربعات السوداء خارج سلسلة البيادق.",
     ),
-    "Opening_Move_Prompt": m3,
+    "Opening_Move_Prompt": m4,
     "Opening_Queens_Gambit": MessageLookupByLibrary.simpleMessage(
       "جامبيت الملكة",
     ),
@@ -224,6 +309,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Opening_Try_Again": MessageLookupByLibrary.simpleMessage(
       "هذه النقلة خارج خط التدريب. حاول مجددًا.",
     ),
+    "Openings_Completed_Count": m5,
     "PGN_Copied": MessageLookupByLibrary.simpleMessage(
       "تم نسخ PGN إلى الحافظة.",
     ),
@@ -234,11 +320,25 @@ class MessageLookup extends MessageLookupByLibrary {
       "تعذر استيراد ملف PGN هذا.",
     ),
     "Paste_PGN": MessageLookupByLibrary.simpleMessage("الصق مباراة بصيغة PGN"),
-    "Pawns_Lost": m4,
+    "Pawns_Lost": m6,
     "Pick_Your_Side": MessageLookupByLibrary.simpleMessage("اختر جانبك"),
+    "Piece_Black_Bishop": MessageLookupByLibrary.simpleMessage("فيل أسود"),
+    "Piece_Black_King": MessageLookupByLibrary.simpleMessage("ملك أسود"),
+    "Piece_Black_Knight": MessageLookupByLibrary.simpleMessage("حصان أسود"),
+    "Piece_Black_Pawn": MessageLookupByLibrary.simpleMessage("بيدق أسود"),
+    "Piece_Black_Queen": MessageLookupByLibrary.simpleMessage("ملكة سوداء"),
+    "Piece_Black_Rook": MessageLookupByLibrary.simpleMessage("رخ أسود"),
+    "Piece_On_Square": m7,
+    "Piece_White_Bishop": MessageLookupByLibrary.simpleMessage("فيل أبيض"),
+    "Piece_White_King": MessageLookupByLibrary.simpleMessage("ملك أبيض"),
+    "Piece_White_Knight": MessageLookupByLibrary.simpleMessage("حصان أبيض"),
+    "Piece_White_Pawn": MessageLookupByLibrary.simpleMessage("بيدق أبيض"),
+    "Piece_White_Queen": MessageLookupByLibrary.simpleMessage("ملكة بيضاء"),
+    "Piece_White_Rook": MessageLookupByLibrary.simpleMessage("رخ أبيض"),
     "Played_Move": MessageLookupByLibrary.simpleMessage("النقلة الملعوبة"),
     "Practice_Again": MessageLookupByLibrary.simpleMessage("تدرّب مجددًا"),
     "Previous": MessageLookupByLibrary.simpleMessage("السابق"),
+    "Previous_Move": MessageLookupByLibrary.simpleMessage("النقلة السابقة"),
     "Privacy_Choices": MessageLookupByLibrary.simpleMessage("خيارات الخصوصية"),
     "Purchase_Cancelled": MessageLookupByLibrary.simpleMessage(
       "تم إلغاء عملية الشراء.",
@@ -285,6 +385,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "اغلق مربعات هروب الملك، ثم وجّه كش بمحاذاة حافة الرقعة.",
     ),
     "Puzzle_Hard": MessageLookupByLibrary.simpleMessage("صعب"),
+    "Puzzle_Hint": MessageLookupByLibrary.simpleMessage("إظهار تلميح"),
     "Puzzle_Instruction": MessageLookupByLibrary.simpleMessage(
       "دور الأبيض أو الأسود. أوجد كش مات في نقلة واحدة.",
     ),
@@ -296,20 +397,31 @@ class MessageLookup extends MessageLookupByLibrary {
       "أكمل التسلسل التكتيكي",
     ),
     "Puzzle_Medium": MessageLookupByLibrary.simpleMessage("متوسط"),
-    "Puzzle_Number": m5,
+    "Puzzle_Number": m8,
+    "Puzzle_Position_Escape": m9,
+    "Puzzle_Position_Fork": m10,
+    "Puzzle_Position_Line": m11,
+    "Puzzle_Position_Mate": m12,
+    "Puzzle_Position_Move": m13,
+    "Puzzle_Position_Pawns": m14,
+    "Puzzle_Position_Promotion": m15,
+    "Puzzle_Position_Reply": m16,
+    "Puzzle_Position_Support": m17,
     "Puzzle_Practice_Next": MessageLookupByLibrary.simpleMessage(
       "واصل التمرين",
     ),
     "Puzzle_Solved": MessageLookupByLibrary.simpleMessage("اكتمل لغز اليوم."),
-    "Puzzle_Streak": m6,
+    "Puzzle_Streak": m18,
     "Puzzle_Why_This_Works": MessageLookupByLibrary.simpleMessage(
       "لماذا تنجح هذه الخطة",
     ),
-    "Puzzles_Solved": m7,
+    "Puzzles_Completed_Count": m19,
+    "Puzzles_Solved": m20,
     "Quick_Play": MessageLookupByLibrary.simpleMessage("لعب سريع"),
     "Quick_Play_Description": MessageLookupByLibrary.simpleMessage(
       "واجه الذكاء الاصطناعي بآخر إعداداتك",
     ),
+    "Redo_Move": MessageLookupByLibrary.simpleMessage("إعادة النقلة"),
     "Remove_Ads": MessageLookupByLibrary.simpleMessage("إزالة الإعلانات"),
     "Remove_Ads_Description": MessageLookupByLibrary.simpleMessage(
       "إزالة الإعلانات نهائيًا من هذا التطبيق.",
@@ -323,7 +435,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Remove_Ads_Unavailable": MessageLookupByLibrary.simpleMessage(
       "إزالة الإعلانات غير متاحة حاليًا.",
     ),
-    "Remove_Ads_With_Price": m8,
+    "Remove_Ads_With_Price": m21,
     "Replace_Unfinished_Game": MessageLookupByLibrary.simpleMessage(
       "بدء مباراة جديدة؟",
     ),
@@ -340,8 +452,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "Resume_Game_Unavailable": MessageLookupByLibrary.simpleMessage(
       "تعذرت استعادة هذه المباراة. يمكنك بدء مباراة جديدة.",
     ),
-    "Review_Game": MessageLookupByLibrary.simpleMessage("مراجعة أكبر خطأ"),
-    "Review_Move_Title": m9,
+    "Retry": MessageLookupByLibrary.simpleMessage("إعادة المحاولة"),
+    "Review_Game": MessageLookupByLibrary.simpleMessage("مراجعة المباراة"),
+    "Review_Move_Title": m22,
     "Saving_Ambulance": MessageLookupByLibrary.simpleMessage(
       "إنقاذ سيارة الإسعاف",
     ),
@@ -353,6 +466,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "Shows": MessageLookupByLibrary.simpleMessage("العروض"),
     "Simple_Calculator": MessageLookupByLibrary.simpleMessage(
       "آلة حاسبة بسيطة",
+    ),
+    "Sound": MessageLookupByLibrary.simpleMessage("الصوت"),
+    "Sound_Description": MessageLookupByLibrary.simpleMessage(
+      "تشغيل أصوات عند تحريك القطع.",
     ),
     "Stalemate": MessageLookupByLibrary.simpleMessage("تعادل بالخنق"),
     "Start": MessageLookupByLibrary.simpleMessage("ابدأ"),
@@ -370,19 +487,32 @@ class MessageLookup extends MessageLookupByLibrary {
     "Theme_Queen_Net": MessageLookupByLibrary.simpleMessage("مات بالملكة"),
     "Theme_Rook_Mate": MessageLookupByLibrary.simpleMessage("مات بالرخ"),
     "Time_Limit": MessageLookupByLibrary.simpleMessage("الحد الزمني"),
-    "Tip": MessageLookupByLibrary.simpleMessage("تلميح"),
-    "Tip_Button": MessageLookupByLibrary.simpleMessage("إظهار زر التلميح"),
+    "Tip": MessageLookupByLibrary.simpleMessage("اقتراح نقلة"),
+    "Tip_Button": MessageLookupByLibrary.simpleMessage("زر اقتراح النقلة"),
+    "Tip_Button_Description": MessageLookupByLibrary.simpleMessage(
+      "إظهار زر يقترح نقلة أقوى.",
+    ),
     "Training": MessageLookupByLibrary.simpleMessage("التدريب"),
     "Training_Description": MessageLookupByLibrary.simpleMessage(
       "اختر جلسة ألغاز مركزة أو تعلّم خط افتتاح موثوقًا.",
+    ),
+    "Training_Progress": MessageLookupByLibrary.simpleMessage("تقدّمك"),
+    "Training_Progress_Unavailable": MessageLookupByLibrary.simpleMessage(
+      "التقدّم غير متاح مؤقتًا. يُرجى المحاولة مجددًا.",
     ),
     "Try_Again": MessageLookupByLibrary.simpleMessage(
       "ليست النقلة الصحيحة — حاول مجددًا",
     ),
     "Two_Players": MessageLookupByLibrary.simpleMessage("لاعبان"),
     "Undo": MessageLookupByLibrary.simpleMessage("تراجع/إعادة"),
+    "Undo_Description": MessageLookupByLibrary.simpleMessage(
+      "السماح بالتراجع عن النقلات وإعادتها.",
+    ),
+    "Undo_Move": MessageLookupByLibrary.simpleMessage("التراجع عن النقلة"),
     "Unfinished": MessageLookupByLibrary.simpleMessage("مباراة غير مكتملة"),
-    "Vs_AI_Player": MessageLookupByLibrary.simpleMessage("ضد الذكاء الاصطناعي"),
+    "Vs_AI_Player": MessageLookupByLibrary.simpleMessage(
+      "إعداد مباراة ضد الذكاء الاصطناعي",
+    ),
     "We_Play_Piano": MessageLookupByLibrary.simpleMessage("نعزف البيانو"),
     "White": MessageLookupByLibrary.simpleMessage("الأبيض"),
     "White_Wins": MessageLookupByLibrary.simpleMessage("فاز الأبيض!"),

@@ -1,10 +1,11 @@
 import 'package:flutter/cupertino.dart';
+import 'package:chess_room/util/app_design.dart';
 
 class TextDefault extends StatelessWidget {
   final String text;
   final Color color;
 
-  TextDefault(this.text, {this.color = CupertinoColors.white});
+  TextDefault(this.text, {this.color = AppColors.textPrimary});
 
   @override
   Widget build(BuildContext context) {
@@ -12,7 +13,7 @@ class TextDefault extends StatelessWidget {
       text,
       style: TextStyle(
         fontSize: 16,
-        fontFamily: 'Jura',
+        height: 1.45,
         color: color,
       ),
     );

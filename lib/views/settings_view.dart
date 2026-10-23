@@ -2,6 +2,7 @@ import 'package:chess_room/features/game_history/game_history_page.dart';
 import 'package:chess_room/features/how_to_play/how_to_play_page.dart';
 import 'package:chess_room/model/app_model.dart';
 import 'package:chess_room/util/ads_manager.dart';
+import 'package:chess_room/util/app_design.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 
@@ -11,7 +12,7 @@ import 'components/settings_view/remove_ads_section.dart';
 import 'components/settings_view/settings_navigation_buttons.dart';
 import 'components/settings_view/toggles.dart';
 import 'components/shared/banner_ad_slot.dart';
-import 'components/shared/text_variable.dart';
+import 'components/shared/app_page.dart';
 
 class SettingsView extends StatelessWidget {
   final AppModel appModel;
@@ -23,70 +24,78 @@ class SettingsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final strings = S.of(context);
     return Consumer<AppModel>(
-      builder: (context, appModel, child) => Container(
-        decoration: BoxDecoration(gradient: appModel.theme.background),
+      builder: (context, appModel, child) => AppPage(
+        title: strings.Settings,
+        leading: CupertinoNavigationBarBackButton(
+          key: const ValueKey('settings-back-button'),
+          onPressed: () => Navigator.pop(context),
+        ),
         child: Column(
           children: [
-            Padding(
-              padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
-              child: Column(
-                children: [
-                  SizedBox(height: MediaQuery.of(context).padding.top + 20),
-                  TextLarge(S.of(context).Settings),
-                  const SizedBox(height: 20),
-                ],
-              ),
-            ),
             Expanded(
-              child: ListView(
-                padding: const EdgeInsets.symmetric(horizontal: 30),
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.all(AppSpacing.xl),
                 physics: const ClampingScrollPhysics(),
-                children: [
-                  const SizedBox(height: 10),
-                  Toggles(appModel),
-                  const SizedBox(height: 30),
-                  RemoveAdsSection(appModel: appModel),
-                  const SizedBox(height: 50),
-                  ValueListenableBuilder<bool>(
-                    valueListenable: AdsManager.privacyOptionsRequired,
-                    builder: (context, privacyOptionsRequired, child) {
-                      return SettingsNavigationButtons(
-                        showPrivacyChoices: privacyOptionsRequired,
-                        onHowToPlay: () {
-                          Navigator.push(
-                            context,
-                            CupertinoPageRoute(
-                              builder: (context) => const HowToPlayPage(),
-                            ),
-                          );
-                        },
-                        onGameHistory: () {
-                          Navigator.push(
-                            context,
-                            CupertinoPageRoute(
-                              builder: (context) => GameHistoryPage(
-                                store: appModel.gameHistoryStore,
-                                pieceTheme: appModel.pieceTheme,
-                              ),
-                            ),
-                          );
-                        },
-                        onPrivacyChoices: AdsManager.showPrivacyOptionsForm,
-                        onMoreApps: () {
-                          Navigator.push(
-                            context,
-                            CupertinoPageRoute(
-                              builder: (context) => const MoreAppsPage(),
-                            ),
-                          );
-                        },
-                        onBack: () => Navigator.pop(context),
-                      );
-                    },
+                child: AppContent(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      _SectionTitle(strings.Gameplay_Settings),
+                      const SizedBox(height: AppSpacing.md),
+                      _SettingsGroup(child: Toggles(appModel)),
+                      if (appModel.canPurchaseRemoveAds) ...[
+                        const SizedBox(height: AppSpacing.xxl),
+                        RemoveAdsSection(appModel: appModel),
+                      ],
+                      const SizedBox(height: AppSpacing.xxl),
+                      _SectionTitle(strings.Help_And_Privacy),
+                      const SizedBox(height: AppSpacing.md),
+                      _SettingsGroup(
+                        child: ValueListenableBuilder<bool>(
+                          valueListenable: AdsManager.privacyOptionsRequired,
+                          builder: (context, privacyOptionsRequired, child) {
+                            return SettingsNavigationButtons(
+                              showBackButton: false,
+                              showPrivacyChoices: privacyOptionsRequired,
+                              onHowToPlay: () {
+                                Navigator.push(
+                                  context,
+                                  CupertinoPageRoute(
+                                    builder: (context) => const HowToPlayPage(),
+                                  ),
+                                );
+                              },
+                              onGameHistory: () {
+                                Navigator.push(
+                                  context,
+                                  CupertinoPageRoute(
+                                    builder: (context) => GameHistoryPage(
+                                      store: appModel.gameHistoryStore,
+                                      pieceTheme: appModel.pieceTheme,
+                                    ),
+                                  ),
+                                );
+                              },
+                              onPrivacyChoices:
+                                  AdsManager.showPrivacyOptionsForm,
+                              onMoreApps: () {
+                                Navigator.push(
+                                  context,
+                                  CupertinoPageRoute(
+                                    builder: (context) => const MoreAppsPage(),
+                                  ),
+                                );
+                              },
+                              onBack: () => Navigator.pop(context),
+                            );
+                          },
+                        ),
+                      ),
+                    ],
                   ),
-                  const SizedBox(height: 20),
-                ],
+                ),
               ),
             ),
             const BannerAdSlot(),
@@ -95,4 +104,36 @@ class SettingsView extends StatelessWidget {
       ),
     );
   }
+}
+
+class _SectionTitle extends StatelessWidget {
+  final String text;
+
+  const _SectionTitle(this.text);
+
+  @override
+  Widget build(BuildContext context) => Text(
+        text,
+        style: const TextStyle(
+          color: AppColors.textSecondary,
+          fontSize: 13,
+          fontWeight: FontWeight.w600,
+        ),
+      );
+}
+
+class _SettingsGroup extends StatelessWidget {
+  final Widget child;
+
+  const _SettingsGroup({required this.child});
+
+  @override
+  Widget build(BuildContext context) => DecoratedBox(
+        decoration: BoxDecoration(
+          color: AppColors.surface,
+          borderRadius: BorderRadius.circular(AppRadius.md),
+          border: Border.all(color: AppColors.divider),
+        ),
+        child: child,
+      );
 }

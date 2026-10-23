@@ -1,0 +1,21 @@
+Find a little time for chess each day. Chess Room brings offline play, short tactics sessions and opening practice together in one app.
+
+PLAY AT YOUR PACE
+• Challenge AI with adjustable difficulty, side and time controls.
+• Play with a friend on the same device.
+• Use Quick Play to start an AI match with your last settings.
+• Pick up an unfinished match with Continue Game. Your moves and remaining time save automatically.
+
+MAKE PRACTICE A HABIT
+• Solve the daily challenge from a rotating collection of 71 positions and build your streak.
+• Explore 77 exercises in the themed puzzle library, which includes the daily positions.
+• Practice easy, medium and hard challenges covering checkmates, forks, promotions and combinations.
+• Play through multi-move solutions, including mate in two. Use hints when you need a nudge, then read a short explanation of the tactic.
+
+LEARN AND REVISIT
+• Practice five opening lines and read the in-app guide to the rules.
+• Use move hints and optional undo and redo during games.
+• Save, replay and review completed games. Import or export games in PGN format.
+• Choose board themes and piece styles to make the board your own.
+
+Core chess play and puzzle practice work offline. Your game history and training progress are stored on this device.

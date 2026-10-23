@@ -9,6 +9,7 @@ import 'package:chess_room/model/game_review.dart';
 import 'package:chess_room/model/in_progress_game.dart';
 import 'package:chess_room/features/game_history/saved_game.dart';
 import 'package:chess_room/util/remove_ads_purchase_service.dart';
+import 'package:chess_room/util/in_app_reviewer_helper.dart';
 import 'package:chess_room/views/components/main_menu_view/game_options/side_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -62,6 +63,7 @@ class AppModel extends ChangeNotifier {
   bool tipInProgress = false;
   bool flip = true;
   bool _currentGameSaved = false;
+  String _currentGameId = '';
 
   ChessGame? game;
   Timer? timer;
@@ -215,6 +217,8 @@ class AppModel extends ChangeNotifier {
     timer?.cancel();
     tipInProgress = false;
     _currentGameSaved = false;
+    _currentGameId = 'game-${_now().microsecondsSinceEpoch}-'
+        '${Random.secure().nextInt(1 << 32)}';
     gameOver = false;
     stalemate = false;
     turn = Player.player1;
@@ -264,6 +268,8 @@ class AppModel extends ChangeNotifier {
       game?.cancelAIMove();
       timer?.cancel();
       _gameRevision++;
+      _currentGameId = saved.sessionId ??
+          'game-${_now().microsecondsSinceEpoch}-${Random.secure().nextInt(1 << 32)}';
       playerCount = saved.playerCount;
       aiDifficulty = saved.aiDifficulty;
       selectedSide = saved.selectedSide;
@@ -354,6 +360,7 @@ class AppModel extends ChangeNotifier {
     final current = game;
     if (current == null || gameOver || _disposed) return _persistenceQueue;
     final saved = InProgressGame(
+      sessionId: _currentGameId,
       playerCount: _activePlayerCount,
       aiDifficulty: _activeAIDifficulty,
       selectedSide: _activeSelectedSide,
@@ -451,7 +458,7 @@ class AppModel extends ChangeNotifier {
       black: black,
     );
     final gameRecord = SavedGame(
-      id: 'game-${playedAt.microsecondsSinceEpoch}',
+      id: _currentGameId,
       playedAt: playedAt,
       result: result,
       pgn: pgn,
@@ -463,6 +470,7 @@ class AppModel extends ChangeNotifier {
     );
     try {
       await gameHistoryStore.saveGame(gameRecord);
+      await InAppReviewHelper.shared.recordCompletedGame(gameRecord.id);
     } catch (_) {
       _currentGameSaved = false;
     }
