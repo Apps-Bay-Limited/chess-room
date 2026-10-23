@@ -10,6 +10,7 @@
 - A visible sound setting using the existing saved preference.
 
 ### Changed
+- Updated Google Mobile Ads to 9.2.0 and migrated iOS dependencies to Swift Package Manager, removing CocoaPods integration.
 - Refined Home with one primary play action, compact navigation, and a smaller brand header.
 - Unified charcoal surfaces, brass accents, typography, cards, and navigation across play and practice.
 - Kept page text readable on bright app themes and clarified source-piece puzzle hints.

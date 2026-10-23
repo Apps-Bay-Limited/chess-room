@@ -37,7 +37,7 @@ To run the project locally, follow these steps:
 
 ## Requirements
 
-- **Flutter / Dart**: The current release is verified with Flutter 3.47.7 and Dart 3.13.5. Use an SDK compatible with the committed dependency lockfile; the package requires Dart 3.3 or later.
+- **Flutter / Dart**: Flutter 3.38.1 or later and Dart 3.10 or later are required. The current release is verified with Flutter 3.47.7 and Dart 3.13.5. Use an SDK compatible with the committed dependency lockfile.
 - **iOS**: Version 15.0 or later.
 
 
@@ -47,6 +47,12 @@ To run the project locally, follow these steps:
 2. Set up an emulator or connect a physical device.
 
 ## Release configuration and builds
+
+iOS dependencies use Swift Package Manager, including `google_mobile_ads` 9.2.0.
+Open `ios/Runner.xcworkspace` after running `flutter pub get`; Xcode resolves
+the generated Flutter plugin package. CocoaPods, `pod install`, and a Podfile
+are no longer required. Keep SwiftPM enabled in `pubspec.yaml` and commit
+updates to the app's Swift package resolution lockfiles.
 
 Version 1.5.0+14 audit results and remaining release checks live in
 `store/RELEASE_VALIDATION_1.5.md`. The older 1.4.0 copy, screenshots and native
