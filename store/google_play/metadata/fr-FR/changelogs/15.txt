@@ -1,0 +1,4 @@
+- Lancez une partie avec Quick Play et reprenez vos parties inachevées avec Continue Game.
+- Résolvez davantage de problèmes, dont des mats en deux coups, avec des indices et des explications plus claires.
+- Suivez vos progrès en problèmes et en ouvertures dans une interface repensée et plus simple.
+- Profitez d’horloges plus lisibles, de coordonnées facultatives et de commandes plus sûres pour la promotion des pions et les parties sauvegardées.

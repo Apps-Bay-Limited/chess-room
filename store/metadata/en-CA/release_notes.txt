@@ -1,0 +1,4 @@
+- Jump into a match with Quick Play and resume unfinished games with Continue Game.
+- Practice more puzzles, including mate-in-two challenges, with hints and clearer explanations.
+- Track puzzle and opening progress in a refreshed, easier-to-use interface.
+- Enjoy clearer clocks, optional board coordinates, and safer promotions and saved-game controls.

@@ -1,0 +1,4 @@
+- Starte mit Quick Play eine Partie und setze unvollendete Partien mit Continue Game fort.
+- Löse mehr Aufgaben, darunter Matt in zwei Zügen, mit Tipps und klareren Erklärungen.
+- Verfolge deine Fortschritte bei Aufgaben und Eröffnungen in einer überarbeiteten, einfacheren Oberfläche.
+- Nutze besser lesbare Uhren, optionale Brettkoordinaten und sicherere Bedienung für Bauernumwandlungen und gespeicherte Partien.

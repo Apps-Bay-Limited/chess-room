@@ -1,0 +1,4 @@
+- Lancez une partie avec Quick Play et reprenez vos parties en cours avec Continue Game.
+- Plus de problèmes, dont des mats en deux coups, avec indices et explications plus claires.
+- Suivez vos progrès dans les problèmes et les ouvertures grâce à une interface repensée, plus simple à utiliser.
+- Des pendules plus lisibles, des coordonnées en option et une gestion plus sûre des promotions et des parties enregistrées.

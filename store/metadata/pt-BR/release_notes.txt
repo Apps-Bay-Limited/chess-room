@@ -1,0 +1,4 @@
+- Comece uma partida com Quick Play e retome partidas não concluídas com Continue Game.
+- Pratique mais problemas, incluindo mates em dois lances, com dicas e explicações mais claras.
+- Acompanhe seu progresso nos problemas e nas aberturas em uma interface renovada e mais fácil de usar.
+- Relógios mais claros, coordenadas opcionais e controles mais seguros para promover peões e gerenciar partidas salvas.

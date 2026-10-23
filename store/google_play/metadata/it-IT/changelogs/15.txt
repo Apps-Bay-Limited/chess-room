@@ -1,0 +1,4 @@
+- Avvia una partita con Quick Play e riprendi quelle non concluse con Continue Game.
+- Allenati con più problemi, anche di matto in due mosse, con suggerimenti e spiegazioni più chiare.
+- Segui i progressi nei problemi e nelle aperture in un’interfaccia rinnovata e più semplice.
+- Orologi più leggibili, coordinate opzionali e comandi più sicuri per promuovere i pedoni e gestire le partite salvate.
