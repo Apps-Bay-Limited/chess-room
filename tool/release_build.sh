@@ -9,6 +9,9 @@ ads_config_file="lib/config/ads_release.json"
 android_properties_file="android/local.properties"
 android_signing_file="android/key.properties"
 ios_secret_file="ios/Secret.xcconfig"
+macos_export_options="macos/ExportOptions.plist"
+macos_archive="build/macos/ChessRoom.xcarchive"
+macos_export_dir="build/macos/export"
 test_admob_publisher="3940256099942544"
 
 fail() {
@@ -66,6 +69,30 @@ validate_ios() {
   return 0
 }
 
+validate_macos() {
+  command -v xcodebuild >/dev/null || fail "xcodebuild is required to build the macOS release"
+  test -f "$macos_export_options" || fail "$macos_export_options is missing"
+
+  security find-identity -v -p codesigning |
+    grep -q "3rd Party Mac Developer Application" ||
+    fail "the Mac App Store application signing identity is missing from the login keychain"
+  security find-identity -v |
+    grep -q "3rd Party Mac Developer Installer" ||
+    fail "the Mac App Store installer signing identity is missing from the login keychain"
+
+  # The export pins both identities by SHA-1, so a rotated certificate has to
+  # be written back into the export options rather than silently falling back
+  # to whichever distribution identity the keychain offers first.
+  while read -r pinned_sha; do
+    security find-certificate -c "3rd Party Mac Developer" -a -Z 2>/dev/null |
+      grep -q "$pinned_sha" ||
+      fail "$macos_export_options pins certificate $pinned_sha, which is not in the login keychain"
+  done < <(plutil -extract signingCertificate raw -o - "$macos_export_options";
+           plutil -extract installerSigningCertificate raw -o - "$macos_export_options")
+
+  return 0
+}
+
 validate_bundled_privacy_manifests() {
   command -v plutil >/dev/null || fail "plutil is required to validate iOS privacy manifests"
   command -v unzip >/dev/null || fail "unzip is required to validate iOS privacy manifests"
@@ -112,6 +139,23 @@ build_ios() {
   validate_bundled_privacy_manifests
 }
 
+build_macos() {
+  validate_macos
+  echo "Building validated macOS release archive..."
+  # No AdMob configuration is required: the Google Mobile Ads SDK has no macOS
+  # implementation, so the Mac build serves no ads. It shares the iOS bundle
+  # identifier, and therefore the same App Store record and the same premium
+  # in-app purchase.
+  flutter build macos --release
+  rm -rf "$macos_archive" "$macos_export_dir"
+  xcodebuild -workspace macos/Runner.xcworkspace -scheme Runner \
+    -configuration Release -archivePath "$macos_archive" \
+    -destination 'generic/platform=macOS' archive
+  xcodebuild -exportArchive -archivePath "$macos_archive" \
+    -exportPath "$macos_export_dir" -exportOptionsPlist "$macos_export_options"
+  echo "Signed Mac App Store package: $macos_export_dir/Chess Room.pkg"
+}
+
 case "$release_target" in
   android)
     build_android
@@ -119,11 +163,15 @@ case "$release_target" in
   ios)
     build_ios
     ;;
+  macos)
+    build_macos
+    ;;
   all)
     build_android
     build_ios
+    build_macos
     ;;
   *)
-    fail "target must be android, ios, or all"
+    fail "target must be android, ios, macos, or all"
     ;;
 esac

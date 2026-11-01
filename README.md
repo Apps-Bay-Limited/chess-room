@@ -39,6 +39,8 @@ To run the project locally, follow these steps:
 
 - **Flutter / Dart**: Flutter 3.38.1 or later and Dart 3.10 or later are required. The current release is verified with Flutter 3.47.7 and Dart 3.13.5. Use an SDK compatible with the committed dependency lockfile.
 - **iOS**: Version 15.0 or later.
+- **macOS**: Version 12.0 or later. The Mac app ships from the same App Store
+  record as iOS and is built from the `macos/` target.
 
 
 ## Environment Setup
@@ -46,7 +48,49 @@ To run the project locally, follow these steps:
 1. Install Flutter by following the [official documentation](https://flutter.dev/docs/get-started/install).
 2. Set up an emulator or connect a physical device.
 
+## macOS target
+
+The Mac build shares the iOS bundle identifier `com.appsbay.chessRoom1`, so it
+ships inside the same App Store record and resolves the same in-app purchase:
+Premium bought on iPhone or iPad restores on the Mac, and the reverse.
+
+```bash
+flutter run -d macos
+```
+
+Platform differences the Dart code accounts for:
+
+- **No ads.** `google_mobile_ads` has no macOS implementation, so
+  `AdsManager.isSupportedPlatform` is false there, the banner slot reserves no
+  space, and tracking authorization is never requested. Premium therefore earns
+  its price on the Mac through the unlocked features rather than ad removal.
+- **StoreKit.** `PremiumPurchaseService.isSupported` covers iOS and macOS. The
+  Release entitlements add `com.apple.security.network.client`, without which
+  StoreKit cannot reach the store from the sandbox.
+- **Store links.** `open_store` throws off iOS and Android, so More Apps goes
+  through `util/store_links.dart`, which launches App Store URLs directly on the
+  Mac.
+
+Mac icons are generated from their own config, because running the generator
+against the shared `flutter_icons` block in `pubspec.yaml` rewrites the iOS
+asset catalogue and corrupts `ios/Runner.xcodeproj`:
+
+```bash
+dart run flutter_launcher_icons -f flutter_launcher_icons-macos.yaml
+```
+
 ## Release configuration and builds
+
+`tool/release_build.sh` takes `android`, `ios`, `macos`, or `all`. The `macos`
+target needs no AdMob configuration; it checks for both Mac App Store signing
+identities, archives, and exports a signed installer to
+`build/macos/export/Chess Room.pkg` using `macos/ExportOptions.plist`, which
+pins the application and installer certificates by SHA-1 so a release cannot
+fall back to the team's `Apple Distribution` identity. Upload with:
+
+```bash
+xcrun altool --upload-app -f "build/macos/export/Chess Room.pkg" -t macos --apiKey <KEY_ID> --apiIssuer <ISSUER_ID>
+```
 
 iOS dependencies use Swift Package Manager, including `google_mobile_ads` 9.2.0.
 Open `ios/Runner.xcworkspace` after running `flutter pub get`; Xcode resolves

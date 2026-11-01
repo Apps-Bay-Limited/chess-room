@@ -1,8 +1,11 @@
 import 'package:chess_room/features/game_history/game_replay_page.dart';
 import 'package:chess_room/features/game_history/saved_game.dart';
-import 'package:chess_room/features/game_review/game_review_page.dart';
+import 'package:chess_room/features/game_review/game_review_access.dart';
 import 'package:chess_room/generated/l10n.dart';
 import 'package:chess_room/util/app_design.dart';
+import 'package:chess_room/util/premium.dart';
+import 'package:chess_room/views/components/premium/premium_locked_panel.dart';
+import 'package:chess_room/views/components/premium/premium_scope.dart';
 import 'package:chess_room/views/components/shared/app_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
@@ -162,6 +165,14 @@ class _GameHistoryPageState extends State<GameHistoryPage> {
   @override
   Widget build(BuildContext context) {
     final strings = S.of(context);
+    final access = premiumAccessOf(context);
+    // Older games stay saved; the free tier only stops listing them, so an
+    // upgrade brings the whole archive straight back.
+    final visibleLimit = access.visibleSavedGameLimit;
+    final visibleGames = visibleLimit == null || _games.length <= visibleLimit
+        ? _games
+        : _games.sublist(0, visibleLimit);
+    final hiddenCount = _games.length - visibleGames.length;
     return AppPage(
       title: strings.Game_History,
       trailing: Semantics(
@@ -203,7 +214,9 @@ class _GameHistoryPageState extends State<GameHistoryPage> {
                   ))
                 : ListView.separated(
                     padding: const EdgeInsets.all(AppSpacing.xl),
-                    itemCount: _games.length + (_loadFailed ? 1 : 0),
+                    itemCount: visibleGames.length +
+                        (_loadFailed ? 1 : 0) +
+                        (hiddenCount > 0 ? 1 : 0),
                     separatorBuilder: (_, __) =>
                         const SizedBox(height: AppSpacing.md),
                     itemBuilder: (context, index) {
@@ -215,7 +228,15 @@ class _GameHistoryPageState extends State<GameHistoryPage> {
                               child: Text(strings.Retry)),
                         ]);
                       }
-                      final game = _games[index - (_loadFailed ? 1 : 0)];
+                      final gameIndex = index - (_loadFailed ? 1 : 0);
+                      if (gameIndex == visibleGames.length) {
+                        return PremiumLockedPanel(
+                          message: strings
+                              .Premium_Locked_History(hiddenCount.toString()),
+                          feature: PremiumFeature.gameHistory,
+                        );
+                      }
+                      final game = visibleGames[gameIndex];
                       return _GameHistoryCard(
                         game: game,
                         result: _localizedResult(strings, game.result),
@@ -230,14 +251,10 @@ class _GameHistoryPageState extends State<GameHistoryPage> {
                         ),
                         onReview: game.reviews.isEmpty
                             ? null
-                            : () => Navigator.push(
+                            : () => openGameReview(
                                   context,
-                                  CupertinoPageRoute(
-                                    builder: (_) => GameReviewPage(
-                                      records: game.reviews,
-                                      pieceTheme: widget.pieceTheme,
-                                    ),
-                                  ),
+                                  records: game.reviews,
+                                  pieceTheme: widget.pieceTheme,
                                 ),
                         onExport: () => _exportPgn(game),
                         onDelete: _deletePending || _importPending

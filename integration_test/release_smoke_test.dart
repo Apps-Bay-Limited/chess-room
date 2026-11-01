@@ -13,7 +13,7 @@ import 'package:chess_room/model/app_model.dart';
 import 'package:chess_room/model/in_progress_game.dart';
 import 'package:chess_room/util/ads_manager.dart';
 import 'package:chess_room/util/in_app_reviewer_helper.dart';
-import 'package:chess_room/util/remove_ads_purchase_service.dart';
+import 'package:chess_room/util/premium_purchase_service.dart';
 import 'package:chess_room/views/chess_view.dart';
 import 'package:chess_room/views/components/chess_view/chess_board_widget.dart';
 import 'package:chess_room/views/components/main_menu_view/game_options/side_picker.dart';
@@ -417,7 +417,7 @@ class SmokePuzzleStore implements PuzzleProgressStore {
 
 // Purchases are deliberately excluded from unattended tests: validate actual
 // restore/entitlement in StoreKit sandbox with the owner's test account.
-class UnavailableSmokeStore implements RemoveAdsStore {
+class UnavailableSmokeStore implements PremiumStore {
   @override
   Stream<List<PurchaseDetails>> get purchaseStream => const Stream.empty();
   @override
@@ -439,7 +439,7 @@ class SmokeAppModel extends AppModel {
           inProgressGameStore: store,
           gameHistoryStore: SmokeHistoryStore(),
           purchaseService:
-              RemoveAdsPurchaseService(store: UnavailableSmokeStore()),
+              PremiumPurchaseService(store: UnavailableSmokeStore()),
         );
 
   @override

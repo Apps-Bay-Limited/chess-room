@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:chess_room/generated/l10n.dart';
 import 'package:chess_room/model/app_model.dart';
-import 'package:chess_room/util/remove_ads_purchase_service.dart';
-import 'package:chess_room/views/components/settings_view/remove_ads_section.dart';
+import 'package:chess_room/util/premium_purchase_service.dart';
+import 'package:chess_room/views/components/settings_view/premium_section.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -26,17 +26,43 @@ void main() {
     final store = _SectionStore();
     addTearDown(store.dispose);
     final appModel = AppModel(
-      purchaseService: RemoveAdsPurchaseService(store: store),
+      purchaseService: PremiumPurchaseService(store: store),
     );
     addTearDown(appModel.dispose);
 
-    await tester
-        .pumpWidget(_localizedApp(RemoveAdsSection(appModel: appModel)));
+    await tester.pumpWidget(_localizedApp(PremiumSection(appModel: appModel)));
 
-    expect(find.text('Remove Ads'), findsNothing);
+    expect(find.byKey(const ValueKey('premium-section')), findsNothing);
     expect(find.text('Restore Purchases'), findsNothing);
     debugDefaultTargetPlatformOverride = null;
   });
+
+  for (final platform in [TargetPlatform.iOS, TargetPlatform.macOS]) {
+    testWidgets('offers buy and restore on ${platform.name}', (tester) async {
+      debugDefaultTargetPlatformOverride = platform;
+      final store = _SectionStore();
+      addTearDown(store.dispose);
+
+      // Store setup runs on the real clock: the service's silent restore
+      // awaits a timer, which a faked test clock would never fire.
+      late final AppModel appModel;
+      await tester.runAsync(() async {
+        appModel =
+            AppModel(purchaseService: PremiumPurchaseService(store: store));
+        await appModel.purchaseInitialization;
+      });
+      addTearDown(appModel.dispose);
+
+      await tester
+          .pumpWidget(_localizedApp(PremiumSection(appModel: appModel)));
+      await tester.pumpAndSettle();
+
+      expect(find.byKey(const ValueKey('premium-section')), findsOneWidget);
+      expect(find.text(r'Unlock Premium $2.99'), findsOneWidget);
+      expect(find.text('Restore Purchases'), findsOneWidget);
+      debugDefaultTargetPlatformOverride = null;
+    });
+  }
 }
 
 Widget _localizedApp(Widget home) {
@@ -48,11 +74,13 @@ Widget _localizedApp(Widget home) {
       GlobalCupertinoLocalizations.delegate,
     ],
     supportedLocales: S.delegate.supportedLocales,
-    home: CupertinoPageScaffold(child: Center(child: home)),
+    home: CupertinoPageScaffold(
+      child: SafeArea(child: SingleChildScrollView(child: home)),
+    ),
   );
 }
 
-class _SectionStore implements RemoveAdsStore {
+class _SectionStore implements PremiumStore {
   final StreamController<List<PurchaseDetails>> _purchaseController =
       StreamController<List<PurchaseDetails>>.broadcast();
 
@@ -69,9 +97,9 @@ class _SectionStore implements RemoveAdsStore {
     return ProductDetailsResponse(
       productDetails: [
         ProductDetails(
-          id: removeAdsProductId,
-          title: 'Remove Ads',
-          description: 'Remove ads permanently from this app.',
+          id: premiumProductId,
+          title: 'Premium',
+          description: 'Unlock every theme, unlimited training and no ads.',
           price: r'$2.99',
           rawPrice: 2.99,
           currencyCode: 'USD',

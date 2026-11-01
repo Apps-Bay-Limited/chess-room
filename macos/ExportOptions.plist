@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<!-- Mac App Store export. Signing is pinned to the distribution identities
+	     and the "Chess Room Mac App Store" profile so a release never picks up
+	     a development identity by accident. -->
+	<key>method</key>
+	<string>app-store-connect</string>
+	<key>teamID</key>
+	<string>F694X76A5X</string>
+	<key>signingStyle</key>
+	<string>manual</string>
+	<!-- Pinned by SHA-1: the team also holds an "Apple Distribution"
+	     certificate, which the export otherwise picks and which this
+	     Mac App Store profile does not include. -->
+	<key>signingCertificate</key>
+	<string>4F7CB44D99EB83ABCF57F86566D516F52C04ED4F</string>
+	<key>installerSigningCertificate</key>
+	<string>A987B013788775ED883CAD825881195B66226325</string>
+	<key>provisioningProfiles</key>
+	<dict>
+		<key>com.appsbay.chessRoom1</key>
+		<string>Chess Room Mac App Store 1.6.0</string>
+	</dict>
+	<key>uploadSymbols</key>
+	<true/>
+</dict>
+</plist>

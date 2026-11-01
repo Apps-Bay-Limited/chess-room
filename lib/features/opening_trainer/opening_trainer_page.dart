@@ -8,6 +8,9 @@ import 'package:chess_room/logic/chess_board.dart';
 import 'package:chess_room/logic/chess_notation.dart';
 import 'package:chess_room/logic/move_calculation/move_classes/move.dart';
 import 'package:chess_room/util/app_design.dart';
+import 'package:chess_room/util/premium.dart';
+import 'package:chess_room/views/components/premium/premium_paywall.dart';
+import 'package:chess_room/views/components/premium/premium_scope.dart';
 import 'package:chess_room/views/components/main_menu_view/game_options/side_picker.dart';
 import 'package:chess_room/views/components/shared/position_board.dart';
 import 'package:chess_room/views/components/shared/app_page.dart';
@@ -58,6 +61,7 @@ class _OpeningTrainerPageState extends State<OpeningTrainerPage> {
   @override
   Widget build(BuildContext context) {
     final strings = S.of(context);
+    final access = premiumAccessOf(context);
     return PracticeSessionScope(
         child: AppPage(
       title: strings.Opening_Trainer,
@@ -95,10 +99,18 @@ class _OpeningTrainerPageState extends State<OpeningTrainerPage> {
             final course = openingCourses[index - 1];
             final complete =
                 !_progressFailed && _completed.contains(course.id.name);
+            final unlocked = access.isOpeningCourseUnlocked(index - 1);
             return CupertinoButton(
               key: ValueKey('opening-${course.id.name}'),
               padding: EdgeInsets.zero,
               onPressed: () async {
+                if (!unlocked) {
+                  await showPremiumPaywall(
+                    context,
+                    feature: PremiumFeature.openingCourses,
+                  );
+                  return;
+                }
                 await Navigator.push(
                   context,
                   CupertinoPageRoute(
@@ -121,8 +133,13 @@ class _OpeningTrainerPageState extends State<OpeningTrainerPage> {
                 ),
                 child: Row(
                   children: [
-                    const Icon(CupertinoIcons.book,
-                        color: AppColors.accent, size: 28),
+                    Icon(
+                      CupertinoIcons.book,
+                      color: unlocked
+                          ? AppColors.accent
+                          : AppColors.textSecondary,
+                      size: 28,
+                    ),
                     const SizedBox(width: AppSpacing.lg),
                     Expanded(
                       child: Column(
@@ -130,15 +147,19 @@ class _OpeningTrainerPageState extends State<OpeningTrainerPage> {
                         children: [
                           Text(
                             openingName(strings, course.id),
-                            style: const TextStyle(
-                              color: AppColors.textPrimary,
+                            style: TextStyle(
+                              color: unlocked
+                                  ? AppColors.textPrimary
+                                  : AppColors.textSecondary,
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
                           const SizedBox(height: AppSpacing.xs),
                           Text(
-                            openingDescription(strings, course.id),
+                            unlocked
+                                ? openingDescription(strings, course.id)
+                                : strings.Premium_Locked_Opening,
                             style: const TextStyle(
                               color: AppColors.textSecondary,
                             ),
@@ -148,12 +169,16 @@ class _OpeningTrainerPageState extends State<OpeningTrainerPage> {
                     ),
                     const SizedBox(width: AppSpacing.sm),
                     Icon(
-                      complete
-                          ? CupertinoIcons.check_mark_circled_solid
-                          : CupertinoIcons.chevron_forward,
-                      color: complete
-                          ? CupertinoColors.activeGreen
-                          : CupertinoColors.systemGrey,
+                      !unlocked
+                          ? CupertinoIcons.lock_fill
+                          : complete
+                              ? CupertinoIcons.check_mark_circled_solid
+                              : CupertinoIcons.chevron_forward,
+                      color: !unlocked
+                          ? AppColors.accent
+                          : complete
+                              ? CupertinoColors.activeGreen
+                              : CupertinoColors.systemGrey,
                     ),
                   ],
                 ),

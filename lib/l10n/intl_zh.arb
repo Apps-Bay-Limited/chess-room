@@ -26,24 +26,14 @@
   "Tip_Button" : "走法推荐按钮",
   "Undo" : "撤销/悔棋",
   "Remove_Ads" : "移除广告",
-  "Remove_Ads_With_Price" : "移除广告 {price}",
-  "@Remove_Ads_With_Price": {
-    "placeholders": {
-      "price": {}
-    }
-  },
-  "Remove_Ads_Description" : "永久移除此 App 中的广告。",
-  "Remove_Ads_Purchased" : "此设备已移除广告。",
-  "Remove_Ads_Loading" : "正在加载购买选项...",
-  "Remove_Ads_Unavailable" : "移除广告暂时不可用。",
   "Restore_Purchases" : "恢复购买",
   "Purchase_In_Progress" : "正在购买...",
   "Purchase_Pending" : "购买正在等待批准。",
-  "Purchase_Success" : "购买完成，广告已移除。",
-  "Purchase_Restored" : "购买已恢复，广告已移除。",
+  "Purchase_Success" : "购买完成，高级版已解锁。",
+  "Purchase_Restored" : "购买已恢复，高级版已解锁。",
   "Purchase_Cancelled" : "购买已取消。",
   "Purchase_Failed" : "购买失败，请重试。",
-  "Restore_Not_Found" : "未找到之前的移除广告购买记录。",
+  "Restore_Not_Found" : "未找到之前的高级版购买记录。",
   "You_Lose" : "你输了",
   "You_Win" : "你赢了",
   "Whites_Turn" : "轮到白棋",
@@ -276,5 +266,51 @@
   "@Puzzle_Position_Reply": {"placeholders": {"reply": {}, "finish": {}}},
   "Local_Data_Unavailable": "暂时无法读取已保存的数据，请重试。",
   "Delete_Game_Failed": "无法删除此对局，请重试。",
-  "Puzzle_Hint": "显示提示"
+  "Puzzle_Hint": "显示提示",
+  "Premium" : "高级版",
+  "Premium_Description" : "一次购买即可解锁全部主题、无限训练和完整对局存档，并移除广告。iPhone、iPad 和 Mac 通用。",
+  "Premium_Unlock" : "解锁高级版",
+  "Premium_Unlock_With_Price" : "解锁高级版 {price}",
+  "@Premium_Unlock_With_Price": {
+    "placeholders": {
+      "price": {}
+    }
+  },
+  "Premium_Active" : "此设备已启用高级版。",
+  "Premium_Unavailable" : "高级版暂时不可用。",
+  "Premium_Loading" : "正在载入购买选项...",
+  "Premium_Benefit_Themes" : "全部棋盘主题与棋子样式",
+  "Premium_Benefit_Training" : "无限题库习题与全部开局课程",
+  "Premium_Benefit_Review" : "无限对局复盘",
+  "Premium_Benefit_History" : "完整的对局存档",
+  "Premium_Benefit_No_Ads" : "无广告",
+  "Premium_Benefit_Shared" : "一次购买，iPhone、iPad 和 Mac 通用",
+  "Premium_Locked_Piece_Theme" : "此棋子样式属于高级版。",
+  "Premium_Locked_Board_Theme" : "此棋盘主题属于高级版。",
+  "Premium_Locked_Opening" : "此开局课程属于高级版。",
+  "Premium_Locked_History" : "另有 {count} 局旧对局需高级版查看。",
+  "@Premium_Locked_History": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "Premium_Puzzles_Left" : "今日还剩 {count} 道免费习题",
+  "@Premium_Puzzles_Left": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "Premium_Puzzles_Spent" : "今日的免费题库习题已用完。",
+  "Premium_Reviews_Left" : "今日还剩 {count} 次免费复盘",
+  "@Premium_Reviews_Left": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "Premium_Reviews_Spent" : "今日的免费复盘次数已用完。",
+  "Premium_Unlimited" : "高级版无限使用",
+  "Not_Now" : "暂不",
+  "Appearance" : "外观",
+  "Board_Theme" : "棋盘主题",
+  "Piece_Set" : "棋子样式"
 }

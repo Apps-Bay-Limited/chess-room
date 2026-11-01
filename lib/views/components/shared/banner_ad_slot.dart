@@ -57,7 +57,7 @@ class _BannerAdSlotState extends State<BannerAdSlot> {
   void _handleAdsRemovedChanged() {
     final adsBlocked = AdsManager.isAdsRemoved.value ||
         AdsManager.isPurchaseFlowActive.value ||
-        (_appModel?.isAdsRemoved ?? false) ||
+        (_appModel?.isPremium ?? false) ||
         (_appModel?.purchaseService.isStoreFlowActive ?? false);
     if (adsBlocked) {
       _disposeAd();
@@ -83,7 +83,7 @@ class _BannerAdSlotState extends State<BannerAdSlot> {
   void _maybeLoadAd() {
     if (!mounted ||
         !AdsManager.canRequestAds ||
-        (_appModel?.isAdsRemoved ?? false) ||
+        (_appModel?.isPremium ?? false) ||
         (_appModel?.purchaseService.isStoreFlowActive ?? false) ||
         _ad != null) {
       return;
@@ -114,7 +114,9 @@ class _BannerAdSlotState extends State<BannerAdSlot> {
 
   @override
   Widget build(BuildContext context) {
-    if ((_appModel?.isAdsRemoved ?? false) ||
+    // The desktop builds have no ad SDK at all, so the slot reserves no space.
+    if (!AdsManager.isSupportedPlatform ||
+        (_appModel?.isPremium ?? false) ||
         (_appModel?.purchaseService.isStoreFlowActive ?? false)) {
       return const SizedBox.shrink();
     }

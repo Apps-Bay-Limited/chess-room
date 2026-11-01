@@ -26,20 +26,14 @@
   "Tip_Button" : "Botón de sugerencias",
   "Undo" : "Deshacer/Rehacer",
   "Remove_Ads" : "Eliminar anuncios",
-  "Remove_Ads_With_Price" : "Eliminar anuncios {price}",
-  "@Remove_Ads_With_Price": {"placeholders": {"price": {}}},
-  "Remove_Ads_Description" : "Elimina los anuncios de esta aplicación para siempre.",
-  "Remove_Ads_Purchased" : "Los anuncios están eliminados en este dispositivo.",
-  "Remove_Ads_Loading" : "Cargando opciones de compra…",
-  "Remove_Ads_Unavailable" : "La eliminación de anuncios no está disponible en este momento.",
   "Restore_Purchases" : "Restaurar compras",
   "Purchase_In_Progress" : "Compra en curso…",
   "Purchase_Pending" : "La compra está pendiente de aprobación.",
-  "Purchase_Success" : "Compra completada. Se han eliminado los anuncios.",
-  "Purchase_Restored" : "Compra restaurada. Se han eliminado los anuncios.",
+  "Purchase_Success" : "Compra completada. Premium está desbloqueado.",
+  "Purchase_Restored" : "Compra restaurada. Premium está desbloqueado.",
   "Purchase_Cancelled" : "Compra cancelada.",
   "Purchase_Failed" : "La compra ha fallado. Inténtalo de nuevo.",
-  "Restore_Not_Found" : "No se encontró ninguna compra anterior para eliminar anuncios.",
+  "Restore_Not_Found" : "No se encontró ninguna compra anterior de Premium.",
   "You_Lose" : "Has perdido",
   "You_Win" : "Has ganado",
   "Whites_Turn" : "Turno de las blancas",
@@ -271,5 +265,51 @@
   "@Puzzle_Position_Reply": {"placeholders": {"reply": {}, "finish": {}}},
   "Local_Data_Unavailable": "Los datos guardados no están disponibles temporalmente. Inténtalo de nuevo.",
   "Delete_Game_Failed": "No se pudo eliminar esta partida. Inténtalo de nuevo.",
-  "Puzzle_Hint": "Mostrar pista"
+  "Puzzle_Hint": "Mostrar pista",
+  "Premium" : "Premium",
+  "Premium_Description" : "Una sola compra desbloquea todos los temas, el entrenamiento ilimitado y tu archivo completo de partidas, y elimina los anuncios. Incluye iPhone, iPad y Mac.",
+  "Premium_Unlock" : "Desbloquear Premium",
+  "Premium_Unlock_With_Price" : "Desbloquear Premium {price}",
+  "@Premium_Unlock_With_Price": {
+    "placeholders": {
+      "price": {}
+    }
+  },
+  "Premium_Active" : "Premium está activo en este dispositivo.",
+  "Premium_Unavailable" : "Premium no está disponible en este momento.",
+  "Premium_Loading" : "Cargando opciones de compra...",
+  "Premium_Benefit_Themes" : "Todos los temas de tablero y juegos de piezas",
+  "Premium_Benefit_Training" : "Ejercicios ilimitados y todos los cursos de apertura",
+  "Premium_Benefit_Review" : "Análisis de partidas ilimitado",
+  "Premium_Benefit_History" : "Tu archivo completo de partidas",
+  "Premium_Benefit_No_Ads" : "Sin anuncios",
+  "Premium_Benefit_Shared" : "Una sola compra para iPhone, iPad y Mac",
+  "Premium_Locked_Piece_Theme" : "Este juego de piezas forma parte de Premium.",
+  "Premium_Locked_Board_Theme" : "Este tema de tablero forma parte de Premium.",
+  "Premium_Locked_Opening" : "Este curso de apertura forma parte de Premium.",
+  "Premium_Locked_History" : "Se conservan {count} partidas anteriores con Premium.",
+  "@Premium_Locked_History": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "Premium_Puzzles_Left" : "Te quedan {count} ejercicios gratuitos hoy",
+  "@Premium_Puzzles_Left": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "Premium_Puzzles_Spent" : "Has usado los ejercicios gratuitos de hoy.",
+  "Premium_Reviews_Left" : "Te quedan {count} análisis gratuitos hoy",
+  "@Premium_Reviews_Left": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "Premium_Reviews_Spent" : "Has usado los análisis gratuitos de hoy.",
+  "Premium_Unlimited" : "Ilimitado con Premium",
+  "Not_Now" : "Ahora no",
+  "Appearance" : "Apariencia",
+  "Board_Theme" : "Tema del tablero",
+  "Piece_Set" : "Juego de piezas"
 }

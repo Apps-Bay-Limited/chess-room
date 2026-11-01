@@ -1,5 +1,35 @@
 # Changelog
 
+## 1.6.0+15
+
+### Added
+- A macOS build that ships from the same App Store record as iOS, sharing the
+  bundle identifier `com.appsbay.chessRoom1`.
+- Premium, the renamed Remove Ads purchase, now resolves on both iOS and macOS;
+  a purchase on either platform restores on the other with no new product.
+- Premium unlocks every board theme and piece set, unlimited library puzzles and
+  opening courses, unlimited game review, and the complete game archive.
+- A new Appearance section in Settings with board and piece-set pickers, a live
+  board preview, and locks on the premium entries.
+- An upgrade sheet reachable from every gated surface, localized in all seven
+  supported locales.
+- Free allowances that reset daily: three library puzzles and three game
+  reviews per day, plus the first opening course and the ten most recent games.
+
+### Changed
+- `tool/release_build.sh` accepts a `macos` target that archives and exports a
+  signed Mac App Store installer.
+- Mac icons are generated from `flutter_launcher_icons-macos.yaml`, keeping the
+  generator away from the iOS asset catalogue.
+
+### Notes
+- The stored entitlement key is unchanged, so existing Remove Ads buyers keep
+  their purchase and gain the new premium features.
+- Games beyond the free tier's ten are hidden rather than deleted, so upgrading
+  restores the whole archive.
+- The Mac build serves no ads: the Google Mobile Ads SDK has no macOS
+  implementation, so ad surfaces, consent, and tracking requests are skipped.
+
 ## 1.5.0+14
 
 ### Added

@@ -1,18 +1,18 @@
 import 'dart:async';
 
-import 'package:chess_room/util/remove_ads_purchase_service.dart';
+import 'package:chess_room/util/premium_purchase_service.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
-  late FakeRemoveAdsStore store;
+  late FakePremiumStore store;
 
   setUp(() {
     SharedPreferences.setMockInitialValues({});
     debugDefaultTargetPlatformOverride = TargetPlatform.iOS;
-    store = FakeRemoveAdsStore();
+    store = FakePremiumStore();
   });
 
   tearDown(() {
@@ -20,29 +20,29 @@ void main() {
     store.dispose();
   });
 
-  test('loads the Remove Ads product and exposes the localized price',
+  test('loads the Premium product and exposes the localized price',
       () async {
-    final service = RemoveAdsPurchaseService(store: store);
+    final service = PremiumPurchaseService(store: store);
 
     await service.init();
 
-    expect(store.queriedProductIds, contains(removeAdsProductId));
+    expect(store.queriedProductIds, contains(premiumProductId));
     expect(service.localizedPrice, r'$2.99');
-    expect(service.state, RemoveAdsStoreState.available);
+    expect(service.state, PremiumStoreState.available);
 
     service.dispose();
   });
 
-  test('purchase grants and persists the remove ads entitlement', () async {
-    final service = RemoveAdsPurchaseService(store: store);
+  test('purchase grants and persists the premium entitlement', () async {
+    final service = PremiumPurchaseService(store: store);
 
     await service.init();
-    await service.buyRemoveAds();
+    await service.buyPremium();
     await Future<void>.delayed(Duration.zero);
 
     final prefs = await SharedPreferences.getInstance();
-    expect(service.isAdsRemoved, isTrue);
-    expect(prefs.getBool(removeAdsEntitlementKey), isTrue);
+    expect(service.isPremium, isTrue);
+    expect(prefs.getBool(premiumEntitlementKey), isTrue);
     expect(store.completedPurchaseCount, 1);
 
     service.dispose();
@@ -50,80 +50,102 @@ void main() {
 
   test('purchase flow is active while purchase is pending', () async {
     store.emitPurchaseOnBuy = false;
-    final service = RemoveAdsPurchaseService(store: store);
+    final service = PremiumPurchaseService(store: store);
 
     await service.init();
-    await service.buyRemoveAds();
+    await service.buyPremium();
 
-    expect(service.state, RemoveAdsStoreState.purchasing);
+    expect(service.state, PremiumStoreState.purchasing);
     expect(service.isStoreFlowActive, isTrue);
 
     store.addPurchase(PurchaseStatus.canceled);
     await Future<void>.delayed(Duration.zero);
 
-    expect(service.state, RemoveAdsStoreState.cancelled);
+    expect(service.state, PremiumStoreState.cancelled);
     expect(service.isStoreFlowActive, isFalse);
 
     service.dispose();
   });
 
-  test('restore reports when no Remove Ads purchase is found', () async {
-    final service = RemoveAdsPurchaseService(store: store);
+  test('restore reports when no Premium purchase is found', () async {
+    final service = PremiumPurchaseService(store: store);
 
     await service.init();
     await service.restorePurchases();
 
-    expect(service.isAdsRemoved, isFalse);
-    expect(service.state, RemoveAdsStoreState.restoreEmpty);
+    expect(service.isPremium, isFalse);
+    expect(service.state, PremiumStoreState.restoreEmpty);
 
     service.dispose();
   });
 
-  test('restore grants and persists a prior Remove Ads purchase', () async {
+  test('restore grants and persists a prior Premium purchase', () async {
     store.emitRestorePurchase = true;
-    final service = RemoveAdsPurchaseService(store: store);
+    final service = PremiumPurchaseService(store: store);
 
     await service.init();
     await service.restorePurchases();
     await Future<void>.delayed(Duration.zero);
 
     final prefs = await SharedPreferences.getInstance();
-    expect(service.isAdsRemoved, isTrue);
-    expect(service.state, RemoveAdsStoreState.restored);
-    expect(prefs.getBool(removeAdsEntitlementKey), isTrue);
+    expect(service.isPremium, isTrue);
+    expect(service.state, PremiumStoreState.restored);
+    expect(prefs.getBool(premiumEntitlementKey), isTrue);
 
     service.dispose();
   });
 
   test('store failures leave the app usable and report unavailable', () async {
     store.throwWhenLoadingProducts = true;
-    final service = RemoveAdsPurchaseService(store: store);
+    final service = PremiumPurchaseService(store: store);
 
     await service.init();
 
-    expect(service.isAdsRemoved, isFalse);
-    expect(service.state, RemoveAdsStoreState.unavailable);
+    expect(service.isPremium, isFalse);
+    expect(service.state, PremiumStoreState.unavailable);
     expect(service.localizedPrice, isNull);
 
     service.dispose();
   });
 
   test('offline launches retain the locally cached entitlement', () async {
-    SharedPreferences.setMockInitialValues({removeAdsEntitlementKey: true});
+    SharedPreferences.setMockInitialValues({premiumEntitlementKey: true});
     store.available = false;
-    final service = RemoveAdsPurchaseService(store: store);
+    final service = PremiumPurchaseService(store: store);
 
     await service.init();
 
-    expect(service.isAdsRemoved, isTrue);
-    expect(service.state, RemoveAdsStoreState.unavailable);
+    expect(service.isPremium, isTrue);
+    expect(service.state, PremiumStoreState.unavailable);
+
+    service.dispose();
+  });
+
+  test('macOS resolves the same product as iOS and restores it', () async {
+    debugDefaultTargetPlatformOverride = TargetPlatform.macOS;
+    store.emitRestorePurchase = true;
+    final service = PremiumPurchaseService(store: store);
+
+    await service.init();
+
+    expect(service.isSupported, isTrue);
+    expect(store.queriedProductIds, contains(premiumProductId));
+    expect(service.localizedPrice, r'$2.99');
+
+    await service.restorePurchases();
+    await Future<void>.delayed(Duration.zero);
+
+    final prefs = await SharedPreferences.getInstance();
+    expect(service.isPremium, isTrue);
+    expect(service.state, PremiumStoreState.restored);
+    expect(prefs.getBool(premiumEntitlementKey), isTrue);
 
     service.dispose();
   });
 
   test('Android does not query products or expose purchase support', () async {
     debugDefaultTargetPlatformOverride = TargetPlatform.android;
-    final service = RemoveAdsPurchaseService(store: store);
+    final service = PremiumPurchaseService(store: store);
 
     await service.init();
 
@@ -135,7 +157,7 @@ void main() {
   });
 }
 
-class FakeRemoveAdsStore implements RemoveAdsStore {
+class FakePremiumStore implements PremiumStore {
   final StreamController<List<PurchaseDetails>> _purchaseController =
       StreamController<List<PurchaseDetails>>.broadcast();
 
@@ -163,7 +185,7 @@ class FakeRemoveAdsStore implements RemoveAdsStore {
     return ProductDetailsResponse(
       productDetails: <ProductDetails>[
         ProductDetails(
-          id: removeAdsProductId,
+          id: premiumProductId,
           title: 'Remove Ads',
           description: 'Remove ads permanently from this app.',
           price: r'$2.99',
@@ -207,7 +229,7 @@ class FakeRemoveAdsStore implements RemoveAdsStore {
 
   PurchaseDetails _purchase(PurchaseStatus status) {
     return PurchaseDetails(
-      productID: removeAdsProductId,
+      productID: premiumProductId,
       verificationData: PurchaseVerificationData(
         localVerificationData: 'local',
         serverVerificationData: 'server',

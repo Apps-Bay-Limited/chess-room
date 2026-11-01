@@ -38,49 +38,56 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m7(piece, square) => "${piece} on ${square}";
 
-  static String m8(current, total) => "Puzzle ${current} of ${total}";
+  static String m8(count) => "${count} older games are kept with Premium.";
 
-  static String m9(piece, support, square) =>
+  static String m9(count) => "${count} free puzzles left today";
+
+  static String m10(count) => "${count} free game reviews left today";
+
+  static String m11(price) => "Unlock Premium ${price}";
+
+  static String m12(current, total) => "Puzzle ${current} of ${total}";
+
+  static String m13(piece, support, square) =>
       "Escape denied: ${piece} on ${support} covers ${square}.";
 
-  static String m10(from, king, target) =>
+  static String m14(from, king, target) =>
       "From ${from}, the knight checks the king on ${king} and also attacks ${target}.";
 
-  static String m11(line) => "One solution: ${line}.";
+  static String m15(line) => "One solution: ${line}.";
 
-  static String m12(square) =>
+  static String m16(square) =>
       "Checkmate against the king on ${square}: there is no legal escape, capture or block.";
 
-  static String m13(piece, from, to) => "${piece}: ${from} → ${to}.";
+  static String m17(piece, from, to) => "${piece}: ${from} → ${to}.";
 
-  static String m14(squares) =>
+  static String m18(squares) =>
       "The defending pawns on ${squares} block their own king’s escape.";
 
-  static String m15(square, piece) =>
+  static String m19(square, piece) =>
       "The pawn reaches ${square} and becomes ${piece}.";
 
-  static String m16(reply, finish) =>
+  static String m20(reply, finish) =>
       "After ${reply}, ${finish} delivers checkmate.";
 
-  static String m17(piece, support, square) =>
+  static String m21(piece, support, square) =>
       "Support: ${piece} on ${support} protects ${square}.";
 
-  static String m18(count) => "Streak: ${count}";
+  static String m22(count) => "Streak: ${count}";
 
-  static String m19(completed, total) =>
+  static String m23(completed, total) =>
       "${completed} of ${total} puzzles completed";
 
-  static String m20(solved, total) => "${solved} of ${total} solved";
+  static String m24(solved, total) => "${solved} of ${total} solved";
 
-  static String m21(price) => "Remove Ads ${price}";
-
-  static String m22(current, total, classification) =>
+  static String m25(current, total, classification) =>
       "Move ${current} of ${total}: ${classification}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
     "AI_Difficulty": MessageLookupByLibrary.simpleMessage("AI Difficulty"),
     "AI_is_thinking": MessageLookupByLibrary.simpleMessage("AI is thinking"),
+    "Appearance": MessageLookupByLibrary.simpleMessage("Appearance"),
     "Back": MessageLookupByLibrary.simpleMessage("Back"),
     "Best_Move": MessageLookupByLibrary.simpleMessage("Best move"),
     "Biggest_Mistake": MessageLookupByLibrary.simpleMessage("Biggest Mistake"),
@@ -97,6 +104,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Board_Coordinates_Description": MessageLookupByLibrary.simpleMessage(
       "Show files and ranks around the board.",
     ),
+    "Board_Theme": MessageLookupByLibrary.simpleMessage("Board theme"),
     "Cancel": MessageLookupByLibrary.simpleMessage("Cancel"),
     "Chess_Bishop_Rule": MessageLookupByLibrary.simpleMessage(
       "Bishop — moves any number of squares diagonally.",
@@ -275,6 +283,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "No_Saved_Games": MessageLookupByLibrary.simpleMessage(
       "Completed and imported games will appear here.",
     ),
+    "Not_Now": MessageLookupByLibrary.simpleMessage("Not now"),
     "Novels_Hub": MessageLookupByLibrary.simpleMessage("Novels Hub"),
     "Onlynote": MessageLookupByLibrary.simpleMessage("Onlynote"),
     "Opening_Complete": MessageLookupByLibrary.simpleMessage(
@@ -332,6 +341,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Piece_Black_Queen": MessageLookupByLibrary.simpleMessage("Black queen"),
     "Piece_Black_Rook": MessageLookupByLibrary.simpleMessage("Black rook"),
     "Piece_On_Square": m7,
+    "Piece_Set": MessageLookupByLibrary.simpleMessage("Piece set"),
     "Piece_White_Bishop": MessageLookupByLibrary.simpleMessage("White bishop"),
     "Piece_White_King": MessageLookupByLibrary.simpleMessage("White king"),
     "Piece_White_Knight": MessageLookupByLibrary.simpleMessage("White knight"),
@@ -340,6 +350,58 @@ class MessageLookup extends MessageLookupByLibrary {
     "Piece_White_Rook": MessageLookupByLibrary.simpleMessage("White rook"),
     "Played_Move": MessageLookupByLibrary.simpleMessage("Played"),
     "Practice_Again": MessageLookupByLibrary.simpleMessage("Practice Again"),
+    "Premium": MessageLookupByLibrary.simpleMessage("Premium"),
+    "Premium_Active": MessageLookupByLibrary.simpleMessage(
+      "Premium is active on this device.",
+    ),
+    "Premium_Benefit_History": MessageLookupByLibrary.simpleMessage(
+      "Your complete game archive",
+    ),
+    "Premium_Benefit_No_Ads": MessageLookupByLibrary.simpleMessage("No ads"),
+    "Premium_Benefit_Review": MessageLookupByLibrary.simpleMessage(
+      "Unlimited game review",
+    ),
+    "Premium_Benefit_Shared": MessageLookupByLibrary.simpleMessage(
+      "One purchase covers iPhone, iPad and Mac",
+    ),
+    "Premium_Benefit_Themes": MessageLookupByLibrary.simpleMessage(
+      "Every board theme and piece set",
+    ),
+    "Premium_Benefit_Training": MessageLookupByLibrary.simpleMessage(
+      "Unlimited library puzzles and every opening course",
+    ),
+    "Premium_Description": MessageLookupByLibrary.simpleMessage(
+      "One purchase unlocks every theme, unlimited training and your full game archive — and removes ads. It covers iPhone, iPad and Mac.",
+    ),
+    "Premium_Loading": MessageLookupByLibrary.simpleMessage(
+      "Loading purchase options...",
+    ),
+    "Premium_Locked_Board_Theme": MessageLookupByLibrary.simpleMessage(
+      "This board theme is part of Premium.",
+    ),
+    "Premium_Locked_History": m8,
+    "Premium_Locked_Opening": MessageLookupByLibrary.simpleMessage(
+      "This opening course is part of Premium.",
+    ),
+    "Premium_Locked_Piece_Theme": MessageLookupByLibrary.simpleMessage(
+      "This piece set is part of Premium.",
+    ),
+    "Premium_Puzzles_Left": m9,
+    "Premium_Puzzles_Spent": MessageLookupByLibrary.simpleMessage(
+      "You have used today’s free library puzzles.",
+    ),
+    "Premium_Reviews_Left": m10,
+    "Premium_Reviews_Spent": MessageLookupByLibrary.simpleMessage(
+      "You have used today’s free game reviews.",
+    ),
+    "Premium_Unavailable": MessageLookupByLibrary.simpleMessage(
+      "Premium is currently unavailable.",
+    ),
+    "Premium_Unlimited": MessageLookupByLibrary.simpleMessage(
+      "Unlimited with Premium",
+    ),
+    "Premium_Unlock": MessageLookupByLibrary.simpleMessage("Unlock Premium"),
+    "Premium_Unlock_With_Price": m11,
     "Previous": MessageLookupByLibrary.simpleMessage("Previous"),
     "Previous_Move": MessageLookupByLibrary.simpleMessage("Previous move"),
     "Privacy_Choices": MessageLookupByLibrary.simpleMessage("Privacy Choices"),
@@ -356,10 +418,10 @@ class MessageLookup extends MessageLookupByLibrary {
       "Purchase is pending approval.",
     ),
     "Purchase_Restored": MessageLookupByLibrary.simpleMessage(
-      "Purchase restored. Ads are removed.",
+      "Purchase restored. Premium is unlocked.",
     ),
     "Purchase_Success": MessageLookupByLibrary.simpleMessage(
-      "Purchase complete. Ads are removed.",
+      "Purchase complete. Premium is unlocked.",
     ),
     "Puzzle_Complete": MessageLookupByLibrary.simpleMessage("Puzzle complete!"),
     "Puzzle_Easy": MessageLookupByLibrary.simpleMessage("Easy"),
@@ -400,47 +462,34 @@ class MessageLookup extends MessageLookupByLibrary {
       "Continue the combination",
     ),
     "Puzzle_Medium": MessageLookupByLibrary.simpleMessage("Medium"),
-    "Puzzle_Number": m8,
-    "Puzzle_Position_Escape": m9,
-    "Puzzle_Position_Fork": m10,
-    "Puzzle_Position_Line": m11,
-    "Puzzle_Position_Mate": m12,
-    "Puzzle_Position_Move": m13,
-    "Puzzle_Position_Pawns": m14,
-    "Puzzle_Position_Promotion": m15,
-    "Puzzle_Position_Reply": m16,
-    "Puzzle_Position_Support": m17,
+    "Puzzle_Number": m12,
+    "Puzzle_Position_Escape": m13,
+    "Puzzle_Position_Fork": m14,
+    "Puzzle_Position_Line": m15,
+    "Puzzle_Position_Mate": m16,
+    "Puzzle_Position_Move": m17,
+    "Puzzle_Position_Pawns": m18,
+    "Puzzle_Position_Promotion": m19,
+    "Puzzle_Position_Reply": m20,
+    "Puzzle_Position_Support": m21,
     "Puzzle_Practice_Next": MessageLookupByLibrary.simpleMessage(
       "Keep practicing",
     ),
     "Puzzle_Solved": MessageLookupByLibrary.simpleMessage(
       "Today\'s puzzle is complete.",
     ),
-    "Puzzle_Streak": m18,
+    "Puzzle_Streak": m22,
     "Puzzle_Why_This_Works": MessageLookupByLibrary.simpleMessage(
       "Why this works",
     ),
-    "Puzzles_Completed_Count": m19,
-    "Puzzles_Solved": m20,
+    "Puzzles_Completed_Count": m23,
+    "Puzzles_Solved": m24,
     "Quick_Play": MessageLookupByLibrary.simpleMessage("Quick Play"),
     "Quick_Play_Description": MessageLookupByLibrary.simpleMessage(
       "Play AI with your last settings",
     ),
     "Redo_Move": MessageLookupByLibrary.simpleMessage("Redo move"),
     "Remove_Ads": MessageLookupByLibrary.simpleMessage("Remove Ads"),
-    "Remove_Ads_Description": MessageLookupByLibrary.simpleMessage(
-      "Remove ads permanently from this app.",
-    ),
-    "Remove_Ads_Loading": MessageLookupByLibrary.simpleMessage(
-      "Loading purchase options...",
-    ),
-    "Remove_Ads_Purchased": MessageLookupByLibrary.simpleMessage(
-      "Ads are removed on this device.",
-    ),
-    "Remove_Ads_Unavailable": MessageLookupByLibrary.simpleMessage(
-      "Remove Ads is currently unavailable.",
-    ),
-    "Remove_Ads_With_Price": m21,
     "Replace_Unfinished_Game": MessageLookupByLibrary.simpleMessage(
       "Start a new game?",
     ),
@@ -449,7 +498,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "Replay": MessageLookupByLibrary.simpleMessage("Replay"),
     "Restore_Not_Found": MessageLookupByLibrary.simpleMessage(
-      "No previous Remove Ads purchase was found.",
+      "No previous Premium purchase was found.",
     ),
     "Restore_Purchases": MessageLookupByLibrary.simpleMessage(
       "Restore Purchases",
@@ -459,7 +508,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "Retry": MessageLookupByLibrary.simpleMessage("Retry"),
     "Review_Game": MessageLookupByLibrary.simpleMessage("Review Game"),
-    "Review_Move_Title": m22,
+    "Review_Move_Title": m25,
     "Saving_Ambulance": MessageLookupByLibrary.simpleMessage(
       "Saving Ambulance",
     ),

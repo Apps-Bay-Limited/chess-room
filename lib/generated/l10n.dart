@@ -1,6 +1,7 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+
 import 'intl/messages_all.dart';
 
 // **************************************************************************
@@ -219,56 +220,6 @@ class S {
     return Intl.message('Remove Ads', name: 'Remove_Ads', desc: '', args: []);
   }
 
-  /// `Remove Ads {price}`
-  String Remove_Ads_With_Price(Object price) {
-    return Intl.message(
-      'Remove Ads $price',
-      name: 'Remove_Ads_With_Price',
-      desc: '',
-      args: [price],
-    );
-  }
-
-  /// `Remove ads permanently from this app.`
-  String get Remove_Ads_Description {
-    return Intl.message(
-      'Remove ads permanently from this app.',
-      name: 'Remove_Ads_Description',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Ads are removed on this device.`
-  String get Remove_Ads_Purchased {
-    return Intl.message(
-      'Ads are removed on this device.',
-      name: 'Remove_Ads_Purchased',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Loading purchase options...`
-  String get Remove_Ads_Loading {
-    return Intl.message(
-      'Loading purchase options...',
-      name: 'Remove_Ads_Loading',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Remove Ads is currently unavailable.`
-  String get Remove_Ads_Unavailable {
-    return Intl.message(
-      'Remove Ads is currently unavailable.',
-      name: 'Remove_Ads_Unavailable',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `Restore Purchases`
   String get Restore_Purchases {
     return Intl.message(
@@ -299,20 +250,20 @@ class S {
     );
   }
 
-  /// `Purchase complete. Ads are removed.`
+  /// `Purchase complete. Premium is unlocked.`
   String get Purchase_Success {
     return Intl.message(
-      'Purchase complete. Ads are removed.',
+      'Purchase complete. Premium is unlocked.',
       name: 'Purchase_Success',
       desc: '',
       args: [],
     );
   }
 
-  /// `Purchase restored. Ads are removed.`
+  /// `Purchase restored. Premium is unlocked.`
   String get Purchase_Restored {
     return Intl.message(
-      'Purchase restored. Ads are removed.',
+      'Purchase restored. Premium is unlocked.',
       name: 'Purchase_Restored',
       desc: '',
       args: [],
@@ -339,10 +290,10 @@ class S {
     );
   }
 
-  /// `No previous Remove Ads purchase was found.`
+  /// `No previous Premium purchase was found.`
   String get Restore_Not_Found {
     return Intl.message(
-      'No previous Remove Ads purchase was found.',
+      'No previous Premium purchase was found.',
       name: 'Restore_Not_Found',
       desc: '',
       args: [],
@@ -2206,6 +2157,241 @@ class S {
   /// `Show hint`
   String get Puzzle_Hint {
     return Intl.message('Show hint', name: 'Puzzle_Hint', desc: '', args: []);
+  }
+
+  /// `Premium`
+  String get Premium {
+    return Intl.message('Premium', name: 'Premium', desc: '', args: []);
+  }
+
+  /// `One purchase unlocks every theme, unlimited training and your full game archive — and removes ads. It covers iPhone, iPad and Mac.`
+  String get Premium_Description {
+    return Intl.message(
+      'One purchase unlocks every theme, unlimited training and your full game archive — and removes ads. It covers iPhone, iPad and Mac.',
+      name: 'Premium_Description',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Unlock Premium`
+  String get Premium_Unlock {
+    return Intl.message(
+      'Unlock Premium',
+      name: 'Premium_Unlock',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Unlock Premium {price}`
+  String Premium_Unlock_With_Price(Object price) {
+    return Intl.message(
+      'Unlock Premium $price',
+      name: 'Premium_Unlock_With_Price',
+      desc: '',
+      args: [price],
+    );
+  }
+
+  /// `Premium is active on this device.`
+  String get Premium_Active {
+    return Intl.message(
+      'Premium is active on this device.',
+      name: 'Premium_Active',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Premium is currently unavailable.`
+  String get Premium_Unavailable {
+    return Intl.message(
+      'Premium is currently unavailable.',
+      name: 'Premium_Unavailable',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Loading purchase options...`
+  String get Premium_Loading {
+    return Intl.message(
+      'Loading purchase options...',
+      name: 'Premium_Loading',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Every board theme and piece set`
+  String get Premium_Benefit_Themes {
+    return Intl.message(
+      'Every board theme and piece set',
+      name: 'Premium_Benefit_Themes',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Unlimited library puzzles and every opening course`
+  String get Premium_Benefit_Training {
+    return Intl.message(
+      'Unlimited library puzzles and every opening course',
+      name: 'Premium_Benefit_Training',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Unlimited game review`
+  String get Premium_Benefit_Review {
+    return Intl.message(
+      'Unlimited game review',
+      name: 'Premium_Benefit_Review',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Your complete game archive`
+  String get Premium_Benefit_History {
+    return Intl.message(
+      'Your complete game archive',
+      name: 'Premium_Benefit_History',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No ads`
+  String get Premium_Benefit_No_Ads {
+    return Intl.message(
+      'No ads',
+      name: 'Premium_Benefit_No_Ads',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `One purchase covers iPhone, iPad and Mac`
+  String get Premium_Benefit_Shared {
+    return Intl.message(
+      'One purchase covers iPhone, iPad and Mac',
+      name: 'Premium_Benefit_Shared',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `This piece set is part of Premium.`
+  String get Premium_Locked_Piece_Theme {
+    return Intl.message(
+      'This piece set is part of Premium.',
+      name: 'Premium_Locked_Piece_Theme',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `This board theme is part of Premium.`
+  String get Premium_Locked_Board_Theme {
+    return Intl.message(
+      'This board theme is part of Premium.',
+      name: 'Premium_Locked_Board_Theme',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `This opening course is part of Premium.`
+  String get Premium_Locked_Opening {
+    return Intl.message(
+      'This opening course is part of Premium.',
+      name: 'Premium_Locked_Opening',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `{count} older games are kept with Premium.`
+  String Premium_Locked_History(Object count) {
+    return Intl.message(
+      '$count older games are kept with Premium.',
+      name: 'Premium_Locked_History',
+      desc: '',
+      args: [count],
+    );
+  }
+
+  /// `{count} free puzzles left today`
+  String Premium_Puzzles_Left(Object count) {
+    return Intl.message(
+      '$count free puzzles left today',
+      name: 'Premium_Puzzles_Left',
+      desc: '',
+      args: [count],
+    );
+  }
+
+  /// `You have used today’s free library puzzles.`
+  String get Premium_Puzzles_Spent {
+    return Intl.message(
+      'You have used today’s free library puzzles.',
+      name: 'Premium_Puzzles_Spent',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `{count} free game reviews left today`
+  String Premium_Reviews_Left(Object count) {
+    return Intl.message(
+      '$count free game reviews left today',
+      name: 'Premium_Reviews_Left',
+      desc: '',
+      args: [count],
+    );
+  }
+
+  /// `You have used today’s free game reviews.`
+  String get Premium_Reviews_Spent {
+    return Intl.message(
+      'You have used today’s free game reviews.',
+      name: 'Premium_Reviews_Spent',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Unlimited with Premium`
+  String get Premium_Unlimited {
+    return Intl.message(
+      'Unlimited with Premium',
+      name: 'Premium_Unlimited',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Not now`
+  String get Not_Now {
+    return Intl.message('Not now', name: 'Not_Now', desc: '', args: []);
+  }
+
+  /// `Appearance`
+  String get Appearance {
+    return Intl.message('Appearance', name: 'Appearance', desc: '', args: []);
+  }
+
+  /// `Board theme`
+  String get Board_Theme {
+    return Intl.message('Board theme', name: 'Board_Theme', desc: '', args: []);
+  }
+
+  /// `Piece set`
+  String get Piece_Set {
+    return Intl.message('Piece set', name: 'Piece_Set', desc: '', args: []);
   }
 }
 

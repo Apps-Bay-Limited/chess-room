@@ -1,0 +1,11 @@
+# macOS icons are generated from their own config file. Running the generator
+# with the shared `flutter_icons` block in pubspec.yaml rewrites the iOS asset
+# catalogue and writes an invalid ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_
+# SYMBOL_EXTENSIONS value into ios/Runner.xcodeproj, so the Mac icons are kept
+# on a target-scoped config instead:
+#
+#   dart run flutter_launcher_icons -f flutter_launcher_icons-macos.yaml
+flutter_launcher_icons:
+  macos:
+    generate: true
+    image_path: "assets/app_icon.png"

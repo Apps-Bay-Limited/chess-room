@@ -37,44 +37,51 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m7(piece, square) => "${square} 上的${piece}";
 
-  static String m8(current, total) => "第 ${current}/${total} 題";
+  static String m8(count) => "另有 ${count} 局舊對局需進階版查看。";
 
-  static String m9(piece, support, square) =>
+  static String m9(count) => "今日還剩 ${count} 道免費習題";
+
+  static String m10(count) => "今日還剩 ${count} 次免費覆盤";
+
+  static String m11(price) => "解鎖進階版 ${price}";
+
+  static String m12(current, total) => "第 ${current}/${total} 題";
+
+  static String m13(piece, support, square) =>
       "封鎖逃路：${support} 上的${piece}控制 ${square}。";
 
-  static String m10(from, king, target) =>
+  static String m14(from, king, target) =>
       "馬在 ${from} 將軍攻擊 ${king} 上的王，同時攻擊 ${target}。";
 
-  static String m11(line) => "一種解法：${line}。";
+  static String m15(line) => "一種解法：${line}。";
 
-  static String m12(square) => "位於 ${square} 的王已被將死：無法逃離、吃掉將軍棋子或墊子解將。";
+  static String m16(square) => "位於 ${square} 的王已被將死：無法逃離、吃掉將軍棋子或墊子解將。";
 
-  static String m13(piece, from, to) => "${piece}：${from} → ${to}。";
+  static String m17(piece, from, to) => "${piece}：${from} → ${to}。";
 
-  static String m14(squares) => "防守方在 ${squares} 的兵擋住了己方王的逃路。";
+  static String m18(squares) => "防守方在 ${squares} 的兵擋住了己方王的逃路。";
 
-  static String m15(square, piece) => "兵到達 ${square}，升變為${piece}。";
+  static String m19(square, piece) => "兵到達 ${square}，升變為${piece}。";
 
-  static String m16(reply, finish) => "對方走 ${reply} 後，${finish} 將死。";
+  static String m20(reply, finish) => "對方走 ${reply} 後，${finish} 將死。";
 
-  static String m17(piece, support, square) =>
+  static String m21(piece, support, square) =>
       "支援：${support} 上的${piece}保護 ${square}。";
 
-  static String m18(count) => "連續：${count} 天";
+  static String m22(count) => "連續：${count} 天";
 
-  static String m19(completed, total) => "已完成 ${completed}/${total} 道題";
+  static String m23(completed, total) => "已完成 ${completed}/${total} 道題";
 
-  static String m20(solved, total) => "已完成 ${solved}/${total}";
+  static String m24(solved, total) => "已完成 ${solved}/${total}";
 
-  static String m21(price) => "移除廣告 ${price}";
-
-  static String m22(current, total, classification) =>
+  static String m25(current, total, classification) =>
       "第 ${current}/${total} 步：${classification}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
     "AI_Difficulty": MessageLookupByLibrary.simpleMessage("AI難度"),
     "AI_is_thinking": MessageLookupByLibrary.simpleMessage("AI正在思考"),
+    "Appearance": MessageLookupByLibrary.simpleMessage("外觀"),
     "Back": MessageLookupByLibrary.simpleMessage("返回"),
     "Best_Move": MessageLookupByLibrary.simpleMessage("最佳走法"),
     "Biggest_Mistake": MessageLookupByLibrary.simpleMessage("最大失誤"),
@@ -89,6 +96,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Board_Coordinates_Description": MessageLookupByLibrary.simpleMessage(
       "在棋盤邊緣顯示橫縱座標。",
     ),
+    "Board_Theme": MessageLookupByLibrary.simpleMessage("棋盤主題"),
     "Cancel": MessageLookupByLibrary.simpleMessage("取消"),
     "Chess_Bishop_Rule": MessageLookupByLibrary.simpleMessage("象 — 可沿斜線走任意格。"),
     "Chess_Castling_Rule": MessageLookupByLibrary.simpleMessage(
@@ -233,6 +241,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Next_Puzzle": MessageLookupByLibrary.simpleMessage("下一題"),
     "No_Limit": MessageLookupByLibrary.simpleMessage("不限時"),
     "No_Saved_Games": MessageLookupByLibrary.simpleMessage("完成或匯入的對局會顯示在這裏。"),
+    "Not_Now": MessageLookupByLibrary.simpleMessage("暫不"),
     "Novels_Hub": MessageLookupByLibrary.simpleMessage("英文小說站"),
     "Onlynote": MessageLookupByLibrary.simpleMessage("極簡備忘錄"),
     "Opening_Complete": MessageLookupByLibrary.simpleMessage("變化完成！每一步都正確。"),
@@ -276,6 +285,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Piece_Black_Queen": MessageLookupByLibrary.simpleMessage("黑后"),
     "Piece_Black_Rook": MessageLookupByLibrary.simpleMessage("黑車"),
     "Piece_On_Square": m7,
+    "Piece_Set": MessageLookupByLibrary.simpleMessage("棋子樣式"),
     "Piece_White_Bishop": MessageLookupByLibrary.simpleMessage("白象"),
     "Piece_White_King": MessageLookupByLibrary.simpleMessage("白王"),
     "Piece_White_Knight": MessageLookupByLibrary.simpleMessage("白馬"),
@@ -284,6 +294,46 @@ class MessageLookup extends MessageLookupByLibrary {
     "Piece_White_Rook": MessageLookupByLibrary.simpleMessage("白車"),
     "Played_Move": MessageLookupByLibrary.simpleMessage("實戰走法"),
     "Practice_Again": MessageLookupByLibrary.simpleMessage("再次練習"),
+    "Premium": MessageLookupByLibrary.simpleMessage("進階版"),
+    "Premium_Active": MessageLookupByLibrary.simpleMessage("此裝置已啟用進階版。"),
+    "Premium_Benefit_History": MessageLookupByLibrary.simpleMessage("完整的對局存檔"),
+    "Premium_Benefit_No_Ads": MessageLookupByLibrary.simpleMessage("沒有廣告"),
+    "Premium_Benefit_Review": MessageLookupByLibrary.simpleMessage("無限對局覆盤"),
+    "Premium_Benefit_Shared": MessageLookupByLibrary.simpleMessage(
+      "一次購買，iPhone、iPad 和 Mac 通用",
+    ),
+    "Premium_Benefit_Themes": MessageLookupByLibrary.simpleMessage(
+      "全部棋盤主題與棋子樣式",
+    ),
+    "Premium_Benefit_Training": MessageLookupByLibrary.simpleMessage(
+      "無限題庫習題與全部開局課程",
+    ),
+    "Premium_Description": MessageLookupByLibrary.simpleMessage(
+      "一次購買即可解鎖全部主題、無限訓練與完整對局存檔，並移除廣告。iPhone、iPad 和 Mac 通用。",
+    ),
+    "Premium_Loading": MessageLookupByLibrary.simpleMessage("正在載入購買選項..."),
+    "Premium_Locked_Board_Theme": MessageLookupByLibrary.simpleMessage(
+      "此棋盤主題屬於進階版。",
+    ),
+    "Premium_Locked_History": m8,
+    "Premium_Locked_Opening": MessageLookupByLibrary.simpleMessage(
+      "此開局課程屬於進階版。",
+    ),
+    "Premium_Locked_Piece_Theme": MessageLookupByLibrary.simpleMessage(
+      "此棋子樣式屬於進階版。",
+    ),
+    "Premium_Puzzles_Left": m9,
+    "Premium_Puzzles_Spent": MessageLookupByLibrary.simpleMessage(
+      "今日的免費題庫習題已用完。",
+    ),
+    "Premium_Reviews_Left": m10,
+    "Premium_Reviews_Spent": MessageLookupByLibrary.simpleMessage(
+      "今日的免費覆盤次數已用完。",
+    ),
+    "Premium_Unavailable": MessageLookupByLibrary.simpleMessage("進階版暫時無法使用。"),
+    "Premium_Unlimited": MessageLookupByLibrary.simpleMessage("進階版無限使用"),
+    "Premium_Unlock": MessageLookupByLibrary.simpleMessage("解鎖進階版"),
+    "Premium_Unlock_With_Price": m11,
     "Previous": MessageLookupByLibrary.simpleMessage("上一步"),
     "Previous_Move": MessageLookupByLibrary.simpleMessage("上一步"),
     "Privacy_Choices": MessageLookupByLibrary.simpleMessage("私隱選項"),
@@ -291,8 +341,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "Purchase_Failed": MessageLookupByLibrary.simpleMessage("購買失敗，請重試。"),
     "Purchase_In_Progress": MessageLookupByLibrary.simpleMessage("正在購買..."),
     "Purchase_Pending": MessageLookupByLibrary.simpleMessage("購買正在等待批准。"),
-    "Purchase_Restored": MessageLookupByLibrary.simpleMessage("購買已恢復，廣告已移除。"),
-    "Purchase_Success": MessageLookupByLibrary.simpleMessage("購買完成，廣告已移除。"),
+    "Purchase_Restored": MessageLookupByLibrary.simpleMessage("購買已恢復，進階版已解鎖。"),
+    "Purchase_Success": MessageLookupByLibrary.simpleMessage("購買完成，進階版已解鎖。"),
     "Puzzle_Complete": MessageLookupByLibrary.simpleMessage("棋題完成！"),
     "Puzzle_Easy": MessageLookupByLibrary.simpleMessage("簡單"),
     "Puzzle_Explain_Back_Rank": MessageLookupByLibrary.simpleMessage(
@@ -330,52 +380,41 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "Puzzle_Line_Progress": MessageLookupByLibrary.simpleMessage("繼續組合戰術"),
     "Puzzle_Medium": MessageLookupByLibrary.simpleMessage("中等"),
-    "Puzzle_Number": m8,
-    "Puzzle_Position_Escape": m9,
-    "Puzzle_Position_Fork": m10,
-    "Puzzle_Position_Line": m11,
-    "Puzzle_Position_Mate": m12,
-    "Puzzle_Position_Move": m13,
-    "Puzzle_Position_Pawns": m14,
-    "Puzzle_Position_Promotion": m15,
-    "Puzzle_Position_Reply": m16,
-    "Puzzle_Position_Support": m17,
+    "Puzzle_Number": m12,
+    "Puzzle_Position_Escape": m13,
+    "Puzzle_Position_Fork": m14,
+    "Puzzle_Position_Line": m15,
+    "Puzzle_Position_Mate": m16,
+    "Puzzle_Position_Move": m17,
+    "Puzzle_Position_Pawns": m18,
+    "Puzzle_Position_Promotion": m19,
+    "Puzzle_Position_Reply": m20,
+    "Puzzle_Position_Support": m21,
     "Puzzle_Practice_Next": MessageLookupByLibrary.simpleMessage("繼續練習"),
     "Puzzle_Solved": MessageLookupByLibrary.simpleMessage("今日棋題已完成。"),
-    "Puzzle_Streak": m18,
+    "Puzzle_Streak": m22,
     "Puzzle_Why_This_Works": MessageLookupByLibrary.simpleMessage("為何這步有效"),
-    "Puzzles_Completed_Count": m19,
-    "Puzzles_Solved": m20,
+    "Puzzles_Completed_Count": m23,
+    "Puzzles_Solved": m24,
     "Quick_Play": MessageLookupByLibrary.simpleMessage("快速對局"),
     "Quick_Play_Description": MessageLookupByLibrary.simpleMessage(
       "使用上次的設定與 AI 對戰",
     ),
     "Redo_Move": MessageLookupByLibrary.simpleMessage("重做走法"),
     "Remove_Ads": MessageLookupByLibrary.simpleMessage("移除廣告"),
-    "Remove_Ads_Description": MessageLookupByLibrary.simpleMessage(
-      "永久移除此 App 中的廣告。",
-    ),
-    "Remove_Ads_Loading": MessageLookupByLibrary.simpleMessage("正在載入購買選項..."),
-    "Remove_Ads_Purchased": MessageLookupByLibrary.simpleMessage("此裝置已移除廣告。"),
-    "Remove_Ads_Unavailable": MessageLookupByLibrary.simpleMessage(
-      "移除廣告暫時無法使用。",
-    ),
-    "Remove_Ads_With_Price": m21,
     "Replace_Unfinished_Game": MessageLookupByLibrary.simpleMessage("開始新對局？"),
     "Replace_Unfinished_Game_Description": MessageLookupByLibrary.simpleMessage(
       "未完成的對局將被取代。",
     ),
     "Replay": MessageLookupByLibrary.simpleMessage("重播"),
-    "Restore_Not_Found": MessageLookupByLibrary.simpleMessage(
-      "未找到之前的移除廣告購買記錄。",
-    ),
+    "Restore_Not_Found": MessageLookupByLibrary.simpleMessage("找不到之前的進階版購買記錄。"),
     "Restore_Purchases": MessageLookupByLibrary.simpleMessage("恢復購買"),
     "Resume_Game_Unavailable": MessageLookupByLibrary.simpleMessage(
       "無法恢復此對局。你可以開始新對局。",
     ),
     "Retry": MessageLookupByLibrary.simpleMessage("重試"),
     "Review_Game": MessageLookupByLibrary.simpleMessage("復盤對局"),
-    "Review_Move_Title": m22,
+    "Review_Move_Title": m25,
     "Saving_Ambulance": MessageLookupByLibrary.simpleMessage("拯救救護車!"),
     "Settings": MessageLookupByLibrary.simpleMessage("設置"),
     "Share_Result": MessageLookupByLibrary.simpleMessage("分享賽果"),

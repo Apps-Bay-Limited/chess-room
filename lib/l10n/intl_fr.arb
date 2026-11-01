@@ -26,20 +26,14 @@
   "Tip_Button" : "Bouton de suggestion",
   "Undo" : "Annuler/Rétablir",
   "Remove_Ads" : "Supprimer les publicités",
-  "Remove_Ads_With_Price" : "Supprimer les publicités {price}",
-  "@Remove_Ads_With_Price": {"placeholders": {"price": {}}},
-  "Remove_Ads_Description" : "Supprime définitivement les publicités de cette application.",
-  "Remove_Ads_Purchased" : "Les publicités sont supprimées sur cet appareil.",
-  "Remove_Ads_Loading" : "Chargement des options d’achat…",
-  "Remove_Ads_Unavailable" : "La suppression des publicités est actuellement indisponible.",
   "Restore_Purchases" : "Restaurer les achats",
   "Purchase_In_Progress" : "Achat en cours…",
   "Purchase_Pending" : "L’achat est en attente d’approbation.",
-  "Purchase_Success" : "Achat terminé. Les publicités sont supprimées.",
-  "Purchase_Restored" : "Achat restauré. Les publicités sont supprimées.",
+  "Purchase_Success" : "Achat terminé. Premium est débloqué.",
+  "Purchase_Restored" : "Achat restauré. Premium est débloqué.",
   "Purchase_Cancelled" : "Achat annulé.",
   "Purchase_Failed" : "Échec de l’achat. Veuillez réessayer.",
-  "Restore_Not_Found" : "Aucun achat antérieur de suppression des publicités n’a été trouvé.",
+  "Restore_Not_Found" : "Aucun achat Premium antérieur n’a été trouvé.",
   "You_Lose" : "Vous avez perdu",
   "You_Win" : "Vous avez gagné",
   "Whites_Turn" : "Au tour des Blancs",
@@ -271,5 +265,51 @@
   "@Puzzle_Position_Reply": {"placeholders": {"reply": {}, "finish": {}}},
   "Local_Data_Unavailable": "Les données enregistrées sont momentanément indisponibles. Veuillez réessayer.",
   "Delete_Game_Failed": "Impossible de supprimer cette partie. Veuillez réessayer.",
-  "Puzzle_Hint": "Afficher un indice"
+  "Puzzle_Hint": "Afficher un indice",
+  "Premium" : "Premium",
+  "Premium_Description" : "Un seul achat débloque tous les thèmes, l’entraînement illimité et l’intégralité de vos parties, et supprime les publicités. Valable sur iPhone, iPad et Mac.",
+  "Premium_Unlock" : "Débloquer Premium",
+  "Premium_Unlock_With_Price" : "Débloquer Premium {price}",
+  "@Premium_Unlock_With_Price": {
+    "placeholders": {
+      "price": {}
+    }
+  },
+  "Premium_Active" : "Premium est actif sur cet appareil.",
+  "Premium_Unavailable" : "Premium est actuellement indisponible.",
+  "Premium_Loading" : "Chargement des options d’achat...",
+  "Premium_Benefit_Themes" : "Tous les thèmes de plateau et jeux de pièces",
+  "Premium_Benefit_Training" : "Exercices illimités et tous les cours d’ouverture",
+  "Premium_Benefit_Review" : "Analyse de parties illimitée",
+  "Premium_Benefit_History" : "L’intégralité de vos parties enregistrées",
+  "Premium_Benefit_No_Ads" : "Aucune publicité",
+  "Premium_Benefit_Shared" : "Un seul achat pour iPhone, iPad et Mac",
+  "Premium_Locked_Piece_Theme" : "Ce jeu de pièces fait partie de Premium.",
+  "Premium_Locked_Board_Theme" : "Ce thème de plateau fait partie de Premium.",
+  "Premium_Locked_Opening" : "Ce cours d’ouverture fait partie de Premium.",
+  "Premium_Locked_History" : "{count} parties plus anciennes sont conservées avec Premium.",
+  "@Premium_Locked_History": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "Premium_Puzzles_Left" : "Il vous reste {count} exercices gratuits aujourd’hui",
+  "@Premium_Puzzles_Left": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "Premium_Puzzles_Spent" : "Vous avez utilisé les exercices gratuits du jour.",
+  "Premium_Reviews_Left" : "Il vous reste {count} analyses gratuites aujourd’hui",
+  "@Premium_Reviews_Left": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "Premium_Reviews_Spent" : "Vous avez utilisé les analyses gratuites du jour.",
+  "Premium_Unlimited" : "Illimité avec Premium",
+  "Not_Now" : "Pas maintenant",
+  "Appearance" : "Apparence",
+  "Board_Theme" : "Thème du plateau",
+  "Piece_Set" : "Jeu de pièces"
 }
