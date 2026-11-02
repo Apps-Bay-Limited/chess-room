@@ -26,24 +26,14 @@
   "Tip_Button" : "走法推薦按鈕",
   "Undo" : "撤銷/悔棋",
   "Remove_Ads" : "移除廣告",
-  "Remove_Ads_With_Price" : "移除廣告 {price}",
-  "@Remove_Ads_With_Price": {
-    "placeholders": {
-      "price": {}
-    }
-  },
-  "Remove_Ads_Description" : "永久移除此 App 中的廣告。",
-  "Remove_Ads_Purchased" : "此裝置已移除廣告。",
-  "Remove_Ads_Loading" : "正在載入購買選項...",
-  "Remove_Ads_Unavailable" : "移除廣告暫時無法使用。",
   "Restore_Purchases" : "恢復購買",
   "Purchase_In_Progress" : "正在購買...",
   "Purchase_Pending" : "購買正在等待批准。",
-  "Purchase_Success" : "購買完成，廣告已移除。",
-  "Purchase_Restored" : "購買已恢復，廣告已移除。",
+  "Purchase_Success" : "購買完成，進階版已解鎖。",
+  "Purchase_Restored" : "購買已恢復，進階版已解鎖。",
   "Purchase_Cancelled" : "購買已取消。",
   "Purchase_Failed" : "購買失敗，請重試。",
-  "Restore_Not_Found" : "未找到之前的移除廣告購買記錄。",
+  "Restore_Not_Found" : "找不到之前的進階版購買記錄。",
   "You_Lose" : "你輸了",
   "You_Win" : "你贏了",
   "Whites_Turn" : "輪到白棋",
@@ -276,5 +266,51 @@
   "@Puzzle_Position_Reply": {"placeholders": {"reply": {}, "finish": {}}},
   "Local_Data_Unavailable": "暫時無法讀取已儲存的資料，請重試。",
   "Delete_Game_Failed": "無法刪除此對局，請重試。",
-  "Puzzle_Hint": "顯示提示"
+  "Puzzle_Hint": "顯示提示",
+  "Premium" : "進階版",
+  "Premium_Description" : "一次購買即可解鎖全部主題、無限訓練與完整對局存檔，並移除廣告。iPhone、iPad 和 Mac 通用。",
+  "Premium_Unlock" : "解鎖進階版",
+  "Premium_Unlock_With_Price" : "解鎖進階版 {price}",
+  "@Premium_Unlock_With_Price": {
+    "placeholders": {
+      "price": {}
+    }
+  },
+  "Premium_Active" : "此裝置已啟用進階版。",
+  "Premium_Unavailable" : "進階版暫時無法使用。",
+  "Premium_Loading" : "正在載入購買選項...",
+  "Premium_Benefit_Themes" : "全部棋盤主題與棋子樣式",
+  "Premium_Benefit_Training" : "無限題庫習題與全部開局課程",
+  "Premium_Benefit_Review" : "無限對局覆盤",
+  "Premium_Benefit_History" : "完整的對局存檔",
+  "Premium_Benefit_No_Ads" : "沒有廣告",
+  "Premium_Benefit_Shared" : "一次購買，iPhone、iPad 和 Mac 通用",
+  "Premium_Locked_Piece_Theme" : "此棋子樣式屬於進階版。",
+  "Premium_Locked_Board_Theme" : "此棋盤主題屬於進階版。",
+  "Premium_Locked_Opening" : "此開局課程屬於進階版。",
+  "Premium_Locked_History" : "另有 {count} 局舊對局需進階版查看。",
+  "@Premium_Locked_History": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "Premium_Puzzles_Left" : "今日還剩 {count} 道免費習題",
+  "@Premium_Puzzles_Left": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "Premium_Puzzles_Spent" : "今日的免費題庫習題已用完。",
+  "Premium_Reviews_Left" : "今日還剩 {count} 次免費覆盤",
+  "@Premium_Reviews_Left": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "Premium_Reviews_Spent" : "今日的免費覆盤次數已用完。",
+  "Premium_Unlimited" : "進階版無限使用",
+  "Not_Now" : "暫不",
+  "Appearance" : "外觀",
+  "Board_Theme" : "棋盤主題",
+  "Piece_Set" : "棋子樣式"
 }

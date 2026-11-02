@@ -38,49 +38,59 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m7(piece, square) => "${piece} en ${square}";
 
-  static String m8(current, total) => "Problème ${current} sur ${total}";
+  static String m8(count) =>
+      "${count} parties plus anciennes sont conservées avec Premium.";
 
-  static String m9(piece, support, square) =>
+  static String m9(count) =>
+      "Il vous reste ${count} exercices gratuits aujourd’hui";
+
+  static String m10(count) =>
+      "Il vous reste ${count} analyses gratuites aujourd’hui";
+
+  static String m11(price) => "Débloquer Premium ${price}";
+
+  static String m12(current, total) => "Problème ${current} sur ${total}";
+
+  static String m13(piece, support, square) =>
       "Fuite empêchée : ${piece} en ${support} contrôle ${square}.";
 
-  static String m10(from, king, target) =>
+  static String m14(from, king, target) =>
       "Depuis ${from}, le cavalier fait échec au roi en ${king} et attaque aussi ${target}.";
 
-  static String m11(line) => "Une solution : ${line}.";
+  static String m15(line) => "Une solution : ${line}.";
 
-  static String m12(square) =>
+  static String m16(square) =>
       "Échec et mat au roi en ${square} : aucune fuite, capture ou interposition légale.";
 
-  static String m13(piece, from, to) => "${piece} : ${from} → ${to}.";
+  static String m17(piece, from, to) => "${piece} : ${from} → ${to}.";
 
-  static String m14(squares) =>
+  static String m18(squares) =>
       "Les pions de la défense en ${squares} bloquent la fuite de leur propre roi.";
 
-  static String m15(square, piece) =>
+  static String m19(square, piece) =>
       "Le pion atteint ${square} et devient ${piece}.";
 
-  static String m16(reply, finish) =>
+  static String m20(reply, finish) =>
       "Après ${reply}, ${finish} fait échec et mat.";
 
-  static String m17(piece, support, square) =>
+  static String m21(piece, support, square) =>
       "Soutien : ${piece} en ${support} protège ${square}.";
 
-  static String m18(count) => "Série : ${count}";
+  static String m22(count) => "Série : ${count}";
 
-  static String m19(completed, total) =>
+  static String m23(completed, total) =>
       "${completed} problèmes sur ${total} terminés";
 
-  static String m20(solved, total) => "${solved} sur ${total} résolus";
+  static String m24(solved, total) => "${solved} sur ${total} résolus";
 
-  static String m21(price) => "Supprimer les publicités ${price}";
-
-  static String m22(current, total, classification) =>
+  static String m25(current, total, classification) =>
       "Coup ${current} sur ${total} : ${classification}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
     "AI_Difficulty": MessageLookupByLibrary.simpleMessage("Difficulté de l’IA"),
     "AI_is_thinking": MessageLookupByLibrary.simpleMessage("L’IA réfléchit"),
+    "Appearance": MessageLookupByLibrary.simpleMessage("Apparence"),
     "Back": MessageLookupByLibrary.simpleMessage("Retour"),
     "Best_Move": MessageLookupByLibrary.simpleMessage("Meilleur coup"),
     "Biggest_Mistake": MessageLookupByLibrary.simpleMessage(
@@ -99,6 +109,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Board_Coordinates_Description": MessageLookupByLibrary.simpleMessage(
       "Afficher les colonnes et les rangées autour de l’échiquier.",
     ),
+    "Board_Theme": MessageLookupByLibrary.simpleMessage("Thème du plateau"),
     "Cancel": MessageLookupByLibrary.simpleMessage("Annuler"),
     "Chess_Bishop_Rule": MessageLookupByLibrary.simpleMessage(
       "Fou — se déplace d’autant de cases que souhaité en diagonale.",
@@ -287,6 +298,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "No_Saved_Games": MessageLookupByLibrary.simpleMessage(
       "Les parties terminées et importées apparaîtront ici.",
     ),
+    "Not_Now": MessageLookupByLibrary.simpleMessage("Pas maintenant"),
     "Novels_Hub": MessageLookupByLibrary.simpleMessage(
       "Bibliothèque de romans",
     ),
@@ -354,6 +366,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Piece_Black_Queen": MessageLookupByLibrary.simpleMessage("Dame noire"),
     "Piece_Black_Rook": MessageLookupByLibrary.simpleMessage("Tour noire"),
     "Piece_On_Square": m7,
+    "Piece_Set": MessageLookupByLibrary.simpleMessage("Jeu de pièces"),
     "Piece_White_Bishop": MessageLookupByLibrary.simpleMessage("Fou blanc"),
     "Piece_White_King": MessageLookupByLibrary.simpleMessage("Roi blanc"),
     "Piece_White_Knight": MessageLookupByLibrary.simpleMessage(
@@ -364,6 +377,60 @@ class MessageLookup extends MessageLookupByLibrary {
     "Piece_White_Rook": MessageLookupByLibrary.simpleMessage("Tour blanche"),
     "Played_Move": MessageLookupByLibrary.simpleMessage("Coup joué"),
     "Practice_Again": MessageLookupByLibrary.simpleMessage("Recommencer"),
+    "Premium": MessageLookupByLibrary.simpleMessage("Premium"),
+    "Premium_Active": MessageLookupByLibrary.simpleMessage(
+      "Premium est actif sur cet appareil.",
+    ),
+    "Premium_Benefit_History": MessageLookupByLibrary.simpleMessage(
+      "L’intégralité de vos parties enregistrées",
+    ),
+    "Premium_Benefit_No_Ads": MessageLookupByLibrary.simpleMessage(
+      "Aucune publicité",
+    ),
+    "Premium_Benefit_Review": MessageLookupByLibrary.simpleMessage(
+      "Analyse de parties illimitée",
+    ),
+    "Premium_Benefit_Shared": MessageLookupByLibrary.simpleMessage(
+      "Un seul achat pour iPhone, iPad et Mac",
+    ),
+    "Premium_Benefit_Themes": MessageLookupByLibrary.simpleMessage(
+      "Tous les thèmes de plateau et jeux de pièces",
+    ),
+    "Premium_Benefit_Training": MessageLookupByLibrary.simpleMessage(
+      "Exercices illimités et tous les cours d’ouverture",
+    ),
+    "Premium_Description": MessageLookupByLibrary.simpleMessage(
+      "Un seul achat débloque tous les thèmes, l’entraînement illimité et l’intégralité de vos parties, et supprime les publicités. Valable sur iPhone, iPad et Mac.",
+    ),
+    "Premium_Loading": MessageLookupByLibrary.simpleMessage(
+      "Chargement des options d’achat...",
+    ),
+    "Premium_Locked_Board_Theme": MessageLookupByLibrary.simpleMessage(
+      "Ce thème de plateau fait partie de Premium.",
+    ),
+    "Premium_Locked_History": m8,
+    "Premium_Locked_Opening": MessageLookupByLibrary.simpleMessage(
+      "Ce cours d’ouverture fait partie de Premium.",
+    ),
+    "Premium_Locked_Piece_Theme": MessageLookupByLibrary.simpleMessage(
+      "Ce jeu de pièces fait partie de Premium.",
+    ),
+    "Premium_Puzzles_Left": m9,
+    "Premium_Puzzles_Spent": MessageLookupByLibrary.simpleMessage(
+      "Vous avez utilisé les exercices gratuits du jour.",
+    ),
+    "Premium_Reviews_Left": m10,
+    "Premium_Reviews_Spent": MessageLookupByLibrary.simpleMessage(
+      "Vous avez utilisé les analyses gratuites du jour.",
+    ),
+    "Premium_Unavailable": MessageLookupByLibrary.simpleMessage(
+      "Premium est actuellement indisponible.",
+    ),
+    "Premium_Unlimited": MessageLookupByLibrary.simpleMessage(
+      "Illimité avec Premium",
+    ),
+    "Premium_Unlock": MessageLookupByLibrary.simpleMessage("Débloquer Premium"),
+    "Premium_Unlock_With_Price": m11,
     "Previous": MessageLookupByLibrary.simpleMessage("Précédent"),
     "Previous_Move": MessageLookupByLibrary.simpleMessage("Coup précédent"),
     "Privacy_Choices": MessageLookupByLibrary.simpleMessage(
@@ -380,10 +447,10 @@ class MessageLookup extends MessageLookupByLibrary {
       "L’achat est en attente d’approbation.",
     ),
     "Purchase_Restored": MessageLookupByLibrary.simpleMessage(
-      "Achat restauré. Les publicités sont supprimées.",
+      "Achat restauré. Premium est débloqué.",
     ),
     "Purchase_Success": MessageLookupByLibrary.simpleMessage(
-      "Achat terminé. Les publicités sont supprimées.",
+      "Achat terminé. Premium est débloqué.",
     ),
     "Puzzle_Complete": MessageLookupByLibrary.simpleMessage(
       "Problème terminé !",
@@ -428,28 +495,28 @@ class MessageLookup extends MessageLookupByLibrary {
       "Poursuivez la combinaison",
     ),
     "Puzzle_Medium": MessageLookupByLibrary.simpleMessage("Moyen"),
-    "Puzzle_Number": m8,
-    "Puzzle_Position_Escape": m9,
-    "Puzzle_Position_Fork": m10,
-    "Puzzle_Position_Line": m11,
-    "Puzzle_Position_Mate": m12,
-    "Puzzle_Position_Move": m13,
-    "Puzzle_Position_Pawns": m14,
-    "Puzzle_Position_Promotion": m15,
-    "Puzzle_Position_Reply": m16,
-    "Puzzle_Position_Support": m17,
+    "Puzzle_Number": m12,
+    "Puzzle_Position_Escape": m13,
+    "Puzzle_Position_Fork": m14,
+    "Puzzle_Position_Line": m15,
+    "Puzzle_Position_Mate": m16,
+    "Puzzle_Position_Move": m17,
+    "Puzzle_Position_Pawns": m18,
+    "Puzzle_Position_Promotion": m19,
+    "Puzzle_Position_Reply": m20,
+    "Puzzle_Position_Support": m21,
     "Puzzle_Practice_Next": MessageLookupByLibrary.simpleMessage(
       "Continuer à s’entraîner",
     ),
     "Puzzle_Solved": MessageLookupByLibrary.simpleMessage(
       "Le problème du jour est terminé.",
     ),
-    "Puzzle_Streak": m18,
+    "Puzzle_Streak": m22,
     "Puzzle_Why_This_Works": MessageLookupByLibrary.simpleMessage(
       "Pourquoi cela fonctionne",
     ),
-    "Puzzles_Completed_Count": m19,
-    "Puzzles_Solved": m20,
+    "Puzzles_Completed_Count": m23,
+    "Puzzles_Solved": m24,
     "Quick_Play": MessageLookupByLibrary.simpleMessage("Partie rapide"),
     "Quick_Play_Description": MessageLookupByLibrary.simpleMessage(
       "Affrontez l’IA avec vos derniers réglages",
@@ -458,19 +525,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "Remove_Ads": MessageLookupByLibrary.simpleMessage(
       "Supprimer les publicités",
     ),
-    "Remove_Ads_Description": MessageLookupByLibrary.simpleMessage(
-      "Supprime définitivement les publicités de cette application.",
-    ),
-    "Remove_Ads_Loading": MessageLookupByLibrary.simpleMessage(
-      "Chargement des options d’achat…",
-    ),
-    "Remove_Ads_Purchased": MessageLookupByLibrary.simpleMessage(
-      "Les publicités sont supprimées sur cet appareil.",
-    ),
-    "Remove_Ads_Unavailable": MessageLookupByLibrary.simpleMessage(
-      "La suppression des publicités est actuellement indisponible.",
-    ),
-    "Remove_Ads_With_Price": m21,
     "Replace_Unfinished_Game": MessageLookupByLibrary.simpleMessage(
       "Commencer une nouvelle partie ?",
     ),
@@ -479,7 +533,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "Replay": MessageLookupByLibrary.simpleMessage("Rejouer"),
     "Restore_Not_Found": MessageLookupByLibrary.simpleMessage(
-      "Aucun achat antérieur de suppression des publicités n’a été trouvé.",
+      "Aucun achat Premium antérieur n’a été trouvé.",
     ),
     "Restore_Purchases": MessageLookupByLibrary.simpleMessage(
       "Restaurer les achats",
@@ -489,7 +543,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "Retry": MessageLookupByLibrary.simpleMessage("Réessayer"),
     "Review_Game": MessageLookupByLibrary.simpleMessage("Analyser la partie"),
-    "Review_Move_Title": m22,
+    "Review_Move_Title": m25,
     "Saving_Ambulance": MessageLookupByLibrary.simpleMessage(
       "Sauver l’ambulance",
     ),

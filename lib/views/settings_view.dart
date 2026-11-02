@@ -8,7 +8,8 @@ import 'package:provider/provider.dart';
 
 import '../generated/l10n.dart';
 import 'more_apps_page.dart';
-import 'components/settings_view/remove_ads_section.dart';
+import 'components/settings_view/appearance_section.dart';
+import 'components/settings_view/premium_section.dart';
 import 'components/settings_view/settings_navigation_buttons.dart';
 import 'components/settings_view/toggles.dart';
 import 'components/shared/banner_ad_slot.dart';
@@ -45,9 +46,19 @@ class SettingsView extends StatelessWidget {
                       _SectionTitle(strings.Gameplay_Settings),
                       const SizedBox(height: AppSpacing.md),
                       _SettingsGroup(child: Toggles(appModel)),
-                      if (appModel.canPurchaseRemoveAds) ...[
+                      const SizedBox(height: AppSpacing.xxl),
+                      _SectionTitle(strings.Appearance),
+                      const SizedBox(height: AppSpacing.md),
+                      _SettingsGroup(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: AppSpacing.lg),
+                          child: AppearanceSection(appModel: appModel),
+                        ),
+                      ),
+                      if (appModel.canPurchasePremium) ...[
                         const SizedBox(height: AppSpacing.xxl),
-                        RemoveAdsSection(appModel: appModel),
+                        PremiumSection(appModel: appModel),
                       ],
                       const SizedBox(height: AppSpacing.xxl),
                       _SectionTitle(strings.Help_And_Privacy),

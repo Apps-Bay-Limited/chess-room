@@ -38,42 +38,49 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m7(piece, square) => "${piece} على ${square}";
 
-  static String m8(current, total) => "اللغز ${current} من ${total}";
+  static String m8(count) =>
+      "يتم الاحتفاظ بـ ${count} مباريات أقدم مع النسخة المميزة.";
 
-  static String m9(piece, support, square) =>
+  static String m9(count) => "بقي لك ${count} ألغاز مجانية اليوم";
+
+  static String m10(count) => "بقي لك ${count} مراجعات مجانية اليوم";
+
+  static String m11(price) => "فتح النسخة المميزة ${price}";
+
+  static String m12(current, total) => "اللغز ${current} من ${total}";
+
+  static String m13(piece, support, square) =>
       "إغلاق الهروب: ${piece} على ${support} يسيطر على ${square}.";
 
-  static String m10(from, king, target) =>
+  static String m14(from, king, target) =>
       "من ${from}، يهدد الحصان الملك على ${king} بالكش ويهاجم أيضًا ${target}.";
 
-  static String m11(line) => "أحد الحلول: ${line}.";
+  static String m15(line) => "أحد الحلول: ${line}.";
 
-  static String m12(square) =>
+  static String m16(square) =>
       "كش مات للملك على ${square}: لا توجد نقلة قانونية للهروب أو الأخذ أو الحجب.";
 
-  static String m13(piece, from, to) => "${piece}: ${from} → ${to}.";
+  static String m17(piece, from, to) => "${piece}: ${from} → ${to}.";
 
-  static String m14(squares) =>
+  static String m18(squares) =>
       "بيادق الطرف المدافع على ${squares} تسدّ طريق هروب ملكها.";
 
-  static String m15(square, piece) =>
+  static String m19(square, piece) =>
       "يصل البيدق إلى ${square} ويترقّى إلى ${piece}.";
 
-  static String m16(reply, finish) =>
+  static String m20(reply, finish) =>
       "بعد ${reply}، تحقق النقلة ${finish} كش مات.";
 
-  static String m17(piece, support, square) =>
+  static String m21(piece, support, square) =>
       "الدعم: ${piece} على ${support} يحمي ${square}.";
 
-  static String m18(count) => "السلسلة: ${count}";
+  static String m22(count) => "السلسلة: ${count}";
 
-  static String m19(completed, total) => "اكتمل ${completed} من ${total} لغزًا";
+  static String m23(completed, total) => "اكتمل ${completed} من ${total} لغزًا";
 
-  static String m20(solved, total) => "تم حل ${solved} من ${total}";
+  static String m24(solved, total) => "تم حل ${solved} من ${total}";
 
-  static String m21(price) => "إزالة الإعلانات ${price}";
-
-  static String m22(current, total, classification) =>
+  static String m25(current, total, classification) =>
       "النقلة ${current} من ${total}: ${classification}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
@@ -84,6 +91,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "AI_is_thinking": MessageLookupByLibrary.simpleMessage(
       "الذكاء الاصطناعي يفكر",
     ),
+    "Appearance": MessageLookupByLibrary.simpleMessage("المظهر"),
     "Back": MessageLookupByLibrary.simpleMessage("رجوع"),
     "Best_Move": MessageLookupByLibrary.simpleMessage("أفضل نقلة"),
     "Biggest_Mistake": MessageLookupByLibrary.simpleMessage("أكبر خطأ"),
@@ -100,6 +108,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Board_Coordinates_Description": MessageLookupByLibrary.simpleMessage(
       "إظهار الأعمدة والصفوف حول الرقعة.",
     ),
+    "Board_Theme": MessageLookupByLibrary.simpleMessage("سمة الرقعة"),
     "Cancel": MessageLookupByLibrary.simpleMessage("إلغاء"),
     "Chess_Bishop_Rule": MessageLookupByLibrary.simpleMessage(
       "الفيل — يتحرك أي عدد من المربعات قطريًا.",
@@ -272,6 +281,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "No_Saved_Games": MessageLookupByLibrary.simpleMessage(
       "ستظهر المباريات المكتملة والمستوردة هنا.",
     ),
+    "Not_Now": MessageLookupByLibrary.simpleMessage("ليس الآن"),
     "Novels_Hub": MessageLookupByLibrary.simpleMessage("مكتبة الروايات"),
     "Onlynote": MessageLookupByLibrary.simpleMessage("Onlynote"),
     "Opening_Complete": MessageLookupByLibrary.simpleMessage(
@@ -329,6 +339,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Piece_Black_Queen": MessageLookupByLibrary.simpleMessage("ملكة سوداء"),
     "Piece_Black_Rook": MessageLookupByLibrary.simpleMessage("رخ أسود"),
     "Piece_On_Square": m7,
+    "Piece_Set": MessageLookupByLibrary.simpleMessage("طقم القطع"),
     "Piece_White_Bishop": MessageLookupByLibrary.simpleMessage("فيل أبيض"),
     "Piece_White_King": MessageLookupByLibrary.simpleMessage("ملك أبيض"),
     "Piece_White_Knight": MessageLookupByLibrary.simpleMessage("حصان أبيض"),
@@ -337,6 +348,62 @@ class MessageLookup extends MessageLookupByLibrary {
     "Piece_White_Rook": MessageLookupByLibrary.simpleMessage("رخ أبيض"),
     "Played_Move": MessageLookupByLibrary.simpleMessage("النقلة الملعوبة"),
     "Practice_Again": MessageLookupByLibrary.simpleMessage("تدرّب مجددًا"),
+    "Premium": MessageLookupByLibrary.simpleMessage("النسخة المميزة"),
+    "Premium_Active": MessageLookupByLibrary.simpleMessage(
+      "النسخة المميزة مُفعّلة على هذا الجهاز.",
+    ),
+    "Premium_Benefit_History": MessageLookupByLibrary.simpleMessage(
+      "سجل مبارياتك الكامل",
+    ),
+    "Premium_Benefit_No_Ads": MessageLookupByLibrary.simpleMessage(
+      "بدون إعلانات",
+    ),
+    "Premium_Benefit_Review": MessageLookupByLibrary.simpleMessage(
+      "مراجعة مباريات غير محدودة",
+    ),
+    "Premium_Benefit_Shared": MessageLookupByLibrary.simpleMessage(
+      "شراء واحد يشمل iPhone وiPad وMac",
+    ),
+    "Premium_Benefit_Themes": MessageLookupByLibrary.simpleMessage(
+      "كل سمات الرقعة وأطقم القطع",
+    ),
+    "Premium_Benefit_Training": MessageLookupByLibrary.simpleMessage(
+      "ألغاز غير محدودة وكل دورات الافتتاحيات",
+    ),
+    "Premium_Description": MessageLookupByLibrary.simpleMessage(
+      "عملية شراء واحدة تفتح كل السمات والتدريب غير المحدود وسجل مبارياتك الكامل، وتزيل الإعلانات. تعمل على iPhone وiPad وMac.",
+    ),
+    "Premium_Loading": MessageLookupByLibrary.simpleMessage(
+      "جارٍ تحميل خيارات الشراء...",
+    ),
+    "Premium_Locked_Board_Theme": MessageLookupByLibrary.simpleMessage(
+      "سمة الرقعة هذه جزء من النسخة المميزة.",
+    ),
+    "Premium_Locked_History": m8,
+    "Premium_Locked_Opening": MessageLookupByLibrary.simpleMessage(
+      "دورة الافتتاحية هذه جزء من النسخة المميزة.",
+    ),
+    "Premium_Locked_Piece_Theme": MessageLookupByLibrary.simpleMessage(
+      "طقم القطع هذا جزء من النسخة المميزة.",
+    ),
+    "Premium_Puzzles_Left": m9,
+    "Premium_Puzzles_Spent": MessageLookupByLibrary.simpleMessage(
+      "لقد استخدمت ألغاز اليوم المجانية.",
+    ),
+    "Premium_Reviews_Left": m10,
+    "Premium_Reviews_Spent": MessageLookupByLibrary.simpleMessage(
+      "لقد استخدمت مراجعات اليوم المجانية.",
+    ),
+    "Premium_Unavailable": MessageLookupByLibrary.simpleMessage(
+      "النسخة المميزة غير متاحة حاليًا.",
+    ),
+    "Premium_Unlimited": MessageLookupByLibrary.simpleMessage(
+      "غير محدود مع النسخة المميزة",
+    ),
+    "Premium_Unlock": MessageLookupByLibrary.simpleMessage(
+      "فتح النسخة المميزة",
+    ),
+    "Premium_Unlock_With_Price": m11,
     "Previous": MessageLookupByLibrary.simpleMessage("السابق"),
     "Previous_Move": MessageLookupByLibrary.simpleMessage("النقلة السابقة"),
     "Privacy_Choices": MessageLookupByLibrary.simpleMessage("خيارات الخصوصية"),
@@ -353,10 +420,10 @@ class MessageLookup extends MessageLookupByLibrary {
       "عملية الشراء بانتظار الموافقة.",
     ),
     "Purchase_Restored": MessageLookupByLibrary.simpleMessage(
-      "تمت استعادة عملية الشراء وإزالة الإعلانات.",
+      "تمت استعادة الشراء. تم فتح النسخة المميزة.",
     ),
     "Purchase_Success": MessageLookupByLibrary.simpleMessage(
-      "اكتملت عملية الشراء. تمت إزالة الإعلانات.",
+      "تمت عملية الشراء. تم فتح النسخة المميزة.",
     ),
     "Puzzle_Complete": MessageLookupByLibrary.simpleMessage("اكتمل اللغز!"),
     "Puzzle_Easy": MessageLookupByLibrary.simpleMessage("سهل"),
@@ -397,45 +464,32 @@ class MessageLookup extends MessageLookupByLibrary {
       "أكمل التسلسل التكتيكي",
     ),
     "Puzzle_Medium": MessageLookupByLibrary.simpleMessage("متوسط"),
-    "Puzzle_Number": m8,
-    "Puzzle_Position_Escape": m9,
-    "Puzzle_Position_Fork": m10,
-    "Puzzle_Position_Line": m11,
-    "Puzzle_Position_Mate": m12,
-    "Puzzle_Position_Move": m13,
-    "Puzzle_Position_Pawns": m14,
-    "Puzzle_Position_Promotion": m15,
-    "Puzzle_Position_Reply": m16,
-    "Puzzle_Position_Support": m17,
+    "Puzzle_Number": m12,
+    "Puzzle_Position_Escape": m13,
+    "Puzzle_Position_Fork": m14,
+    "Puzzle_Position_Line": m15,
+    "Puzzle_Position_Mate": m16,
+    "Puzzle_Position_Move": m17,
+    "Puzzle_Position_Pawns": m18,
+    "Puzzle_Position_Promotion": m19,
+    "Puzzle_Position_Reply": m20,
+    "Puzzle_Position_Support": m21,
     "Puzzle_Practice_Next": MessageLookupByLibrary.simpleMessage(
       "واصل التمرين",
     ),
     "Puzzle_Solved": MessageLookupByLibrary.simpleMessage("اكتمل لغز اليوم."),
-    "Puzzle_Streak": m18,
+    "Puzzle_Streak": m22,
     "Puzzle_Why_This_Works": MessageLookupByLibrary.simpleMessage(
       "لماذا تنجح هذه الخطة",
     ),
-    "Puzzles_Completed_Count": m19,
-    "Puzzles_Solved": m20,
+    "Puzzles_Completed_Count": m23,
+    "Puzzles_Solved": m24,
     "Quick_Play": MessageLookupByLibrary.simpleMessage("لعب سريع"),
     "Quick_Play_Description": MessageLookupByLibrary.simpleMessage(
       "واجه الذكاء الاصطناعي بآخر إعداداتك",
     ),
     "Redo_Move": MessageLookupByLibrary.simpleMessage("إعادة النقلة"),
     "Remove_Ads": MessageLookupByLibrary.simpleMessage("إزالة الإعلانات"),
-    "Remove_Ads_Description": MessageLookupByLibrary.simpleMessage(
-      "إزالة الإعلانات نهائيًا من هذا التطبيق.",
-    ),
-    "Remove_Ads_Loading": MessageLookupByLibrary.simpleMessage(
-      "جارٍ تحميل خيارات الشراء…",
-    ),
-    "Remove_Ads_Purchased": MessageLookupByLibrary.simpleMessage(
-      "تمت إزالة الإعلانات على هذا الجهاز.",
-    ),
-    "Remove_Ads_Unavailable": MessageLookupByLibrary.simpleMessage(
-      "إزالة الإعلانات غير متاحة حاليًا.",
-    ),
-    "Remove_Ads_With_Price": m21,
     "Replace_Unfinished_Game": MessageLookupByLibrary.simpleMessage(
       "بدء مباراة جديدة؟",
     ),
@@ -444,7 +498,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "Replay": MessageLookupByLibrary.simpleMessage("إعادة اللعب"),
     "Restore_Not_Found": MessageLookupByLibrary.simpleMessage(
-      "لم يتم العثور على عملية شراء سابقة لإزالة الإعلانات.",
+      "لم يتم العثور على عملية شراء سابقة للنسخة المميزة.",
     ),
     "Restore_Purchases": MessageLookupByLibrary.simpleMessage(
       "استعادة المشتريات",
@@ -454,7 +508,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "Retry": MessageLookupByLibrary.simpleMessage("إعادة المحاولة"),
     "Review_Game": MessageLookupByLibrary.simpleMessage("مراجعة المباراة"),
-    "Review_Move_Title": m22,
+    "Review_Move_Title": m25,
     "Saving_Ambulance": MessageLookupByLibrary.simpleMessage(
       "إنقاذ سيارة الإسعاف",
     ),

@@ -37,45 +37,52 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m7(piece, square) => "${square}の${piece}";
 
-  static String m8(current, total) => "${total}問中${current}問目";
+  static String m8(count) => "過去の対局 ${count} 件はプレミアムで表示できます。";
 
-  static String m9(piece, support, square) =>
+  static String m9(count) => "今日の無料問題は残り ${count} 問";
+
+  static String m10(count) => "今日の無料レビューは残り ${count} 回";
+
+  static String m11(price) => "プレミアムを解除 ${price}";
+
+  static String m12(current, total) => "${total}問中${current}問目";
+
+  static String m13(piece, support, square) =>
       "逃げ道を封鎖：${support}の${piece}が${square}を押さえています。";
 
-  static String m10(from, king, target) =>
+  static String m14(from, king, target) =>
       "${from}のナイトが${king}のキングにチェックし、同時に${target}も攻撃します。";
 
-  static String m11(line) => "解答例：${line}。";
+  static String m15(line) => "解答例：${line}。";
 
-  static String m12(square) =>
+  static String m16(square) =>
       "${square}のキングはチェックメイトです。逃げる、取る、間に駒を置く、いずれの合法手もありません。";
 
-  static String m13(piece, from, to) => "${piece}：${from} → ${to}。";
+  static String m17(piece, from, to) => "${piece}：${from} → ${to}。";
 
-  static String m14(squares) => "守る側の${squares}のポーンが、自分のキングの逃げ道をふさいでいます。";
+  static String m18(squares) => "守る側の${squares}のポーンが、自分のキングの逃げ道をふさいでいます。";
 
-  static String m15(square, piece) => "ポーンが${square}に到達し、${piece}に昇格します。";
+  static String m19(square, piece) => "ポーンが${square}に到達し、${piece}に昇格します。";
 
-  static String m16(reply, finish) => "${reply}に対し、${finish}でチェックメイトです。";
+  static String m20(reply, finish) => "${reply}に対し、${finish}でチェックメイトです。";
 
-  static String m17(piece, support, square) =>
+  static String m21(piece, support, square) =>
       "支え：${support}の${piece}が${square}を守っています。";
 
-  static String m18(count) => "連続正解：${count}";
+  static String m22(count) => "連続正解：${count}";
 
-  static String m19(completed, total) => "パズル ${total} 問中 ${completed} 問完了";
+  static String m23(completed, total) => "パズル ${total} 問中 ${completed} 問完了";
 
-  static String m20(solved, total) => "${total}問中${solved}問クリア";
+  static String m24(solved, total) => "${total}問中${solved}問クリア";
 
-  static String m21(price) => "広告を削除 ${price}";
-
-  static String m22(current, total, classification) =>
+  static String m25(current, total, classification) =>
       "${total}手中${current}手目：${classification}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
     "AI_Difficulty": MessageLookupByLibrary.simpleMessage("AIの強さ"),
     "AI_is_thinking": MessageLookupByLibrary.simpleMessage("AIが考えています"),
+    "Appearance": MessageLookupByLibrary.simpleMessage("外観"),
     "Back": MessageLookupByLibrary.simpleMessage("戻る"),
     "Best_Move": MessageLookupByLibrary.simpleMessage("最善手"),
     "Biggest_Mistake": MessageLookupByLibrary.simpleMessage("最大のミス"),
@@ -90,6 +97,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Board_Coordinates_Description": MessageLookupByLibrary.simpleMessage(
       "盤の周りに列と段の座標を表示します。",
     ),
+    "Board_Theme": MessageLookupByLibrary.simpleMessage("盤テーマ"),
     "Cancel": MessageLookupByLibrary.simpleMessage("キャンセル"),
     "Chess_Bishop_Rule": MessageLookupByLibrary.simpleMessage(
       "ビショップ — 斜めに好きなだけ動けます。",
@@ -244,6 +252,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "No_Saved_Games": MessageLookupByLibrary.simpleMessage(
       "完了またはインポートした対局がここに表示されます。",
     ),
+    "Not_Now": MessageLookupByLibrary.simpleMessage("今はしない"),
     "Novels_Hub": MessageLookupByLibrary.simpleMessage("小説ライブラリ"),
     "Onlynote": MessageLookupByLibrary.simpleMessage("Onlynote"),
     "Opening_Complete": MessageLookupByLibrary.simpleMessage(
@@ -293,6 +302,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Piece_Black_Queen": MessageLookupByLibrary.simpleMessage("黒のクイーン"),
     "Piece_Black_Rook": MessageLookupByLibrary.simpleMessage("黒のルーク"),
     "Piece_On_Square": m7,
+    "Piece_Set": MessageLookupByLibrary.simpleMessage("駒デザイン"),
     "Piece_White_Bishop": MessageLookupByLibrary.simpleMessage("白のビショップ"),
     "Piece_White_King": MessageLookupByLibrary.simpleMessage("白のキング"),
     "Piece_White_Knight": MessageLookupByLibrary.simpleMessage("白のナイト"),
@@ -301,6 +311,50 @@ class MessageLookup extends MessageLookupByLibrary {
     "Piece_White_Rook": MessageLookupByLibrary.simpleMessage("白のルーク"),
     "Played_Move": MessageLookupByLibrary.simpleMessage("実戦の手"),
     "Practice_Again": MessageLookupByLibrary.simpleMessage("もう一度練習"),
+    "Premium": MessageLookupByLibrary.simpleMessage("プレミアム"),
+    "Premium_Active": MessageLookupByLibrary.simpleMessage("この端末でプレミアムが有効です。"),
+    "Premium_Benefit_History": MessageLookupByLibrary.simpleMessage("対局履歴のすべて"),
+    "Premium_Benefit_No_Ads": MessageLookupByLibrary.simpleMessage("広告なし"),
+    "Premium_Benefit_Review": MessageLookupByLibrary.simpleMessage(
+      "無制限の対局レビュー",
+    ),
+    "Premium_Benefit_Shared": MessageLookupByLibrary.simpleMessage(
+      "一度の購入で iPhone、iPad、Mac に対応",
+    ),
+    "Premium_Benefit_Themes": MessageLookupByLibrary.simpleMessage(
+      "すべての盤テーマと駒デザイン",
+    ),
+    "Premium_Benefit_Training": MessageLookupByLibrary.simpleMessage(
+      "無制限の問題集とすべての定跡コース",
+    ),
+    "Premium_Description": MessageLookupByLibrary.simpleMessage(
+      "一度の購入で、すべてのテーマ、無制限のトレーニング、対局履歴のすべてが使えるようになり、広告も表示されません。iPhone、iPad、Mac で共通です。",
+    ),
+    "Premium_Loading": MessageLookupByLibrary.simpleMessage("購入オプションを読み込み中..."),
+    "Premium_Locked_Board_Theme": MessageLookupByLibrary.simpleMessage(
+      "この盤テーマはプレミアムの機能です。",
+    ),
+    "Premium_Locked_History": m8,
+    "Premium_Locked_Opening": MessageLookupByLibrary.simpleMessage(
+      "この定跡コースはプレミアムの機能です。",
+    ),
+    "Premium_Locked_Piece_Theme": MessageLookupByLibrary.simpleMessage(
+      "この駒デザインはプレミアムの機能です。",
+    ),
+    "Premium_Puzzles_Left": m9,
+    "Premium_Puzzles_Spent": MessageLookupByLibrary.simpleMessage(
+      "今日の無料問題を使い切りました。",
+    ),
+    "Premium_Reviews_Left": m10,
+    "Premium_Reviews_Spent": MessageLookupByLibrary.simpleMessage(
+      "今日の無料レビューを使い切りました。",
+    ),
+    "Premium_Unavailable": MessageLookupByLibrary.simpleMessage(
+      "現在プレミアムは利用できません。",
+    ),
+    "Premium_Unlimited": MessageLookupByLibrary.simpleMessage("プレミアムなら無制限"),
+    "Premium_Unlock": MessageLookupByLibrary.simpleMessage("プレミアムを解除"),
+    "Premium_Unlock_With_Price": m11,
     "Previous": MessageLookupByLibrary.simpleMessage("前へ"),
     "Previous_Move": MessageLookupByLibrary.simpleMessage("前の手"),
     "Privacy_Choices": MessageLookupByLibrary.simpleMessage("プライバシー設定"),
@@ -311,10 +365,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "Purchase_In_Progress": MessageLookupByLibrary.simpleMessage("購入処理中…"),
     "Purchase_Pending": MessageLookupByLibrary.simpleMessage("購入は承認待ちです。"),
     "Purchase_Restored": MessageLookupByLibrary.simpleMessage(
-      "購入を復元しました。広告は削除されました。",
+      "購入を復元しました。プレミアムが有効になりました。",
     ),
     "Purchase_Success": MessageLookupByLibrary.simpleMessage(
-      "購入が完了しました。広告は削除されました。",
+      "購入が完了しました。プレミアムが有効になりました。",
     ),
     "Puzzle_Complete": MessageLookupByLibrary.simpleMessage("パズルクリア！"),
     "Puzzle_Easy": MessageLookupByLibrary.simpleMessage("かんたん"),
@@ -355,41 +409,28 @@ class MessageLookup extends MessageLookupByLibrary {
       "コンビネーションを続けよう",
     ),
     "Puzzle_Medium": MessageLookupByLibrary.simpleMessage("ふつう"),
-    "Puzzle_Number": m8,
-    "Puzzle_Position_Escape": m9,
-    "Puzzle_Position_Fork": m10,
-    "Puzzle_Position_Line": m11,
-    "Puzzle_Position_Mate": m12,
-    "Puzzle_Position_Move": m13,
-    "Puzzle_Position_Pawns": m14,
-    "Puzzle_Position_Promotion": m15,
-    "Puzzle_Position_Reply": m16,
-    "Puzzle_Position_Support": m17,
+    "Puzzle_Number": m12,
+    "Puzzle_Position_Escape": m13,
+    "Puzzle_Position_Fork": m14,
+    "Puzzle_Position_Line": m15,
+    "Puzzle_Position_Mate": m16,
+    "Puzzle_Position_Move": m17,
+    "Puzzle_Position_Pawns": m18,
+    "Puzzle_Position_Promotion": m19,
+    "Puzzle_Position_Reply": m20,
+    "Puzzle_Position_Support": m21,
     "Puzzle_Practice_Next": MessageLookupByLibrary.simpleMessage("練習を続ける"),
     "Puzzle_Solved": MessageLookupByLibrary.simpleMessage("本日のパズルは完了しています。"),
-    "Puzzle_Streak": m18,
+    "Puzzle_Streak": m22,
     "Puzzle_Why_This_Works": MessageLookupByLibrary.simpleMessage("この手が有効な理由"),
-    "Puzzles_Completed_Count": m19,
-    "Puzzles_Solved": m20,
+    "Puzzles_Completed_Count": m23,
+    "Puzzles_Solved": m24,
     "Quick_Play": MessageLookupByLibrary.simpleMessage("クイック対局"),
     "Quick_Play_Description": MessageLookupByLibrary.simpleMessage(
       "前回の設定でAIと対戦",
     ),
     "Redo_Move": MessageLookupByLibrary.simpleMessage("手をやり直す"),
     "Remove_Ads": MessageLookupByLibrary.simpleMessage("広告を削除"),
-    "Remove_Ads_Description": MessageLookupByLibrary.simpleMessage(
-      "このアプリから広告を完全に削除します。",
-    ),
-    "Remove_Ads_Loading": MessageLookupByLibrary.simpleMessage(
-      "購入オプションを読み込み中…",
-    ),
-    "Remove_Ads_Purchased": MessageLookupByLibrary.simpleMessage(
-      "この端末では広告が削除されています。",
-    ),
-    "Remove_Ads_Unavailable": MessageLookupByLibrary.simpleMessage(
-      "現在、広告の削除は利用できません。",
-    ),
-    "Remove_Ads_With_Price": m21,
     "Replace_Unfinished_Game": MessageLookupByLibrary.simpleMessage(
       "新しい対局を始めますか？",
     ),
@@ -398,7 +439,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "Replay": MessageLookupByLibrary.simpleMessage("再生"),
     "Restore_Not_Found": MessageLookupByLibrary.simpleMessage(
-      "以前の広告削除の購入が見つかりませんでした。",
+      "以前のプレミアムの購入が見つかりませんでした。",
     ),
     "Restore_Purchases": MessageLookupByLibrary.simpleMessage("購入を復元"),
     "Resume_Game_Unavailable": MessageLookupByLibrary.simpleMessage(
@@ -406,7 +447,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "Retry": MessageLookupByLibrary.simpleMessage("再試行"),
     "Review_Game": MessageLookupByLibrary.simpleMessage("対局を振り返る"),
-    "Review_Move_Title": m22,
+    "Review_Move_Title": m25,
     "Saving_Ambulance": MessageLookupByLibrary.simpleMessage("救急車を救え"),
     "Settings": MessageLookupByLibrary.simpleMessage("設定"),
     "Share_Result": MessageLookupByLibrary.simpleMessage("結果を共有"),

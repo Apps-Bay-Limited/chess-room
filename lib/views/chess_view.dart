@@ -6,7 +6,7 @@ import 'package:chess_room/views/components/chess_view/chess_board_widget.dart';
 import 'package:chess_room/views/components/chess_view/game_info_and_controls.dart';
 import 'package:chess_room/views/components/chess_view/game_tip_button.dart';
 import 'package:chess_room/views/components/chess_view/promotion_dialog.dart';
-import 'package:chess_room/features/game_review/game_review_page.dart';
+import 'package:chess_room/features/game_review/game_review_access.dart';
 import 'package:chess_room/features/share_result/result_share_section.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
@@ -156,17 +156,11 @@ class _ChessViewState extends State<ChessView> with WidgetsBindingObserver {
                                 MenuButton(
                                   key: const ValueKey('review-game-button'),
                                   label: S.of(context).Review_Game,
-                                  onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      CupertinoPageRoute(
-                                        builder: (context) => GameReviewPage(
-                                          records: appModel.moveReviewRecords,
-                                          pieceTheme: appModel.pieceTheme,
-                                        ),
-                                      ),
-                                    );
-                                  },
+                                  onTap: () => unawaited(openGameReview(
+                                    context,
+                                    records: appModel.moveReviewRecords,
+                                    pieceTheme: appModel.pieceTheme,
+                                  )),
                                 ),
                                 const SizedBox(height: 24),
                               ],

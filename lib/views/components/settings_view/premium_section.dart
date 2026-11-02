@@ -1,32 +1,34 @@
 import 'package:chess_room/model/app_model.dart';
 import 'package:chess_room/util/app_design.dart';
-import 'package:chess_room/util/remove_ads_purchase_service.dart';
+import 'package:chess_room/views/components/premium/premium_paywall.dart';
 import 'package:chess_room/views/components/shared/menu_button.dart';
 import 'package:flutter/cupertino.dart';
 
 import '../../../generated/l10n.dart';
 
-class RemoveAdsSection extends StatelessWidget {
+/// The Settings entry point for the shared premium purchase. The same product
+/// backs the iOS and macOS builds, so this section offers both Buy and Restore
+/// wherever StoreKit is reachable.
+class PremiumSection extends StatelessWidget {
   final AppModel appModel;
 
-  const RemoveAdsSection({super.key, required this.appModel});
+  const PremiumSection({super.key, required this.appModel});
 
   @override
   Widget build(BuildContext context) {
-    if (!appModel.canPurchaseRemoveAds) {
+    if (!appModel.canPurchasePremium) {
       return const SizedBox.shrink();
     }
 
+    final strings = S.of(context);
     final service = appModel.purchaseService;
-    final status = _statusText(context, service);
+    final status = premiumStatusText(strings, appModel);
     final price = service.localizedPrice;
-    final canBuy = !appModel.isAdsRemoved &&
-        price != null &&
-        service.state != RemoveAdsStoreState.loading &&
-        service.state != RemoveAdsStoreState.purchasing &&
-        service.state != RemoveAdsStoreState.pending;
+    final canBuy =
+        !appModel.isPremium && price != null && !service.isStoreFlowActive;
 
     return Container(
+      key: const ValueKey('premium-section'),
       padding: const EdgeInsets.all(AppSpacing.xl),
       decoration: BoxDecoration(
         color: AppColors.surface,
@@ -43,7 +45,7 @@ class RemoveAdsSection extends StatelessWidget {
               const SizedBox(width: AppSpacing.md),
               Expanded(
                 child: Text(
-                  S.of(context).Remove_Ads,
+                  strings.Premium,
                   style: const TextStyle(
                     color: AppColors.textPrimary,
                     fontSize: 17,
@@ -55,28 +57,55 @@ class RemoveAdsSection extends StatelessWidget {
           ),
           const SizedBox(height: AppSpacing.md),
           Text(
-            S.of(context).Remove_Ads_Description,
+            strings.Premium_Description,
             style: const TextStyle(
                 color: AppColors.textSecondary, fontSize: 14, height: 1.4),
           ),
+          if (!appModel.isPremium) ...[
+            const SizedBox(height: AppSpacing.lg),
+            for (final benefit in premiumBenefits(strings))
+              Padding(
+                padding: const EdgeInsets.only(bottom: AppSpacing.sm),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Padding(
+                      padding: EdgeInsets.only(top: 2),
+                      child: Icon(CupertinoIcons.check_mark_circled,
+                          color: AppColors.success, size: 16),
+                    ),
+                    const SizedBox(width: AppSpacing.sm),
+                    Expanded(
+                      child: Text(
+                        benefit,
+                        style: const TextStyle(
+                          color: AppColors.textSecondary,
+                          fontSize: 14,
+                          height: 1.35,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+          ],
           const SizedBox(height: AppSpacing.lg),
-          if (!appModel.isAdsRemoved)
+          if (!appModel.isPremium)
             MenuButton(
+              key: const ValueKey('premium-buy-button'),
               label: price == null
-                  ? S.of(context).Remove_Ads
-                  : S.of(context).Remove_Ads_With_Price(price),
-              onTap: canBuy ? service.buyRemoveAds : null,
+                  ? strings.Premium_Unlock
+                  : strings.Premium_Unlock_With_Price(price),
+              onTap: canBuy ? service.buyPremium : null,
             ),
           const SizedBox(height: AppSpacing.md),
           CupertinoButton(
+            key: const ValueKey('premium-restore-button'),
             padding: const EdgeInsets.symmetric(vertical: AppSpacing.md),
-            onPressed: service.state == RemoveAdsStoreState.loading ||
-                    service.state == RemoveAdsStoreState.purchasing ||
-                    service.state == RemoveAdsStoreState.pending
-                ? null
-                : service.restorePurchases,
+            onPressed:
+                service.isStoreFlowActive ? null : service.restorePurchases,
             child: Text(
-              S.of(context).Restore_Purchases,
+              strings.Restore_Purchases,
               style: const TextStyle(color: AppColors.accent, fontSize: 15),
             ),
           ),
@@ -87,7 +116,7 @@ class RemoveAdsSection extends StatelessWidget {
               child: Text(
                 status,
                 style: TextStyle(
-                  color: appModel.isAdsRemoved
+                  color: appModel.isPremium
                       ? AppColors.success
                       : AppColors.textSecondary,
                   fontSize: 14,
@@ -99,37 +128,5 @@ class RemoveAdsSection extends StatelessWidget {
         ],
       ),
     );
-  }
-
-  String? _statusText(BuildContext context, RemoveAdsPurchaseService service) {
-    final strings = S.of(context);
-    if (appModel.isAdsRemoved) {
-      return strings.Remove_Ads_Purchased;
-    }
-
-    switch (service.state) {
-      case RemoveAdsStoreState.idle:
-        return null;
-      case RemoveAdsStoreState.loading:
-        return strings.Remove_Ads_Loading;
-      case RemoveAdsStoreState.available:
-        return null;
-      case RemoveAdsStoreState.unavailable:
-        return strings.Remove_Ads_Unavailable;
-      case RemoveAdsStoreState.purchasing:
-        return strings.Purchase_In_Progress;
-      case RemoveAdsStoreState.pending:
-        return strings.Purchase_Pending;
-      case RemoveAdsStoreState.purchased:
-        return strings.Purchase_Success;
-      case RemoveAdsStoreState.restored:
-        return strings.Purchase_Restored;
-      case RemoveAdsStoreState.cancelled:
-        return strings.Purchase_Cancelled;
-      case RemoveAdsStoreState.failed:
-        return strings.Purchase_Failed;
-      case RemoveAdsStoreState.restoreEmpty:
-        return strings.Restore_Not_Found;
-    }
   }
 }

@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:chess_room/util/remove_ads_purchase_service.dart'
-    show removeAdsProductId;
+import 'package:chess_room/util/premium_purchase_service.dart'
+    show premiumProductId;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
@@ -39,7 +39,7 @@ void main() {
       'schemaVersion': 1,
       'platform': defaultTargetPlatform.name,
       'checkedAtUtc': DateTime.now().toUtc().toIso8601String(),
-      'requestedProductIDs': [removeAdsProductId],
+      'requestedProductIDs': [premiumProductId],
       'storeAvailable': false,
       'productFound': false,
       'notFoundProductIDs': <String>[],
@@ -73,9 +73,9 @@ void main() {
       if (result['storeAvailable'] == true) {
         try {
           final response = await store
-              .queryProductDetails({removeAdsProductId}).timeout(_queryTimeout);
+              .queryProductDetails({premiumProductId}).timeout(_queryTimeout);
           final matching = response.productDetails
-              .where((product) => product.id == removeAdsProductId)
+              .where((product) => product.id == premiumProductId)
               .toList();
           result['productFound'] = matching.isNotEmpty;
           // Record public queried IDs only; never output transaction IDs,
@@ -83,14 +83,14 @@ void main() {
           result['returnedProductIDs'] =
               matching.map((product) => product.id).toSet().toList()..sort();
           result['notFoundProductIDs'] = response.notFoundIDs
-              .where((id) => id == removeAdsProductId)
+              .where((id) => id == premiumProductId)
               .toSet()
               .toList()
             ..sort();
           result['unexpectedProductCount'] =
               response.productDetails.length - matching.length;
           result['unexpectedNotFoundCount'] = response.notFoundIDs
-              .where((id) => id != removeAdsProductId)
+              .where((id) => id != premiumProductId)
               .length;
           final error = response.error;
           result['queryStatus'] = error != null
@@ -145,7 +145,7 @@ Future<void> _observeRestore(InAppPurchase store, Map<String, Object?> result,
   final observed = Completer<void>();
   final subscription = store.purchaseStream.listen((purchases) {
     for (final purchase in purchases) {
-      if (purchase.productID != removeAdsProductId) {
+      if (purchase.productID != premiumProductId) {
         otherProductEvents++;
       } else if (purchase.status == PurchaseStatus.restored) {
         matchingRestoredEvents++;

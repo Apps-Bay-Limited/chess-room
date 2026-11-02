@@ -8,7 +8,8 @@ import 'package:chess_room/logic/shared_functions.dart';
 import 'package:chess_room/model/game_review.dart';
 import 'package:chess_room/model/in_progress_game.dart';
 import 'package:chess_room/features/game_history/saved_game.dart';
-import 'package:chess_room/util/remove_ads_purchase_service.dart';
+import 'package:chess_room/util/premium.dart';
+import 'package:chess_room/util/premium_purchase_service.dart';
 import 'package:chess_room/util/in_app_reviewer_helper.dart';
 import 'package:chess_room/views/components/main_menu_view/game_options/side_picker.dart';
 import 'package:flutter/material.dart';
@@ -29,7 +30,8 @@ const PIECE_THEMES = [
 ];
 
 class AppModel extends ChangeNotifier {
-  final RemoveAdsPurchaseService purchaseService;
+  final PremiumPurchaseService purchaseService;
+  final PremiumUsageStore premiumUsageStore;
   final GameHistoryStore gameHistoryStore;
   final InProgressGameStore inProgressGameStore;
   final DateTime Function() _now;
@@ -40,6 +42,7 @@ class AppModel extends ChangeNotifier {
   bool _disposed = false;
   bool _notificationsSuppressed = false;
   bool _gamePaused = true;
+  PremiumUsage _premiumUsage = const PremiumUsage();
   bool _gameSessionActive = false;
   int _gameRevision = 0;
   int _activePlayerCount = 1;
@@ -141,12 +144,61 @@ class AppModel extends ChangeNotifier {
     return playerCount == 1;
   }
 
-  bool get isAdsRemoved {
-    return purchaseService.isAdsRemoved;
+  bool get isPremium {
+    return purchaseService.isPremium;
   }
 
-  bool get canPurchaseRemoveAds {
+  bool get canPurchasePremium {
     return purchaseService.isSupported;
+  }
+
+  /// The entitlement plus today's spent allowances, which is what every gated
+  /// screen reads instead of inspecting limits itself.
+  PremiumAccess get premiumAccess =>
+      PremiumAccess(isPremium: isPremium, usage: _premiumUsage);
+
+  /// Reloads the day's allowances, for screens returning to the foreground
+  /// after midnight or after another screen spent one.
+  Future<void> refreshPremiumUsage() async {
+    try {
+      final usage = await premiumUsageStore.load(_now());
+      if (_disposed) return;
+      _premiumUsage = usage;
+      notifyListeners();
+    } catch (_) {
+      // A storage failure leaves the last known allowances in place rather
+      // than locking a feature the player may still be entitled to use.
+    }
+  }
+
+  /// Spends one library-puzzle allowance. Returns false when the free tier is
+  /// out for today, which is the paywall's cue.
+  Future<bool> consumeLibraryPuzzle() =>
+      _consumeAllowance(PremiumDailyAllowance.libraryPuzzles);
+
+  /// Spends one game-review allowance. Returns false when the free tier is
+  /// out for today, which is the paywall's cue.
+  Future<bool> consumeGameReview() =>
+      _consumeAllowance(PremiumDailyAllowance.gameReviews);
+
+  Future<bool> _consumeAllowance(PremiumDailyAllowance allowance) async {
+    if (isPremium) return true;
+    try {
+      final usage = await premiumUsageStore.increment(allowance, _now());
+      if (_disposed) return true;
+      _premiumUsage = usage;
+      notifyListeners();
+    } catch (_) {
+      // Never charge for a counter that could not be written; an unreadable
+      // store must not block practice.
+      return true;
+    }
+    return switch (allowance) {
+      PremiumDailyAllowance.libraryPuzzles =>
+        _premiumUsage.libraryPuzzles <= PremiumLimits.freeLibraryPuzzlesPerDay,
+      PremiumDailyAllowance.gameReviews =>
+        _premiumUsage.gameReviews <= PremiumLimits.freeGameReviewsPerDay,
+    };
   }
 
   MoveReviewRecord? get biggestMistake {
@@ -163,11 +215,14 @@ class AppModel extends ChangeNotifier {
   }
 
   AppModel({
-    RemoveAdsPurchaseService? purchaseService,
+    PremiumPurchaseService? purchaseService,
+    PremiumUsageStore? premiumUsageStore,
     GameHistoryStore? gameHistoryStore,
     InProgressGameStore? inProgressGameStore,
     DateTime Function()? now,
-  })  : purchaseService = purchaseService ?? RemoveAdsPurchaseService(),
+  })  : purchaseService = purchaseService ?? PremiumPurchaseService(),
+        premiumUsageStore =
+            premiumUsageStore ?? SharedPreferencesPremiumUsageStore(),
         gameHistoryStore =
             gameHistoryStore ?? SharedPreferencesGameHistoryStore(),
         inProgressGameStore =
@@ -192,6 +247,12 @@ class AppModel extends ChangeNotifier {
       }
     } catch (_) {
       // A storage failure must not prevent a new match from starting.
+    }
+    try {
+      final usage = await premiumUsageStore.load(_now());
+      if (!_disposed) _premiumUsage = usage;
+    } catch (_) {
+      // Unreadable counters read as unused, which keeps practice available.
     }
     if (!_disposed) notifyListeners();
   }
@@ -539,15 +600,22 @@ class AppModel extends ChangeNotifier {
     }
   }
 
+  /// Premium themes are refused here as well as in the picker, so a selection
+  /// cannot be applied from a stale view of the entitlement. A theme already
+  /// stored by an earlier release is left in place rather than reset.
   void setTheme(int index) async {
-    themeName = themeList[index].name;
+    final name = themeList[index].name;
+    if (!premiumAccess.isBoardThemeUnlocked(name)) return;
+    themeName = name;
     final prefs = await SharedPreferences.getInstance();
     prefs.setString('themeName', themeName);
     notifyListeners();
   }
 
   void setPieceTheme(int index) async {
-    pieceTheme = pieceThemes[index];
+    final theme = pieceThemes[index];
+    if (!premiumAccess.isPieceThemeUnlocked(theme)) return;
+    pieceTheme = theme;
     final prefs = await SharedPreferences.getInstance();
     prefs.setString('pieceTheme', pieceTheme);
     notifyListeners();

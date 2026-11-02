@@ -4,10 +4,16 @@ import 'package:flutter/foundation.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-const String removeAdsProductId = 'com.appsbay.chessRoom1.remove_ads';
-const String removeAdsEntitlementKey = 'remove_ads_entitlement';
+/// The non-consumable App Store product that grants premium. The iOS and
+/// macOS builds ship under one App Store record, so both resolve this same
+/// identifier and a purchase made on either platform restores on the other.
+const String premiumProductId = 'com.appsbay.chessRoom1.remove_ads';
 
-enum RemoveAdsStoreState {
+/// Preserves the key written by the releases that sold this purchase as
+/// "Remove Ads", so upgrading players keep their entitlement.
+const String premiumEntitlementKey = 'remove_ads_entitlement';
+
+enum PremiumStoreState {
   idle,
   loading,
   available,
@@ -21,7 +27,7 @@ enum RemoveAdsStoreState {
   restoreEmpty,
 }
 
-abstract class RemoveAdsStore {
+abstract class PremiumStore {
   Stream<List<PurchaseDetails>> get purchaseStream;
 
   Future<bool> isAvailable();
@@ -37,25 +43,25 @@ abstract class RemoveAdsStore {
 
 /// Boundary for a future server-side receipt verifier. The App Store purchase
 /// stream remains the authority for this client-only implementation.
-abstract class RemoveAdsPurchaseVerifier {
-  Future<bool> grantsRemoveAdsEntitlement(PurchaseDetails purchase);
+abstract class PremiumPurchaseVerifier {
+  Future<bool> grantsPremiumEntitlement(PurchaseDetails purchase);
 }
 
-class StorePurchaseVerifier implements RemoveAdsPurchaseVerifier {
+class StorePurchaseVerifier implements PremiumPurchaseVerifier {
   const StorePurchaseVerifier();
 
   @override
-  Future<bool> grantsRemoveAdsEntitlement(PurchaseDetails purchase) async {
-    return purchase.productID == removeAdsProductId &&
+  Future<bool> grantsPremiumEntitlement(PurchaseDetails purchase) async {
+    return purchase.productID == premiumProductId &&
         (purchase.status == PurchaseStatus.purchased ||
             purchase.status == PurchaseStatus.restored);
   }
 }
 
-class InAppPurchaseRemoveAdsStore implements RemoveAdsStore {
+class InAppPurchasePremiumStore implements PremiumStore {
   final InAppPurchase _iap;
 
-  InAppPurchaseRemoveAdsStore({InAppPurchase? iap})
+  InAppPurchasePremiumStore({InAppPurchase? iap})
       : _iap = iap ?? InAppPurchase.instance;
 
   @override
@@ -85,46 +91,50 @@ class InAppPurchaseRemoveAdsStore implements RemoveAdsStore {
   }
 }
 
-class RemoveAdsPurchaseService extends ChangeNotifier {
-  RemoveAdsPurchaseService({
-    RemoveAdsStore? store,
-    RemoveAdsPurchaseVerifier? verifier,
+class PremiumPurchaseService extends ChangeNotifier {
+  PremiumPurchaseService({
+    PremiumStore? store,
+    PremiumPurchaseVerifier? verifier,
   })  : _injectedStore = store,
         _verifier = verifier ?? const StorePurchaseVerifier();
 
-  final RemoveAdsStore? _injectedStore;
-  final RemoveAdsPurchaseVerifier _verifier;
-  RemoveAdsStore? _store;
+  final PremiumStore? _injectedStore;
+  final PremiumPurchaseVerifier _verifier;
+  PremiumStore? _store;
   StreamSubscription<List<PurchaseDetails>>? _purchaseSubscription;
   Future<void>? _initialization;
-  ProductDetails? _removeAdsProduct;
-  bool _isAdsRemoved = false;
+  ProductDetails? _premiumProduct;
+  bool _isPremium = false;
   bool _isAvailable = false;
   bool _isRestoring = false;
   bool _restoreFoundPurchase = false;
-  RemoveAdsStoreState _state = RemoveAdsStoreState.idle;
+  PremiumStoreState _state = PremiumStoreState.idle;
 
+  /// StoreKit is reachable on the two Apple platforms that share this app's
+  /// App Store record.
   bool get isSupported =>
-      !kIsWeb && defaultTargetPlatform == TargetPlatform.iOS;
+      !kIsWeb &&
+      (defaultTargetPlatform == TargetPlatform.iOS ||
+          defaultTargetPlatform == TargetPlatform.macOS);
 
-  bool get isAdsRemoved => _isAdsRemoved;
+  bool get isPremium => _isPremium;
 
   bool get isAvailable => _isAvailable;
 
-  ProductDetails? get removeAdsProduct => _removeAdsProduct;
+  ProductDetails? get premiumProduct => _premiumProduct;
 
-  String? get localizedPrice => _removeAdsProduct?.price;
+  String? get localizedPrice => _premiumProduct?.price;
 
-  RemoveAdsStoreState get state => _state;
+  PremiumStoreState get state => _state;
 
   bool get isStoreFlowActive {
-    return _state == RemoveAdsStoreState.loading ||
-        _state == RemoveAdsStoreState.purchasing ||
-        _state == RemoveAdsStoreState.pending;
+    return _state == PremiumStoreState.loading ||
+        _state == PremiumStoreState.purchasing ||
+        _state == PremiumStoreState.pending;
   }
 
-  RemoveAdsStore get _activeStore {
-    return _store ??= _injectedStore ?? InAppPurchaseRemoveAdsStore();
+  PremiumStore get _activeStore {
+    return _store ??= _injectedStore ?? InAppPurchasePremiumStore();
   }
 
   Future<void> init() => _initialization ??= _initialize();
@@ -135,7 +145,7 @@ class RemoveAdsPurchaseService extends ChangeNotifier {
       // while the app is launching.
       _purchaseSubscription ??= _activeStore.purchaseStream.listen(
         _handlePurchaseUpdates,
-        onError: (_) => _setState(RemoveAdsStoreState.failed),
+        onError: (_) => _setState(PremiumStoreState.failed),
       );
     }
 
@@ -151,7 +161,7 @@ class RemoveAdsPurchaseService extends ChangeNotifier {
       return;
     }
 
-    _setState(RemoveAdsStoreState.loading);
+    _setState(PremiumStoreState.loading);
     try {
       _isAvailable = await _activeStore.isAvailable();
       if (!_isAvailable) {
@@ -160,10 +170,10 @@ class RemoveAdsPurchaseService extends ChangeNotifier {
       }
 
       final response =
-          await _activeStore.queryProductDetails({removeAdsProductId});
+          await _activeStore.queryProductDetails({premiumProductId});
       ProductDetails? product;
       for (final candidate in response.productDetails) {
-        if (candidate.id == removeAdsProductId) {
+        if (candidate.id == premiumProductId) {
           product = candidate;
           break;
         }
@@ -173,8 +183,8 @@ class RemoveAdsPurchaseService extends ChangeNotifier {
         return;
       }
 
-      _removeAdsProduct = product;
-      _setState(RemoveAdsStoreState.available);
+      _premiumProduct = product;
+      _setState(PremiumStoreState.available);
     } catch (_) {
       _setUnavailable();
     }
@@ -182,34 +192,34 @@ class RemoveAdsPurchaseService extends ChangeNotifier {
 
   void _setUnavailable() {
     _isAvailable = false;
-    _removeAdsProduct = null;
-    _setState(RemoveAdsStoreState.unavailable);
+    _premiumProduct = null;
+    _setState(PremiumStoreState.unavailable);
   }
 
-  Future<void> buyRemoveAds() async {
+  Future<void> buyPremium() async {
     if (!isSupported) {
       _setUnavailable();
       return;
     }
 
-    if (_removeAdsProduct == null) {
+    if (_premiumProduct == null) {
       await loadProducts();
     }
 
-    final product = _removeAdsProduct;
+    final product = _premiumProduct;
     if (product == null) {
       _setUnavailable();
       return;
     }
 
-    _setState(RemoveAdsStoreState.purchasing);
+    _setState(PremiumStoreState.purchasing);
     try {
       final started = await _activeStore.buyNonConsumable(product);
       if (!started) {
-        _setState(RemoveAdsStoreState.failed);
+        _setState(PremiumStoreState.failed);
       }
     } catch (_) {
-      _setState(RemoveAdsStoreState.failed);
+      _setState(PremiumStoreState.failed);
     }
   }
 
@@ -224,7 +234,7 @@ class RemoveAdsPurchaseService extends ChangeNotifier {
     _isRestoring = true;
     _restoreFoundPurchase = false;
     if (userInitiated) {
-      _setState(RemoveAdsStoreState.loading);
+      _setState(PremiumStoreState.loading);
     }
 
     try {
@@ -233,11 +243,11 @@ class RemoveAdsPurchaseService extends ChangeNotifier {
       // update the entitlement before reporting an empty restore result.
       await Future<void>.delayed(Duration.zero);
       if (userInitiated && !_restoreFoundPurchase) {
-        _setState(RemoveAdsStoreState.restoreEmpty);
+        _setState(PremiumStoreState.restoreEmpty);
       }
     } catch (_) {
       if (userInitiated) {
-        _setState(RemoveAdsStoreState.failed);
+        _setState(PremiumStoreState.failed);
       }
     } finally {
       _isRestoring = false;
@@ -246,35 +256,35 @@ class RemoveAdsPurchaseService extends ChangeNotifier {
 
   Future<void> _handlePurchaseUpdates(List<PurchaseDetails> purchases) async {
     for (final purchase in purchases) {
-      if (purchase.productID != removeAdsProductId) {
+      if (purchase.productID != premiumProductId) {
         continue;
       }
 
       switch (purchase.status) {
         case PurchaseStatus.pending:
-          _setState(RemoveAdsStoreState.pending);
+          _setState(PremiumStoreState.pending);
           break;
         case PurchaseStatus.purchased:
         case PurchaseStatus.restored:
           if (purchase.status == PurchaseStatus.restored) {
             _restoreFoundPurchase = true;
           }
-          final isValid = await _verifier.grantsRemoveAdsEntitlement(purchase);
+          final isValid = await _verifier.grantsPremiumEntitlement(purchase);
           if (isValid) {
             await _grantEntitlement(
               purchase.status == PurchaseStatus.restored && _isRestoring
-                  ? RemoveAdsStoreState.restored
-                  : RemoveAdsStoreState.purchased,
+                  ? PremiumStoreState.restored
+                  : PremiumStoreState.purchased,
             );
           } else {
-            _setState(RemoveAdsStoreState.failed);
+            _setState(PremiumStoreState.failed);
           }
           break;
         case PurchaseStatus.error:
-          _setState(RemoveAdsStoreState.failed);
+          _setState(PremiumStoreState.failed);
           break;
         case PurchaseStatus.canceled:
-          _setState(RemoveAdsStoreState.cancelled);
+          _setState(PremiumStoreState.cancelled);
           break;
       }
 
@@ -288,20 +298,20 @@ class RemoveAdsPurchaseService extends ChangeNotifier {
     }
   }
 
-  Future<void> _grantEntitlement(RemoveAdsStoreState state) async {
-    _isAdsRemoved = true;
+  Future<void> _grantEntitlement(PremiumStoreState state) async {
+    _isPremium = true;
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setBool(removeAdsEntitlementKey, true);
+    await prefs.setBool(premiumEntitlementKey, true);
     _setState(state);
   }
 
   Future<void> _loadPersistedEntitlement() async {
     final prefs = await SharedPreferences.getInstance();
-    _isAdsRemoved = prefs.getBool(removeAdsEntitlementKey) ?? false;
+    _isPremium = prefs.getBool(premiumEntitlementKey) ?? false;
     notifyListeners();
   }
 
-  void _setState(RemoveAdsStoreState state) {
+  void _setState(PremiumStoreState state) {
     _state = state;
     notifyListeners();
   }

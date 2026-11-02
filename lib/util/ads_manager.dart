@@ -7,6 +7,16 @@ import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 class AdsManager {
   static bool disableAllAdsForScreenshot = false;
+
+  /// The Google Mobile Ads SDK only ships iOS and Android implementations, so
+  /// the desktop builds have no ad surfaces at all. Resolved from
+  /// [defaultTargetPlatform] rather than `Platform`, so a widget test reports
+  /// the platform under test instead of the host it runs on.
+  static bool get isSupportedPlatform =>
+      !kIsWeb &&
+      (defaultTargetPlatform == TargetPlatform.android ||
+          defaultTargetPlatform == TargetPlatform.iOS);
+
   static final ValueNotifier<bool> isInitialized = ValueNotifier<bool>(false);
   static final ValueNotifier<bool> isAdsRemoved = ValueNotifier<bool>(false);
   static final ValueNotifier<bool> isPurchaseFlowActive =
@@ -95,9 +105,8 @@ class AdsManager {
       return kDebugMode
           ? "ca-app-pub-3940256099942544/2934735716"
           : _bannerAdUnitIdIOSRelease;
-    } else {
-      throw UnsupportedError("Unsupported platform");
     }
+    return "";
   }
 
   static String get openAdUnitID {
@@ -110,9 +119,8 @@ class AdsManager {
       return kDebugMode
           ? 'ca-app-pub-3940256099942544/5575463023'
           : _openAdUnitIDIOSRelease;
-    } else {
-      throw UnsupportedError("Unsupported platform");
     }
+    return "";
   }
 
   static String get rewardAdUnitID {
@@ -125,9 +133,8 @@ class AdsManager {
       return kDebugMode
           ? 'ca-app-pub-3940256099942544/1712485313'
           : _rewardedAdIDIOSRelease;
-    } else {
-      throw UnsupportedError("Unsupported platform");
     }
+    return "";
   }
 
   static String get rewardInterstitialAdUnitID {
@@ -140,9 +147,8 @@ class AdsManager {
       return kDebugMode
           ? 'ca-app-pub-3940256099942544/6978759866'
           : _rewardedInterstitialAdIDIOSRelease;
-    } else {
-      throw UnsupportedError("Unsupported platform");
     }
+    return "";
   }
 
   static void debugPrintID() {
@@ -152,7 +158,8 @@ class AdsManager {
   }
 
   static bool get canRequestAds {
-    return isInitialized.value &&
+    return isSupportedPlatform &&
+        isInitialized.value &&
         (kDebugMode || releaseConfigurationIsValid) &&
         !isAdsRemoved.value &&
         !isPurchaseFlowActive.value &&
@@ -160,7 +167,7 @@ class AdsManager {
   }
 
   static Future<bool> gatherConsent() async {
-    if (!Platform.isAndroid && !Platform.isIOS) return false;
+    if (!isSupportedPlatform) return false;
 
     final result = Completer<bool>();
 
@@ -187,11 +194,16 @@ class AdsManager {
   }
 
   static Future<void> showPrivacyOptionsForm() async {
+    if (!isSupportedPlatform) return;
     await ConsentForm.showPrivacyOptionsForm((_) {});
     await _refreshPrivacyOptionsRequirement();
   }
 
   static Future<void> _refreshPrivacyOptionsRequirement() async {
+    if (!isSupportedPlatform) {
+      privacyOptionsRequired.value = false;
+      return;
+    }
     final status =
         await ConsentInformation.instance.getPrivacyOptionsRequirementStatus();
     privacyOptionsRequired.value =
@@ -200,7 +212,8 @@ class AdsManager {
 
   static Future<void> initialize({required bool adsRemoved}) async {
     isAdsRemoved.value = adsRemoved;
-    if (adsRemoved ||
+    if (!isSupportedPlatform ||
+        adsRemoved ||
         isInitialized.value ||
         disableAllAdsForScreenshot ||
         (!kDebugMode && !releaseConfigurationIsValid)) {

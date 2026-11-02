@@ -8,6 +8,9 @@ import 'package:chess_room/features/daily_puzzle/daily_puzzle.dart';
 import 'package:chess_room/features/daily_puzzle/puzzle_labels.dart';
 import 'package:chess_room/features/daily_puzzle/puzzle_session.dart';
 import 'package:chess_room/util/app_design.dart';
+import 'package:chess_room/util/premium.dart';
+import 'package:chess_room/views/components/premium/premium_locked_panel.dart';
+import 'package:chess_room/views/components/premium/premium_scope.dart';
 import 'package:chess_room/views/components/main_menu_view/game_options/side_picker.dart';
 import 'package:chess_room/views/components/shared/position_board.dart';
 import 'package:chess_room/views/components/shared/app_page.dart';
@@ -59,6 +62,7 @@ class _PuzzleLibraryPageState extends State<PuzzleLibraryPage> {
   @override
   Widget build(BuildContext context) {
     final strings = S.of(context);
+    final access = premiumAccessOf(context);
     return PracticeSessionScope(
         child: AppPage(
       title: strings.Puzzle_Library,
@@ -69,6 +73,15 @@ class _PuzzleLibraryPageState extends State<PuzzleLibraryPage> {
             Text(
               strings.Puzzle_Library_Description,
               style: const TextStyle(fontSize: 17),
+            ),
+            const SizedBox(height: AppSpacing.md),
+            PremiumAllowanceLabel(
+              key: const ValueKey('library-allowance'),
+              remaining: access.libraryPuzzlesLeft,
+              isPremium: access.isPremium,
+              describeRemaining: (strings, remaining) => remaining > 0
+                  ? strings.Premium_Puzzles_Left(remaining)
+                  : strings.Premium_Puzzles_Spent,
             ),
             const SizedBox(height: AppSpacing.xl),
             if (_progressFailed) ...[
@@ -202,6 +215,8 @@ class _PuzzleSessionPageState extends State<PuzzleSessionPage> {
   bool _showHint = false;
   bool _progressFailed = false;
   bool _savingProgress = false;
+  bool _allowanceSpent = false;
+  bool _claimingAllowance = false;
   final Set<String> _pendingCompletions = {};
 
   ThemedPuzzle get _puzzle => _puzzles[_index];
@@ -212,6 +227,24 @@ class _PuzzleSessionPageState extends State<PuzzleSessionPage> {
     _loadPuzzles();
   }
 
+  /// Spends one of the day's free positions. Premium players always get one;
+  /// a free player who has run out sees the upgrade panel in place of the
+  /// board, with the position they were on left untouched.
+  Future<bool> _claimPuzzle() async {
+    if (_claimingAllowance) return !_allowanceSpent;
+    _claimingAllowance = true;
+    try {
+      final granted = await claimPremiumAllowance(
+        context,
+        PremiumDailyAllowance.libraryPuzzles,
+      );
+      if (mounted) setState(() => _allowanceSpent = !granted);
+      return granted;
+    } finally {
+      _claimingAllowance = false;
+    }
+  }
+
   Future<void> _loadPuzzles() async {
     Set<String> solved = {};
     try {
@@ -220,6 +253,8 @@ class _PuzzleSessionPageState extends State<PuzzleSessionPage> {
       _progressFailed = true;
     }
     if (!mounted) return;
+    final allowed = await _claimPuzzle();
+    if (!mounted || !allowed) return;
     final candidates = themedPuzzles
         .where((puzzle) => puzzle.theme == widget.theme)
         .toList(growable: false);
@@ -317,7 +352,8 @@ class _PuzzleSessionPageState extends State<PuzzleSessionPage> {
     }
   }
 
-  void _nextPuzzle() {
+  Future<void> _nextPuzzle() async {
+    if (!await _claimPuzzle() || !mounted) return;
     setState(() {
       _index = (_index + 1) % _puzzles.length;
       _startPuzzle();
@@ -331,9 +367,19 @@ class _PuzzleSessionPageState extends State<PuzzleSessionPage> {
         child: AppPage(
       title: _themeName(strings, widget.theme),
       child: AppContent(
-        child: _puzzles.isEmpty
-            ? const Center(child: CupertinoActivityIndicator())
-            : _buildPuzzle(strings),
+        child: _allowanceSpent
+            ? Center(
+                child: Padding(
+                  padding: const EdgeInsets.all(AppSpacing.xl),
+                  child: PremiumLockedPanel(
+                    message: strings.Premium_Puzzles_Spent,
+                    feature: PremiumFeature.libraryPuzzles,
+                  ),
+                ),
+              )
+            : _puzzles.isEmpty
+                ? const Center(child: CupertinoActivityIndicator())
+                : _buildPuzzle(strings),
       ),
     ));
   }
@@ -422,7 +468,8 @@ class _PuzzleSessionPageState extends State<PuzzleSessionPage> {
             const SizedBox(height: AppSpacing.lg),
             CupertinoButton.filled(
               key: const ValueKey('next-library-puzzle'),
-              onPressed: _savingProgress ? null : _nextPuzzle,
+              onPressed:
+                  _savingProgress ? null : () => unawaited(_nextPuzzle()),
               child: Text(strings.Next_Puzzle),
             ),
           ],

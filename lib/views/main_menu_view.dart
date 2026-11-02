@@ -45,7 +45,7 @@ class _MainMenuViewState extends State<MainMenuView>
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
     AdsManager.practiceSessionCount.removeListener(_practiceListener);
-    _appModel?.purchaseService.removeListener(_handleRemoveAdsChanged);
+    _appModel?.purchaseService.removeListener(_handlePremiumChanged);
     _stopAppOpenAds();
     super.dispose();
   }
@@ -178,14 +178,14 @@ class _MainMenuViewState extends State<MainMenuView>
       }
 
       _appModel = Provider.of<AppModel>(context, listen: false);
-      _appModel?.purchaseService.addListener(_handleRemoveAdsChanged);
+      _appModel?.purchaseService.addListener(_handlePremiumChanged);
       await _appModel!.purchaseInitialization;
       if (!mounted) {
         return;
       }
 
-      AdsManager.setAdsRemoved(_appModel!.isAdsRemoved);
-      if (_appModel!.isAdsRemoved) {
+      AdsManager.setAdsRemoved(_appModel!.isPremium);
+      if (_appModel!.isPremium || !AdsManager.isSupportedPlatform) {
         _stopAppOpenAds();
         return;
       }
@@ -206,7 +206,7 @@ class _MainMenuViewState extends State<MainMenuView>
         }
       }
 
-      await AdsManager.initialize(adsRemoved: _appModel!.isAdsRemoved);
+      await AdsManager.initialize(adsRemoved: _appModel!.isPremium);
       if (!mounted) {
         return;
       }
@@ -222,16 +222,16 @@ class _MainMenuViewState extends State<MainMenuView>
     });
   }
 
-  void _handleRemoveAdsChanged() {
+  void _handlePremiumChanged() {
     final appModel = _appModel;
     if (appModel == null) {
       return;
     }
 
-    AdsManager.setAdsRemoved(appModel.isAdsRemoved);
+    AdsManager.setAdsRemoved(appModel.isPremium);
     AdsManager.setPurchaseFlowActive(
         appModel.purchaseService.isStoreFlowActive);
-    if (appModel.isAdsRemoved) {
+    if (appModel.isPremium) {
       _stopAppOpenAds();
     }
   }

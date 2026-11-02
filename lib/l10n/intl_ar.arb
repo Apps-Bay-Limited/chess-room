@@ -26,20 +26,14 @@
   "Tip_Button" : "زر اقتراح النقلة",
   "Undo" : "تراجع/إعادة",
   "Remove_Ads" : "إزالة الإعلانات",
-  "Remove_Ads_With_Price" : "إزالة الإعلانات {price}",
-  "@Remove_Ads_With_Price": {"placeholders": {"price": {}}},
-  "Remove_Ads_Description" : "إزالة الإعلانات نهائيًا من هذا التطبيق.",
-  "Remove_Ads_Purchased" : "تمت إزالة الإعلانات على هذا الجهاز.",
-  "Remove_Ads_Loading" : "جارٍ تحميل خيارات الشراء…",
-  "Remove_Ads_Unavailable" : "إزالة الإعلانات غير متاحة حاليًا.",
   "Restore_Purchases" : "استعادة المشتريات",
   "Purchase_In_Progress" : "جارٍ الشراء…",
   "Purchase_Pending" : "عملية الشراء بانتظار الموافقة.",
-  "Purchase_Success" : "اكتملت عملية الشراء. تمت إزالة الإعلانات.",
-  "Purchase_Restored" : "تمت استعادة عملية الشراء وإزالة الإعلانات.",
+  "Purchase_Success" : "تمت عملية الشراء. تم فتح النسخة المميزة.",
+  "Purchase_Restored" : "تمت استعادة الشراء. تم فتح النسخة المميزة.",
   "Purchase_Cancelled" : "تم إلغاء عملية الشراء.",
   "Purchase_Failed" : "فشلت عملية الشراء. يُرجى المحاولة مجددًا.",
-  "Restore_Not_Found" : "لم يتم العثور على عملية شراء سابقة لإزالة الإعلانات.",
+  "Restore_Not_Found" : "لم يتم العثور على عملية شراء سابقة للنسخة المميزة.",
   "You_Lose" : "لقد خسرت",
   "You_Win" : "لقد فزت",
   "Whites_Turn" : "دور الأبيض",
@@ -271,5 +265,51 @@
   "@Puzzle_Position_Reply": {"placeholders": {"reply": {}, "finish": {}}},
   "Local_Data_Unavailable": "البيانات المحفوظة غير متاحة مؤقتًا. يُرجى المحاولة مجددًا.",
   "Delete_Game_Failed": "تعذّر حذف هذه المباراة. يُرجى المحاولة مجددًا.",
-  "Puzzle_Hint": "إظهار تلميح"
+  "Puzzle_Hint": "إظهار تلميح",
+  "Premium" : "النسخة المميزة",
+  "Premium_Description" : "عملية شراء واحدة تفتح كل السمات والتدريب غير المحدود وسجل مبارياتك الكامل، وتزيل الإعلانات. تعمل على iPhone وiPad وMac.",
+  "Premium_Unlock" : "فتح النسخة المميزة",
+  "Premium_Unlock_With_Price" : "فتح النسخة المميزة {price}",
+  "@Premium_Unlock_With_Price": {
+    "placeholders": {
+      "price": {}
+    }
+  },
+  "Premium_Active" : "النسخة المميزة مُفعّلة على هذا الجهاز.",
+  "Premium_Unavailable" : "النسخة المميزة غير متاحة حاليًا.",
+  "Premium_Loading" : "جارٍ تحميل خيارات الشراء...",
+  "Premium_Benefit_Themes" : "كل سمات الرقعة وأطقم القطع",
+  "Premium_Benefit_Training" : "ألغاز غير محدودة وكل دورات الافتتاحيات",
+  "Premium_Benefit_Review" : "مراجعة مباريات غير محدودة",
+  "Premium_Benefit_History" : "سجل مبارياتك الكامل",
+  "Premium_Benefit_No_Ads" : "بدون إعلانات",
+  "Premium_Benefit_Shared" : "شراء واحد يشمل iPhone وiPad وMac",
+  "Premium_Locked_Piece_Theme" : "طقم القطع هذا جزء من النسخة المميزة.",
+  "Premium_Locked_Board_Theme" : "سمة الرقعة هذه جزء من النسخة المميزة.",
+  "Premium_Locked_Opening" : "دورة الافتتاحية هذه جزء من النسخة المميزة.",
+  "Premium_Locked_History" : "يتم الاحتفاظ بـ {count} مباريات أقدم مع النسخة المميزة.",
+  "@Premium_Locked_History": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "Premium_Puzzles_Left" : "بقي لك {count} ألغاز مجانية اليوم",
+  "@Premium_Puzzles_Left": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "Premium_Puzzles_Spent" : "لقد استخدمت ألغاز اليوم المجانية.",
+  "Premium_Reviews_Left" : "بقي لك {count} مراجعات مجانية اليوم",
+  "@Premium_Reviews_Left": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "Premium_Reviews_Spent" : "لقد استخدمت مراجعات اليوم المجانية.",
+  "Premium_Unlimited" : "غير محدود مع النسخة المميزة",
+  "Not_Now" : "ليس الآن",
+  "Appearance" : "المظهر",
+  "Board_Theme" : "سمة الرقعة",
+  "Piece_Set" : "طقم القطع"
 }

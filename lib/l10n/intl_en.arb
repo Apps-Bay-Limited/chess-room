@@ -26,24 +26,14 @@
   "Tip_Button" : "Move suggestion button",
   "Undo" : "Undo/Redo",
   "Remove_Ads" : "Remove Ads",
-  "Remove_Ads_With_Price" : "Remove Ads {price}",
-  "@Remove_Ads_With_Price": {
-    "placeholders": {
-      "price": {}
-    }
-  },
-  "Remove_Ads_Description" : "Remove ads permanently from this app.",
-  "Remove_Ads_Purchased" : "Ads are removed on this device.",
-  "Remove_Ads_Loading" : "Loading purchase options...",
-  "Remove_Ads_Unavailable" : "Remove Ads is currently unavailable.",
   "Restore_Purchases" : "Restore Purchases",
   "Purchase_In_Progress" : "Purchase in progress...",
   "Purchase_Pending" : "Purchase is pending approval.",
-  "Purchase_Success" : "Purchase complete. Ads are removed.",
-  "Purchase_Restored" : "Purchase restored. Ads are removed.",
+  "Purchase_Success" : "Purchase complete. Premium is unlocked.",
+  "Purchase_Restored" : "Purchase restored. Premium is unlocked.",
   "Purchase_Cancelled" : "Purchase cancelled.",
   "Purchase_Failed" : "Purchase failed. Please try again.",
-  "Restore_Not_Found" : "No previous Remove Ads purchase was found.",
+  "Restore_Not_Found" : "No previous Premium purchase was found.",
   "You_Lose" : "You Lose",
   "You_Win" : "You Win",
   "Whites_Turn" : "White's turn",
@@ -276,5 +266,51 @@
   "@Puzzle_Position_Reply": {"placeholders": {"reply": {}, "finish": {}}},
   "Local_Data_Unavailable": "Saved data is temporarily unavailable. Please try again.",
   "Delete_Game_Failed": "Could not delete this game. Please try again.",
-  "Puzzle_Hint": "Show hint"
+  "Puzzle_Hint": "Show hint",
+  "Premium" : "Premium",
+  "Premium_Description" : "One purchase unlocks every theme, unlimited training and your full game archive — and removes ads. It covers iPhone, iPad and Mac.",
+  "Premium_Unlock" : "Unlock Premium",
+  "Premium_Unlock_With_Price" : "Unlock Premium {price}",
+  "@Premium_Unlock_With_Price": {
+    "placeholders": {
+      "price": {}
+    }
+  },
+  "Premium_Active" : "Premium is active on this device.",
+  "Premium_Unavailable" : "Premium is currently unavailable.",
+  "Premium_Loading" : "Loading purchase options...",
+  "Premium_Benefit_Themes" : "Every board theme and piece set",
+  "Premium_Benefit_Training" : "Unlimited library puzzles and every opening course",
+  "Premium_Benefit_Review" : "Unlimited game review",
+  "Premium_Benefit_History" : "Your complete game archive",
+  "Premium_Benefit_No_Ads" : "No ads",
+  "Premium_Benefit_Shared" : "One purchase covers iPhone, iPad and Mac",
+  "Premium_Locked_Piece_Theme" : "This piece set is part of Premium.",
+  "Premium_Locked_Board_Theme" : "This board theme is part of Premium.",
+  "Premium_Locked_Opening" : "This opening course is part of Premium.",
+  "Premium_Locked_History" : "{count} older games are kept with Premium.",
+  "@Premium_Locked_History": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "Premium_Puzzles_Left" : "{count} free puzzles left today",
+  "@Premium_Puzzles_Left": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "Premium_Puzzles_Spent" : "You have used today’s free library puzzles.",
+  "Premium_Reviews_Left" : "{count} free game reviews left today",
+  "@Premium_Reviews_Left": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "Premium_Reviews_Spent" : "You have used today’s free game reviews.",
+  "Premium_Unlimited" : "Unlimited with Premium",
+  "Not_Now" : "Not now",
+  "Appearance" : "Appearance",
+  "Board_Theme" : "Board theme",
+  "Piece_Set" : "Piece set"
 }

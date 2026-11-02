@@ -26,20 +26,14 @@
   "Tip_Button" : "指し手の提案ボタン",
   "Undo" : "待った/やり直し",
   "Remove_Ads" : "広告を削除",
-  "Remove_Ads_With_Price" : "広告を削除 {price}",
-  "@Remove_Ads_With_Price": {"placeholders": {"price": {}}},
-  "Remove_Ads_Description" : "このアプリから広告を完全に削除します。",
-  "Remove_Ads_Purchased" : "この端末では広告が削除されています。",
-  "Remove_Ads_Loading" : "購入オプションを読み込み中…",
-  "Remove_Ads_Unavailable" : "現在、広告の削除は利用できません。",
   "Restore_Purchases" : "購入を復元",
   "Purchase_In_Progress" : "購入処理中…",
   "Purchase_Pending" : "購入は承認待ちです。",
-  "Purchase_Success" : "購入が完了しました。広告は削除されました。",
-  "Purchase_Restored" : "購入を復元しました。広告は削除されました。",
+  "Purchase_Success" : "購入が完了しました。プレミアムが有効になりました。",
+  "Purchase_Restored" : "購入を復元しました。プレミアムが有効になりました。",
   "Purchase_Cancelled" : "購入をキャンセルしました。",
   "Purchase_Failed" : "購入に失敗しました。もう一度お試しください。",
-  "Restore_Not_Found" : "以前の広告削除の購入が見つかりませんでした。",
+  "Restore_Not_Found" : "以前のプレミアムの購入が見つかりませんでした。",
   "You_Lose" : "あなたの負けです",
   "You_Win" : "あなたの勝ちです",
   "Whites_Turn" : "白の番",
@@ -271,5 +265,51 @@
   "@Puzzle_Position_Reply": {"placeholders": {"reply": {}, "finish": {}}},
   "Local_Data_Unavailable": "保存済みデータを一時的に読み込めません。もう一度お試しください。",
   "Delete_Game_Failed": "この対局を削除できませんでした。もう一度お試しください。",
-  "Puzzle_Hint": "ヒントを表示"
+  "Puzzle_Hint": "ヒントを表示",
+  "Premium" : "プレミアム",
+  "Premium_Description" : "一度の購入で、すべてのテーマ、無制限のトレーニング、対局履歴のすべてが使えるようになり、広告も表示されません。iPhone、iPad、Mac で共通です。",
+  "Premium_Unlock" : "プレミアムを解除",
+  "Premium_Unlock_With_Price" : "プレミアムを解除 {price}",
+  "@Premium_Unlock_With_Price": {
+    "placeholders": {
+      "price": {}
+    }
+  },
+  "Premium_Active" : "この端末でプレミアムが有効です。",
+  "Premium_Unavailable" : "現在プレミアムは利用できません。",
+  "Premium_Loading" : "購入オプションを読み込み中...",
+  "Premium_Benefit_Themes" : "すべての盤テーマと駒デザイン",
+  "Premium_Benefit_Training" : "無制限の問題集とすべての定跡コース",
+  "Premium_Benefit_Review" : "無制限の対局レビュー",
+  "Premium_Benefit_History" : "対局履歴のすべて",
+  "Premium_Benefit_No_Ads" : "広告なし",
+  "Premium_Benefit_Shared" : "一度の購入で iPhone、iPad、Mac に対応",
+  "Premium_Locked_Piece_Theme" : "この駒デザインはプレミアムの機能です。",
+  "Premium_Locked_Board_Theme" : "この盤テーマはプレミアムの機能です。",
+  "Premium_Locked_Opening" : "この定跡コースはプレミアムの機能です。",
+  "Premium_Locked_History" : "過去の対局 {count} 件はプレミアムで表示できます。",
+  "@Premium_Locked_History": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "Premium_Puzzles_Left" : "今日の無料問題は残り {count} 問",
+  "@Premium_Puzzles_Left": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "Premium_Puzzles_Spent" : "今日の無料問題を使い切りました。",
+  "Premium_Reviews_Left" : "今日の無料レビューは残り {count} 回",
+  "@Premium_Reviews_Left": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "Premium_Reviews_Spent" : "今日の無料レビューを使い切りました。",
+  "Premium_Unlimited" : "プレミアムなら無制限",
+  "Not_Now" : "今はしない",
+  "Appearance" : "外観",
+  "Board_Theme" : "盤テーマ",
+  "Piece_Set" : "駒デザイン"
 }
