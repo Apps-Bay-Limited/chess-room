@@ -42,12 +42,11 @@ the one step worth pausing over.
 ## State
 
 Created on 2026-11-13 with eight listings and 174 regional prices converted
-from USD 2.99 at regions version `2026/01`. The `buy` option is **DRAFT**, so
-nothing is purchasable yet — not even for license testers.
+from USD 2.99 at regions version `2026/01`. The `buy` option was activated on
+2026-11-14 and is **ACTIVE**.
 
-Before activating, ship an Android build that contains the Billing library (any
-build of this app since Play Billing support landed) to a Play track, otherwise
-`queryProductDetails` returns the product as not found on devices.
+Devices only see the product once a build containing Play Billing support is
+on a Play track; until then `queryProductDetails` reports it as not found.
 
 Google's legacy `inappproducts` API now answers HTTP 403 `Please migrate to the
 new publishing API.` Use `monetization.onetimeproducts`, which is what the tool
