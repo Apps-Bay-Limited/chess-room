@@ -107,39 +107,6 @@ class InAppPurchasePremiumStore implements PremiumStore {
   }
 }
 
-/// A store that reports itself unreachable and never emits a purchase, so the
-/// service settles on [PremiumStoreState.unavailable] instead of touching a
-/// real billing client. Only used where no real store can answer.
-class _UnreachableStore implements PremiumStore {
-  const _UnreachableStore();
-
-  @override
-  Stream<List<PurchaseDetails>> get purchaseStream =>
-      const Stream<List<PurchaseDetails>>.empty();
-
-  @override
-  Future<bool> isAvailable() async => false;
-
-  @override
-  Future<ProductDetailsResponse> queryProductDetails(
-    Set<String> productIds,
-  ) async {
-    return ProductDetailsResponse(
-      productDetails: const [],
-      notFoundIDs: productIds.toList(),
-    );
-  }
-
-  @override
-  Future<bool> buyNonConsumable(ProductDetails product) async => false;
-
-  @override
-  Future<void> restorePurchases() async {}
-
-  @override
-  Future<void> completePurchase(PurchaseDetails purchase) async {}
-}
-
 class PremiumPurchaseService extends ChangeNotifier {
   PremiumPurchaseService({
     PremiumStore? store,
@@ -161,11 +128,18 @@ class PremiumPurchaseService extends ChangeNotifier {
 
   /// A billing client is reachable: StoreKit on the two Apple platforms that
   /// share this app's App Store record, and Play Billing on Android.
-  bool get isSupported =>
-      !kIsWeb &&
-      (defaultTargetPlatform == TargetPlatform.iOS ||
-          defaultTargetPlatform == TargetPlatform.macOS ||
-          defaultTargetPlatform == TargetPlatform.android);
+  bool get isSupported {
+    if (kIsWeb) return false;
+    // `flutter test` reports Android as the target platform, and no store
+    // answers in the test host. A test that injects no store therefore gets
+    // the no-store path: otherwise it would build a real billing client, and
+    // the silent launch restore would await a timer that a widget test's fake
+    // clock never fires. Tests that exercise buying or restoring inject one.
+    if (_injectedStore == null && _isFlutterTest) return false;
+    return defaultTargetPlatform == TargetPlatform.iOS ||
+        defaultTargetPlatform == TargetPlatform.macOS ||
+        defaultTargetPlatform == TargetPlatform.android;
+  }
 
   bool get isPremium => _isPremium;
 
@@ -184,18 +158,7 @@ class PremiumPurchaseService extends ChangeNotifier {
   }
 
   PremiumStore get _activeStore {
-    return _store ??= _injectedStore ?? _defaultStore();
-  }
-
-  /// `flutter test` reports Android as the target platform, so every test that
-  /// builds an [PremiumPurchaseService] without injecting a store would reach
-  /// for a real Play billing client and then wait on a platform channel that
-  /// nothing in the test host answers. Tests that exercise buying or restoring
-  /// inject their own store, so an inert one is the right default there.
-  PremiumStore _defaultStore() {
-    return _isFlutterTest
-        ? const _UnreachableStore()
-        : InAppPurchasePremiumStore();
+    return _store ??= _injectedStore ?? InAppPurchasePremiumStore();
   }
 
   static bool get _isFlutterTest =>
