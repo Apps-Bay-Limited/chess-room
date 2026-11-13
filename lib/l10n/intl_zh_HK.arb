@@ -268,7 +268,7 @@
   "Delete_Game_Failed": "無法刪除此對局，請重試。",
   "Puzzle_Hint": "顯示提示",
   "Premium" : "進階版",
-  "Premium_Description" : "一次購買即可解鎖全部主題、無限訓練與完整對局存檔，並移除廣告。iPhone、iPad 和 Mac 通用。",
+  "Premium_Description" : "一次購買即可解鎖全部主題、無限訓練與完整對局存檔，並移除廣告。",
   "Premium_Unlock" : "解鎖進階版",
   "Premium_Unlock_With_Price" : "解鎖進階版 {price}",
   "@Premium_Unlock_With_Price": {
@@ -285,6 +285,7 @@
   "Premium_Benefit_History" : "完整的對局存檔",
   "Premium_Benefit_No_Ads" : "沒有廣告",
   "Premium_Benefit_Shared" : "一次購買，iPhone、iPad 和 Mac 通用",
+  "Premium_Benefit_Play" : "可用同一 Google Play 帳戶回復購買",
   "Premium_Locked_Piece_Theme" : "此棋子樣式屬於進階版。",
   "Premium_Locked_Board_Theme" : "此棋盤主題屬於進階版。",
   "Premium_Locked_Opening" : "此開局課程屬於進階版。",

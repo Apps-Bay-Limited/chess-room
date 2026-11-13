@@ -315,6 +315,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "Premium_Active": MessageLookupByLibrary.simpleMessage("この端末でプレミアムが有効です。"),
     "Premium_Benefit_History": MessageLookupByLibrary.simpleMessage("対局履歴のすべて"),
     "Premium_Benefit_No_Ads": MessageLookupByLibrary.simpleMessage("広告なし"),
+    "Premium_Benefit_Play": MessageLookupByLibrary.simpleMessage(
+      "同じ Google Play アカウントで復元できます",
+    ),
     "Premium_Benefit_Review": MessageLookupByLibrary.simpleMessage(
       "無制限の対局レビュー",
     ),
@@ -328,7 +331,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "無制限の問題集とすべての定跡コース",
     ),
     "Premium_Description": MessageLookupByLibrary.simpleMessage(
-      "一度の購入で、すべてのテーマ、無制限のトレーニング、対局履歴のすべてが使えるようになり、広告も表示されません。iPhone、iPad、Mac で共通です。",
+      "一度の購入で、すべてのテーマ、無制限のトレーニング、対局履歴のすべてが使えるようになり、広告も表示されません。",
     ),
     "Premium_Loading": MessageLookupByLibrary.simpleMessage("購入オプションを読み込み中..."),
     "Premium_Locked_Board_Theme": MessageLookupByLibrary.simpleMessage(

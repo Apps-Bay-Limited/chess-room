@@ -268,7 +268,7 @@
   "Delete_Game_Failed": "Could not delete this game. Please try again.",
   "Puzzle_Hint": "Show hint",
   "Premium" : "Premium",
-  "Premium_Description" : "One purchase unlocks every theme, unlimited training and your full game archive — and removes ads. It covers iPhone, iPad and Mac.",
+  "Premium_Description" : "One purchase unlocks every theme, unlimited training and your full game archive — and removes ads.",
   "Premium_Unlock" : "Unlock Premium",
   "Premium_Unlock_With_Price" : "Unlock Premium {price}",
   "@Premium_Unlock_With_Price": {
@@ -285,6 +285,7 @@
   "Premium_Benefit_History" : "Your complete game archive",
   "Premium_Benefit_No_Ads" : "No ads",
   "Premium_Benefit_Shared" : "One purchase covers iPhone, iPad and Mac",
+  "Premium_Benefit_Play" : "Restores with your Google Play account",
   "Premium_Locked_Piece_Theme" : "This piece set is part of Premium.",
   "Premium_Locked_Board_Theme" : "This board theme is part of Premium.",
   "Premium_Locked_Opening" : "This opening course is part of Premium.",

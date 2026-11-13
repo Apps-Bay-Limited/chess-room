@@ -268,7 +268,7 @@
   "Delete_Game_Failed": "无法删除此对局，请重试。",
   "Puzzle_Hint": "显示提示",
   "Premium" : "高级版",
-  "Premium_Description" : "一次购买即可解锁全部主题、无限训练和完整对局存档，并移除广告。iPhone、iPad 和 Mac 通用。",
+  "Premium_Description" : "一次购买即可解锁全部主题、无限训练和完整对局存档，并移除广告。",
   "Premium_Unlock" : "解锁高级版",
   "Premium_Unlock_With_Price" : "解锁高级版 {price}",
   "@Premium_Unlock_With_Price": {
@@ -285,6 +285,7 @@
   "Premium_Benefit_History" : "完整的对局存档",
   "Premium_Benefit_No_Ads" : "无广告",
   "Premium_Benefit_Shared" : "一次购买，iPhone、iPad 和 Mac 通用",
+  "Premium_Benefit_Play" : "可用同一 Google Play 账号恢复购买",
   "Premium_Locked_Piece_Theme" : "此棋子样式属于高级版。",
   "Premium_Locked_Board_Theme" : "此棋盘主题属于高级版。",
   "Premium_Locked_Opening" : "此开局课程属于高级版。",

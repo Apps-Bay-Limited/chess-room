@@ -21,8 +21,8 @@ void main() {
     debugDefaultTargetPlatformOverride = null;
   });
 
-  testWidgets('hides purchase controls on Android', (tester) async {
-    debugDefaultTargetPlatformOverride = TargetPlatform.android;
+  testWidgets('hides purchase controls where no store ships', (tester) async {
+    debugDefaultTargetPlatformOverride = TargetPlatform.windows;
     final store = _SectionStore();
     addTearDown(store.dispose);
     final appModel = AppModel(
@@ -37,7 +37,11 @@ void main() {
     debugDefaultTargetPlatformOverride = null;
   });
 
-  for (final platform in [TargetPlatform.iOS, TargetPlatform.macOS]) {
+  for (final platform in [
+    TargetPlatform.iOS,
+    TargetPlatform.macOS,
+    TargetPlatform.android,
+  ]) {
     testWidgets('offers buy and restore on ${platform.name}', (tester) async {
       debugDefaultTargetPlatformOverride = platform;
       final store = _SectionStore();
@@ -60,6 +64,16 @@ void main() {
       expect(find.byKey(const ValueKey('premium-section')), findsOneWidget);
       expect(find.text(r'Unlock Premium $2.99'), findsOneWidget);
       expect(find.text('Restore Purchases'), findsOneWidget);
+
+      // Each store's reach is stated for the store the player actually buys
+      // from: the App Store product spans the Apple devices, while a Play
+      // purchase follows the Google Play account and no Apple device.
+      const appleReach = 'One purchase covers iPhone, iPad and Mac';
+      const playReach = 'Restores with your Google Play account';
+      final isAndroid = platform == TargetPlatform.android;
+      expect(find.text(appleReach), isAndroid ? findsNothing : findsOneWidget);
+      expect(find.text(playReach), isAndroid ? findsOneWidget : findsNothing);
+
       debugDefaultTargetPlatformOverride = null;
     });
   }

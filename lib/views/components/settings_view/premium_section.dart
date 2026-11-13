@@ -6,9 +6,9 @@ import 'package:flutter/cupertino.dart';
 
 import '../../../generated/l10n.dart';
 
-/// The Settings entry point for the shared premium purchase. The same product
-/// backs the iOS and macOS builds, so this section offers both Buy and Restore
-/// wherever StoreKit is reachable.
+/// The Settings entry point for the premium purchase. One App Store product
+/// backs the iOS and macOS builds and a matching Play product backs Android,
+/// so this section offers both Buy and Restore wherever a store is reachable.
 class PremiumSection extends StatelessWidget {
   final AppModel appModel;
 

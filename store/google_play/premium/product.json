@@ -1,0 +1,20 @@
+{
+  "packageName": "com.appsbay.chess_room",
+  "productId": "com.appsbay.chess_room.remove_ads",
+  "purchaseOptionId": "buy",
+  "legacyCompatible": true,
+  "multiQuantityEnabled": false,
+  "basePrice": {
+    "currency": "USD",
+    "amount": "2.99",
+    "approval": "approved",
+    "approvedOn": "2026-11-13",
+    "note": "Matches the App Store price of com.appsbay.chessRoom1.remove_ads, which the public listing shows as $2.99."
+  },
+  "appleProductId": "com.appsbay.chessRoom1.remove_ads",
+  "notes": [
+    "Play rejects uppercase characters in a product ID, so Android cannot reuse the App Store identifier.",
+    "One permanent purchase the app never consumes; the client acknowledges it through in_app_purchase's completePurchase.",
+    "Each store bills and restores on its own. An Apple purchase is not an Android purchase, and the paywall copy says so per platform."
+  ]
+}

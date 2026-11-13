@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
@@ -7,7 +8,22 @@ import 'package:shared_preferences/shared_preferences.dart';
 /// The non-consumable App Store product that grants premium. The iOS and
 /// macOS builds ship under one App Store record, so both resolve this same
 /// identifier and a purchase made on either platform restores on the other.
-const String premiumProductId = 'com.appsbay.chessRoom1.remove_ads';
+const String premiumAppleProductId = 'com.appsbay.chessRoom1.remove_ads';
+
+/// The Google Play product that grants premium. Play only accepts lowercase
+/// letters, digits, underscores and periods in a product ID, so the Android
+/// build cannot reuse the App Store identifier and carries its own.
+const String premiumPlayProductId = 'com.appsbay.chess_room.remove_ads';
+
+/// True where Play Billing, rather than StoreKit, sells premium.
+bool get isPlayBillingPlatform =>
+    !kIsWeb && defaultTargetPlatform == TargetPlatform.android;
+
+/// The premium product sold by the storefront this build talks to. Each store
+/// bills and restores on its own, so a player who buys on Android unlocks the
+/// Android build and a player who buys on Apple unlocks iPhone, iPad and Mac.
+String get premiumProductId =>
+    isPlayBillingPlatform ? premiumPlayProductId : premiumAppleProductId;
 
 /// Preserves the key written by the releases that sold this purchase as
 /// "Remove Ads", so upgrading players keep their entitlement.
@@ -41,7 +57,7 @@ abstract class PremiumStore {
   Future<void> completePurchase(PurchaseDetails purchase);
 }
 
-/// Boundary for a future server-side receipt verifier. The App Store purchase
+/// Boundary for a future server-side receipt verifier. The store's purchase
 /// stream remains the authority for this client-only implementation.
 abstract class PremiumPurchaseVerifier {
   Future<bool> grantsPremiumEntitlement(PurchaseDetails purchase);
@@ -91,6 +107,39 @@ class InAppPurchasePremiumStore implements PremiumStore {
   }
 }
 
+/// A store that reports itself unreachable and never emits a purchase, so the
+/// service settles on [PremiumStoreState.unavailable] instead of touching a
+/// real billing client. Only used where no real store can answer.
+class _UnreachableStore implements PremiumStore {
+  const _UnreachableStore();
+
+  @override
+  Stream<List<PurchaseDetails>> get purchaseStream =>
+      const Stream<List<PurchaseDetails>>.empty();
+
+  @override
+  Future<bool> isAvailable() async => false;
+
+  @override
+  Future<ProductDetailsResponse> queryProductDetails(
+    Set<String> productIds,
+  ) async {
+    return ProductDetailsResponse(
+      productDetails: const [],
+      notFoundIDs: productIds.toList(),
+    );
+  }
+
+  @override
+  Future<bool> buyNonConsumable(ProductDetails product) async => false;
+
+  @override
+  Future<void> restorePurchases() async {}
+
+  @override
+  Future<void> completePurchase(PurchaseDetails purchase) async {}
+}
+
 class PremiumPurchaseService extends ChangeNotifier {
   PremiumPurchaseService({
     PremiumStore? store,
@@ -110,12 +159,13 @@ class PremiumPurchaseService extends ChangeNotifier {
   bool _restoreFoundPurchase = false;
   PremiumStoreState _state = PremiumStoreState.idle;
 
-  /// StoreKit is reachable on the two Apple platforms that share this app's
-  /// App Store record.
+  /// A billing client is reachable: StoreKit on the two Apple platforms that
+  /// share this app's App Store record, and Play Billing on Android.
   bool get isSupported =>
       !kIsWeb &&
       (defaultTargetPlatform == TargetPlatform.iOS ||
-          defaultTargetPlatform == TargetPlatform.macOS);
+          defaultTargetPlatform == TargetPlatform.macOS ||
+          defaultTargetPlatform == TargetPlatform.android);
 
   bool get isPremium => _isPremium;
 
@@ -134,14 +184,28 @@ class PremiumPurchaseService extends ChangeNotifier {
   }
 
   PremiumStore get _activeStore {
-    return _store ??= _injectedStore ?? InAppPurchasePremiumStore();
+    return _store ??= _injectedStore ?? _defaultStore();
   }
+
+  /// `flutter test` reports Android as the target platform, so every test that
+  /// builds an [PremiumPurchaseService] without injecting a store would reach
+  /// for a real Play billing client and then wait on a platform channel that
+  /// nothing in the test host answers. Tests that exercise buying or restoring
+  /// inject their own store, so an inert one is the right default there.
+  PremiumStore _defaultStore() {
+    return _isFlutterTest
+        ? const _UnreachableStore()
+        : InAppPurchasePremiumStore();
+  }
+
+  static bool get _isFlutterTest =>
+      !kIsWeb && Platform.environment['FLUTTER_TEST'] == 'true';
 
   Future<void> init() => _initialization ??= _initialize();
 
   Future<void> _initialize() async {
     if (isSupported) {
-      // Subscribe before any awaited work so StoreKit updates are not missed
+      // Subscribe before any awaited work so store updates are not missed
       // while the app is launching.
       _purchaseSubscription ??= _activeStore.purchaseStream.listen(
         _handlePurchaseUpdates,
@@ -292,7 +356,10 @@ class PremiumPurchaseService extends ChangeNotifier {
         try {
           await _activeStore.completePurchase(purchase);
         } catch (_) {
-          // StoreKit redelivers unfinished transactions on a later launch.
+          // Both stores redeliver an unfinished purchase, so a failed
+          // completion is retried on a later launch: StoreKit replays the
+          // transaction, and the restore `init` runs re-emits the Play
+          // purchase so it is acknowledged inside Play's three-day window.
         }
       }
     }
