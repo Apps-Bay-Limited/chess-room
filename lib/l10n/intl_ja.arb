@@ -267,7 +267,7 @@
   "Delete_Game_Failed": "この対局を削除できませんでした。もう一度お試しください。",
   "Puzzle_Hint": "ヒントを表示",
   "Premium" : "プレミアム",
-  "Premium_Description" : "一度の購入で、すべてのテーマ、無制限のトレーニング、対局履歴のすべてが使えるようになり、広告も表示されません。iPhone、iPad、Mac で共通です。",
+  "Premium_Description" : "一度の購入で、すべてのテーマ、無制限のトレーニング、対局履歴のすべてが使えるようになり、広告も表示されません。",
   "Premium_Unlock" : "プレミアムを解除",
   "Premium_Unlock_With_Price" : "プレミアムを解除 {price}",
   "@Premium_Unlock_With_Price": {
@@ -284,6 +284,7 @@
   "Premium_Benefit_History" : "対局履歴のすべて",
   "Premium_Benefit_No_Ads" : "広告なし",
   "Premium_Benefit_Shared" : "一度の購入で iPhone、iPad、Mac に対応",
+  "Premium_Benefit_Play" : "同じ Google Play アカウントで復元できます",
   "Premium_Locked_Piece_Theme" : "この駒デザインはプレミアムの機能です。",
   "Premium_Locked_Board_Theme" : "この盤テーマはプレミアムの機能です。",
   "Premium_Locked_Opening" : "この定跡コースはプレミアムの機能です。",

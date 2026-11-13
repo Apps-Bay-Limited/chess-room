@@ -267,7 +267,7 @@
   "Delete_Game_Failed": "No se pudo eliminar esta partida. Inténtalo de nuevo.",
   "Puzzle_Hint": "Mostrar pista",
   "Premium" : "Premium",
-  "Premium_Description" : "Una sola compra desbloquea todos los temas, el entrenamiento ilimitado y tu archivo completo de partidas, y elimina los anuncios. Incluye iPhone, iPad y Mac.",
+  "Premium_Description" : "Una sola compra desbloquea todos los temas, el entrenamiento ilimitado y tu archivo completo de partidas, y elimina los anuncios.",
   "Premium_Unlock" : "Desbloquear Premium",
   "Premium_Unlock_With_Price" : "Desbloquear Premium {price}",
   "@Premium_Unlock_With_Price": {
@@ -284,6 +284,7 @@
   "Premium_Benefit_History" : "Tu archivo completo de partidas",
   "Premium_Benefit_No_Ads" : "Sin anuncios",
   "Premium_Benefit_Shared" : "Una sola compra para iPhone, iPad y Mac",
+  "Premium_Benefit_Play" : "Se restaura con tu cuenta de Google Play",
   "Premium_Locked_Piece_Theme" : "Este juego de piezas forma parte de Premium.",
   "Premium_Locked_Board_Theme" : "Este tema de tablero forma parte de Premium.",
   "Premium_Locked_Opening" : "Este curso de apertura forma parte de Premium.",

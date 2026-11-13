@@ -1,5 +1,30 @@
 # Changelog
 
+## Unreleased
+
+### Added
+- Premium is now sold on Android through Google Play Billing. The Play product
+  `com.appsbay.chess_room.remove_ads` carries its own identifier because Play
+  rejects the uppercase letters in the App Store's
+  `com.appsbay.chessRoom1.remove_ads`; `premiumProductId` resolves whichever
+  one the running platform sells.
+- `store/google_play/premium/` holds the Play product definition and its eight
+  localized listings, and `tool/play_premium_product.py` validates them,
+  quotes regional prices, upserts the product, and activates it separately.
+
+### Changed
+- The paywall and the Settings section now state the reach of the store the
+  player is actually buying from: the App Store purchase covers iPhone, iPad
+  and Mac, while a Play purchase follows the Google Play account. The shared
+  description no longer promises Apple devices to an Android buyer.
+
+### Notes
+- The two stores bill and restore separately. There is no cross-store account
+  service, so an Apple purchase does not unlock the Android build.
+- Play voids a purchase that is never acknowledged within three days. The
+  service acknowledges through `completePurchase`, and the silent restore on
+  launch re-emits anything that failed to complete earlier.
+
 ## 1.6.0+15
 
 ### Added

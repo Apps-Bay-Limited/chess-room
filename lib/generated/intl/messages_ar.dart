@@ -358,6 +358,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "Premium_Benefit_No_Ads": MessageLookupByLibrary.simpleMessage(
       "بدون إعلانات",
     ),
+    "Premium_Benefit_Play": MessageLookupByLibrary.simpleMessage(
+      "يمكن استعادتها بحساب Google Play نفسه",
+    ),
     "Premium_Benefit_Review": MessageLookupByLibrary.simpleMessage(
       "مراجعة مباريات غير محدودة",
     ),
@@ -371,7 +374,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "ألغاز غير محدودة وكل دورات الافتتاحيات",
     ),
     "Premium_Description": MessageLookupByLibrary.simpleMessage(
-      "عملية شراء واحدة تفتح كل السمات والتدريب غير المحدود وسجل مبارياتك الكامل، وتزيل الإعلانات. تعمل على iPhone وiPad وMac.",
+      "عملية شراء واحدة تفتح كل السمات والتدريب غير المحدود وسجل مبارياتك الكامل، وتزيل الإعلانات.",
     ),
     "Premium_Loading": MessageLookupByLibrary.simpleMessage(
       "جارٍ تحميل خيارات الشراء...",

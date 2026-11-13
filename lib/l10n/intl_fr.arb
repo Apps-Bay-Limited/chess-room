@@ -267,7 +267,7 @@
   "Delete_Game_Failed": "Impossible de supprimer cette partie. Veuillez réessayer.",
   "Puzzle_Hint": "Afficher un indice",
   "Premium" : "Premium",
-  "Premium_Description" : "Un seul achat débloque tous les thèmes, l’entraînement illimité et l’intégralité de vos parties, et supprime les publicités. Valable sur iPhone, iPad et Mac.",
+  "Premium_Description" : "Un seul achat débloque tous les thèmes, l’entraînement illimité et l’intégralité de vos parties, et supprime les publicités.",
   "Premium_Unlock" : "Débloquer Premium",
   "Premium_Unlock_With_Price" : "Débloquer Premium {price}",
   "@Premium_Unlock_With_Price": {
@@ -284,6 +284,7 @@
   "Premium_Benefit_History" : "L’intégralité de vos parties enregistrées",
   "Premium_Benefit_No_Ads" : "Aucune publicité",
   "Premium_Benefit_Shared" : "Un seul achat pour iPhone, iPad et Mac",
+  "Premium_Benefit_Play" : "Restauration avec votre compte Google Play",
   "Premium_Locked_Piece_Theme" : "Ce jeu de pièces fait partie de Premium.",
   "Premium_Locked_Board_Theme" : "Ce thème de plateau fait partie de Premium.",
   "Premium_Locked_Opening" : "Ce cours d’ouverture fait partie de Premium.",

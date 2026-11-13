@@ -54,6 +54,31 @@ The Mac build shares the iOS bundle identifier `com.appsbay.chessRoom1`, so it
 ships inside the same App Store record and resolves the same in-app purchase:
 Premium bought on iPhone or iPad restores on the Mac, and the reverse.
 
+## Premium in-app purchase
+
+Premium is one permanent purchase per store, never consumed:
+
+| Store | Product ID | Reach |
+| --- | --- | --- |
+| App Store | `com.appsbay.chessRoom1.remove_ads` | iPhone, iPad and Mac |
+| Google Play | `com.appsbay.chess_room.remove_ads` | the buyer's Google Play account |
+
+Play rejects uppercase characters in a product ID, so Android cannot reuse the
+App Store identifier. `premiumProductId` resolves whichever one the running
+platform sells. There is no cross-store account service, so an Apple purchase
+is not an Android purchase: `premiumBenefits` states each store's reach in the
+paywall rather than promising Apple devices to a Play buyer.
+
+Play voids a purchase that is never acknowledged within three days, which
+`completePurchase` does; the silent restore on launch re-emits anything that
+earlier failed to complete.
+
+The Play catalog entry is defined in `store/google_play/premium/` and managed
+with `tool/play_premium_product.py`. `--create` upserts the product, its eight
+listings and the regional prices converted from the approved USD base price;
+the purchase option stays `DRAFT` until the separate `--activate` makes it
+buyable.
+
 ```bash
 flutter run -d macos
 ```
@@ -64,9 +89,9 @@ Platform differences the Dart code accounts for:
   `AdsManager.isSupportedPlatform` is false there, the banner slot reserves no
   space, and tracking authorization is never requested. Premium therefore earns
   its price on the Mac through the unlocked features rather than ad removal.
-- **StoreKit.** `PremiumPurchaseService.isSupported` covers iOS and macOS. The
-  Release entitlements add `com.apple.security.network.client`, without which
-  StoreKit cannot reach the store from the sandbox.
+- **StoreKit.** `PremiumPurchaseService.isSupported` covers iOS, macOS and
+  Android. The Release entitlements add `com.apple.security.network.client`,
+  without which StoreKit cannot reach the store from the sandbox.
 - **Store links.** `open_store` throws off iOS and Android, so More Apps goes
   through `util/store_links.dart`, which launches App Store URLs directly on the
   Mac.

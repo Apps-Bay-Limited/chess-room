@@ -198,14 +198,19 @@ class _Benefit extends StatelessWidget {
 
 /// The benefit list shared by the paywall and the Settings section. The ad-free
 /// line is left out where no ads are served, so the Mac build does not promise
-/// to remove something it never shows.
+/// to remove something it never shows. The last line names the reach the
+/// player's own store gives: the App Store sells one purchase across iPhone,
+/// iPad and Mac, while a Play purchase follows the Google Play account.
 List<String> premiumBenefits(S strings) => [
       strings.Premium_Benefit_Themes,
       strings.Premium_Benefit_Training,
       strings.Premium_Benefit_Review,
       strings.Premium_Benefit_History,
       if (AdsManager.isSupportedPlatform) strings.Premium_Benefit_No_Ads,
-      strings.Premium_Benefit_Shared,
+      if (isPlayBillingPlatform)
+        strings.Premium_Benefit_Play
+      else
+        strings.Premium_Benefit_Shared,
     ];
 
 /// The one-line store status shared by the paywall and the Settings section.

@@ -298,6 +298,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "Premium_Active": MessageLookupByLibrary.simpleMessage("此裝置已啟用進階版。"),
     "Premium_Benefit_History": MessageLookupByLibrary.simpleMessage("完整的對局存檔"),
     "Premium_Benefit_No_Ads": MessageLookupByLibrary.simpleMessage("沒有廣告"),
+    "Premium_Benefit_Play": MessageLookupByLibrary.simpleMessage(
+      "可用同一 Google Play 帳戶回復購買",
+    ),
     "Premium_Benefit_Review": MessageLookupByLibrary.simpleMessage("無限對局覆盤"),
     "Premium_Benefit_Shared": MessageLookupByLibrary.simpleMessage(
       "一次購買，iPhone、iPad 和 Mac 通用",
@@ -309,7 +312,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "無限題庫習題與全部開局課程",
     ),
     "Premium_Description": MessageLookupByLibrary.simpleMessage(
-      "一次購買即可解鎖全部主題、無限訓練與完整對局存檔，並移除廣告。iPhone、iPad 和 Mac 通用。",
+      "一次購買即可解鎖全部主題、無限訓練與完整對局存檔，並移除廣告。",
     ),
     "Premium_Loading": MessageLookupByLibrary.simpleMessage("正在載入購買選項..."),
     "Premium_Locked_Board_Theme": MessageLookupByLibrary.simpleMessage(

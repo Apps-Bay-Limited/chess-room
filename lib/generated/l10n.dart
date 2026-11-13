@@ -2164,10 +2164,10 @@ class S {
     return Intl.message('Premium', name: 'Premium', desc: '', args: []);
   }
 
-  /// `One purchase unlocks every theme, unlimited training and your full game archive — and removes ads. It covers iPhone, iPad and Mac.`
+  /// `One purchase unlocks every theme, unlimited training and your full game archive — and removes ads.`
   String get Premium_Description {
     return Intl.message(
-      'One purchase unlocks every theme, unlimited training and your full game archive — and removes ads. It covers iPhone, iPad and Mac.',
+      'One purchase unlocks every theme, unlimited training and your full game archive — and removes ads.',
       name: 'Premium_Description',
       desc: '',
       args: [],
@@ -2279,6 +2279,16 @@ class S {
     return Intl.message(
       'One purchase covers iPhone, iPad and Mac',
       name: 'Premium_Benefit_Shared',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Restores with your Google Play account`
+  String get Premium_Benefit_Play {
+    return Intl.message(
+      'Restores with your Google Play account',
+      name: 'Premium_Benefit_Play',
       desc: '',
       args: [],
     );

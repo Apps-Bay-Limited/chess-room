@@ -358,6 +358,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "Your complete game archive",
     ),
     "Premium_Benefit_No_Ads": MessageLookupByLibrary.simpleMessage("No ads"),
+    "Premium_Benefit_Play": MessageLookupByLibrary.simpleMessage(
+      "Restores with your Google Play account",
+    ),
     "Premium_Benefit_Review": MessageLookupByLibrary.simpleMessage(
       "Unlimited game review",
     ),
@@ -371,7 +374,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Unlimited library puzzles and every opening course",
     ),
     "Premium_Description": MessageLookupByLibrary.simpleMessage(
-      "One purchase unlocks every theme, unlimited training and your full game archive — and removes ads. It covers iPhone, iPad and Mac.",
+      "One purchase unlocks every theme, unlimited training and your full game archive — and removes ads.",
     ),
     "Premium_Loading": MessageLookupByLibrary.simpleMessage(
       "Loading purchase options...",

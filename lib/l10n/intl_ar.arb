@@ -267,7 +267,7 @@
   "Delete_Game_Failed": "تعذّر حذف هذه المباراة. يُرجى المحاولة مجددًا.",
   "Puzzle_Hint": "إظهار تلميح",
   "Premium" : "النسخة المميزة",
-  "Premium_Description" : "عملية شراء واحدة تفتح كل السمات والتدريب غير المحدود وسجل مبارياتك الكامل، وتزيل الإعلانات. تعمل على iPhone وiPad وMac.",
+  "Premium_Description" : "عملية شراء واحدة تفتح كل السمات والتدريب غير المحدود وسجل مبارياتك الكامل، وتزيل الإعلانات.",
   "Premium_Unlock" : "فتح النسخة المميزة",
   "Premium_Unlock_With_Price" : "فتح النسخة المميزة {price}",
   "@Premium_Unlock_With_Price": {
@@ -284,6 +284,7 @@
   "Premium_Benefit_History" : "سجل مبارياتك الكامل",
   "Premium_Benefit_No_Ads" : "بدون إعلانات",
   "Premium_Benefit_Shared" : "شراء واحد يشمل iPhone وiPad وMac",
+  "Premium_Benefit_Play" : "يمكن استعادتها بحساب Google Play نفسه",
   "Premium_Locked_Piece_Theme" : "طقم القطع هذا جزء من النسخة المميزة.",
   "Premium_Locked_Board_Theme" : "سمة الرقعة هذه جزء من النسخة المميزة.",
   "Premium_Locked_Opening" : "دورة الافتتاحية هذه جزء من النسخة المميزة.",

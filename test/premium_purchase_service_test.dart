@@ -143,8 +143,33 @@ void main() {
     service.dispose();
   });
 
-  test('Android does not query products or expose purchase support', () async {
+  test('Android queries the Play product and can grant premium', () async {
     debugDefaultTargetPlatformOverride = TargetPlatform.android;
+    final service = PremiumPurchaseService(store: store);
+
+    await service.init();
+
+    expect(service.isSupported, isTrue);
+    expect(store.queriedProductIds, contains(premiumPlayProductId));
+    expect(store.queriedProductIds, isNot(contains(premiumAppleProductId)));
+    expect(service.localizedPrice, r'$2.99');
+
+    await service.buyPremium();
+    await Future<void>.delayed(Duration.zero);
+
+    final prefs = await SharedPreferences.getInstance();
+    expect(service.isPremium, isTrue);
+    expect(prefs.getBool(premiumEntitlementKey), isTrue);
+    // Play voids a purchase that is never acknowledged, so the service has to
+    // complete it rather than leave it to the next launch.
+    expect(store.completedPurchaseCount, 1);
+
+    service.dispose();
+  });
+
+  test('a desktop platform without a store exposes no purchase support',
+      () async {
+    debugDefaultTargetPlatformOverride = TargetPlatform.windows;
     final service = PremiumPurchaseService(store: store);
 
     await service.init();

@@ -387,6 +387,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "Premium_Benefit_No_Ads": MessageLookupByLibrary.simpleMessage(
       "Sin anuncios",
     ),
+    "Premium_Benefit_Play": MessageLookupByLibrary.simpleMessage(
+      "Se restaura con tu cuenta de Google Play",
+    ),
     "Premium_Benefit_Review": MessageLookupByLibrary.simpleMessage(
       "Análisis de partidas ilimitado",
     ),
@@ -400,7 +403,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Ejercicios ilimitados y todos los cursos de apertura",
     ),
     "Premium_Description": MessageLookupByLibrary.simpleMessage(
-      "Una sola compra desbloquea todos los temas, el entrenamiento ilimitado y tu archivo completo de partidas, y elimina los anuncios. Incluye iPhone, iPad y Mac.",
+      "Una sola compra desbloquea todos los temas, el entrenamiento ilimitado y tu archivo completo de partidas, y elimina los anuncios.",
     ),
     "Premium_Loading": MessageLookupByLibrary.simpleMessage(
       "Cargando opciones de compra...",
