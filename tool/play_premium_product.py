@@ -184,14 +184,19 @@ def create(product, listings, amount):
 def activate(product):
     url = (f'{API}/{product["packageName"]}/oneTimeProducts/'
            f'{product["productId"]}/purchaseOptions:batchUpdateStates')
-    body = {'requests': [{
+    # Each request names its target inside the activation message itself,
+    # not at the request's top level.
+    body = {'requests': [{'activatePurchaseOptionRequest': {
         'packageName': product['packageName'],
         'productId': product['productId'],
-        'activatePurchaseOption': {'purchaseOptionId': product['purchaseOptionId']},
+        'purchaseOptionId': product['purchaseOptionId'],
         'latencyTolerance': 'PRODUCT_UPDATE_LATENCY_TOLERANCE_LATENCY_SENSITIVE',
-    }]}
+    }}]}
     result = api(url, method='POST', body=body)
-    print(json.dumps(result, ensure_ascii=False, indent=2))
+    for item in result.get('oneTimeProducts', []):
+        states = [f'{option.get("purchaseOptionId")}={option.get("state")}'
+                  for option in item.get('purchaseOptions', [])]
+        print(f'{item.get("productId")}: ' + ', '.join(states))
     return result
 
 
